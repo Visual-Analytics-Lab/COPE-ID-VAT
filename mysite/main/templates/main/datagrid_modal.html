@@ -1,0 +1,22 @@
+<!-- <div id="sampleDataDetailsModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>{{ doc.id }}</h2>
+      <p>Document Text: {{ doc.doc_text }}</p>
+      <p>Document JSON: {{ doc.doc_json }}</p>
+      <p>Document Source: {{ doc.doc_source }}</p>
+    </div>
+  </div> -->
+
+<p>Document ID: {{ doc_info.doc_id }}</p>
+<p>Document Text: {{ doc_info.doc_text }}</p>
+<p>Document JSON: {{ doc_info.doc_json }}</p>
+<p>Document Source: {{ doc_info.doc_source }}</p>
+<!-- Dropdown Menu -->
+<label for="code_column">Document Code</label>
+<select name="code_column" id="code_column" style="margin-left: 25px;">
+  <option value="C1">Coding Variable1</option>
+  <option value="C2">Coding Variable2</option>
+  <option value="C3">Coding Variable3</option>
+  <option value="C4">Coding Variable4</option>
+</select>

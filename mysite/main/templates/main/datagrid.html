@@ -1,11 +1,95 @@
-{% extends 'main\\header.html' %}
+{% extends 'main/header.html' %}
+
+{% block title %}Data Grid Template{% endblock %}
 
 {% block content %}
+
+<style>
+  /* Compact styling for the data grid */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px; /* Adjust font size as needed */
+  }
+  th, td {
+    padding: 6px; /* Reduce padding */
+    border-bottom: 1px solid #ddd;
+    text-align: left;
+    white-space: nowrap; /* Prevent text wrapping */
+    overflow: hidden; /* Hide overflow content */
+    text-overflow: ellipsis; /* Display ellipsis for truncated text */
+  }
+  th {
+    background-color: #f2f2f2;
+  }
+  tr:hover {
+    background-color: #f5f5f5;
+  }
+
+  /* Limit the number of characters for person name */
+  .doc_text {
+    max-width: 150px; /* Adjust as needed */
+  }
+  .doc_json {
+    max-width: 150px; /* Adjust as needed */
+  }
+  .modal-content {
+    padding: initial;
+  }
+</style>
+
+<div>
+  <h2>Data Grid</h2>
+  
+  <form method="GET" action="{% url 'main:datagrid' %}" style="max-width: 600px; margin: auto;">
+    <div style="display: flex; align-items: center;">
+      <!-- Search Query Input -->
+      <input type="text" name="search_query" placeholder="Search..." style="flex: 1;">
+  
+      <!-- Dropdown Menu -->
+      <!-- <label for="search_column">Column Dropdown</label>
+      <select name="search_column" id="search_column" style="margin-left: 25px;">
+        <option value="id">ID</option>
+        <option value="doc_text">Document Text</option>
+        <option value="doc_json">Document JSON</option>
+        <option value="doc_source">Document Source</option>
+      </select> -->
+  
+      <!-- Search Button -->
+      <button type="submit" style="margin-left: 5px;">Search</button>
+    </div>
+  </form>
+</div>
+
+<div>
   <table>
-    <tr>
-      <th>Doc Text</th>
-      <th>Doc Json</th>
-      <th>Source</th>
-    </tr>
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Text</th>
+        <th>JSON</th>
+        <th>Source</th>
+        <th>Code</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for doc in sample_data %}
+      <tr>
+        <td>
+          <!-- Form to submit doc ID for modal display -->
+          <form action="{% url 'main:doc_info' %}" method="post">
+            {% csrf_token %}
+            <input type="hidden" name="doc_id" value="{{ doc.id }}">
+            <button type="submit">{{ doc.id }}</button>
+          </form>
+        </td>
+        <td class="doc_text">{{ doc.doc_text }}</td>
+        <td class="doc_json">{{ doc.doc_json }}</td>
+        <td class="doc_source">{{ doc.doc_source }}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
   </table>
+</div>
+
 {% endblock %}
