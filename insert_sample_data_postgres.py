@@ -3,7 +3,7 @@ import pandas as pd
 from configparser import ConfigParser
 from sqlalchemy import create_engine
 
-def config(filename="M:\\COPE-ID-VAT\\COPE-ID-VAT\\database.ini", section='postgresql'):
+def config(filename="database.ini", section='postgresql'):
     # create a parser
     parser = ConfigParser()
     # read config file
@@ -68,7 +68,7 @@ def connect(id, doc_json, doc_source, doc_text):
     conn.close()
 
 if __name__ == '__main__':
-        data = pd.read_json('M:\\COPE-ID-VAT\\COPE-ID-VAT\\test_main_sample_data.json')
+        data = pd.read_json('/home/shared/data/test_main_sample_data.json')
         for d in data.iterrows():
              doc_json = d[1]['doc_json']
              doc_source = d[1]['doc_source']

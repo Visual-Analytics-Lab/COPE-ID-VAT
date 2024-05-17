@@ -18,7 +18,7 @@ import yaml
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 # Load config
-with open(os.path.join(BASE_DIR, 'mysite\\config.yml'), 'r') as f:
+with open(os.path.join(BASE_DIR, 'mysite/config.yml'), 'r') as f:
     config = yaml.safe_load(f)
 
 # Quick-start development settings - unsuitable for production
@@ -30,7 +30,7 @@ SECRET_KEY = config['secret_key']['key']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
