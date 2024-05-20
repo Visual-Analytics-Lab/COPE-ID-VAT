@@ -1,16 +1,29 @@
-{% extends 'main/header.html' %}
+{% extends 'main/index.html' %}
 
 {% block content %}
 
-    <div class="container">
-        <form method="POST">
-            {% csrf_token %}
-            {{form.as_p}}
+    <!-- Register New Users -->
+    <div class="container px-1 py-3">
+        <div class="d-flex justify-content-center">
 
-            <button style="background-color:#F4EB16; color:blue" class="btn btn-outline-info" type="submit">Sign Up</button>
+            <!-- Card for Register Form -->
+            <div class="card" style="width: 30rem;">
+                <div class="card-header">
+                  Register
+                </div>
+                <div class="card-body">
 
-        </form>
+                    <!-- Register Form -->
+                    <form method="POST">
+                        {% csrf_token %}
+                        {{form.as_p}}
+                        <button class="btn btn-primary" type="submit">Sign Up</button>
+                    </form>
 
-        If you already have an account <a href="/login" target="blank"><strong>login</strong></a> instead.
+                    <!-- Redirect to Login Page -->
+                    <p>If you already have an account, <a href="/login"><strong>login</strong></a> instead.</p>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
