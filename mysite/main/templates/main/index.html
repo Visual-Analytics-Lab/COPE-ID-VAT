@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>COPE-ID</title>
+        {% load static %}
+        <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}" />
+
+        <!-- Bootstrap CSS -->
+        {% load static %}
+        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+        <!-- Bootstrap Icons CSS -->
+        {% load static %}
+        <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+    </head>
+
+    <body>
+        <div class="container-fluid px-0">
+            <div class="row mx-0" style="height:15vh;">
+                <div class="col-12 p-0">
+                    <!-- content for first row goes here -->
+                    {% include 'main/includes/header.html' %}
+                </div>
+            </div>
+            <div class="row mx-0" style="height:85vh; overflow-y:auto;">
+                {% block content %}
+
+                {% endblock %}
+            </div>
+            <div class="row mx-0" style="min-height:5vh;">
+                <div class="col-12 p-0" style="background-color: #5D1725;">
+                    <!-- content for third row goes here -->
+
+                </div>
+            </div>
+        </div>
+        <!-- Bootstrap JavaScript Bundle with Popper -->
+        {% load static %}
+        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+    </body>
+
+</html>
