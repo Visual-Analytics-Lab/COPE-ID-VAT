@@ -161,3 +161,9 @@ cython_debug/
 
 config.yml
 database.ini
+insert_sample_data_postgres.py
+mysite/main/migrations/__init__.py
+mysite/main/migrations/0001_initial.py
+mysite/main/migrations/0002_sample_data_alter_tutorial_tutorial_published.py
+mysite/main/migrations/__pycache__/__init__.cpython-312.pyc
+mysite/main/migrations/__pycache__/0001_initial.cpython-312.pyc
