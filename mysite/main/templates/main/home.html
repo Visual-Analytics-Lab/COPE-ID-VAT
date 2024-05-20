@@ -1,6 +1,9 @@
-{% extends 'main\\header.html' %}
+{% extends 'main/index.html' %}
 
 {% block content %}
+
+<div class="container px-1 py-3" id="homeContainer">
+
   <div class="row">
     {% for tut in tutorials %}
         <div class="col s12 m6">
@@ -13,4 +16,9 @@
           </div>
         </div>
     {% endfor %}
+    
+</div>
+
+
+
 {% endblock %}
