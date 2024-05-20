@@ -82,10 +82,11 @@
             <input type="hidden" name="doc_id" value="{{ doc.id }}">
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
               {{ doc.id }}
-            </button>            
+            </button>
             <button type="submit">{{ doc.id }}</button>
           </form>
         </td>
+        <td class="doc_id d-none" id="id_{{ doc.id }}">{{ doc.id }}</td>
         <td class="doc_text">{{ doc.doc_text }}</td>
         <td class="doc_json">{{ doc.doc_json }}</td>
         <td class="doc_source">{{ doc.doc_source }}</td>
@@ -94,6 +95,10 @@
     </tbody>
   </table>
 </div>
+
+<!-- Maybe a GET request to populate the modal, sending the data back through the views.py
+I believe that POST request would be necessary to update the DB, or maybe something through AJAX after the
+get request? -->
 
 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -113,5 +118,8 @@
   </div>
 </div>
 
+<script>
+
+</script>
 
 {% endblock %}
