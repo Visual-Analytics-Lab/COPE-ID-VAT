@@ -4,6 +4,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.http import JsonResponse
+from django.core.paginator import Paginator
 
 # Create your views here.
 def homepage(request):
@@ -66,7 +67,12 @@ def datagrid(request):
         documents = sample_data.objects.filter(doc_text__icontains=search_query).order_by('id')
     else:
         documents = sample_data.objects.all().order_by('id')
-    return render(request, 'main\\datagrid.html', context = {"sample_data":documents})
+
+    paginator = Paginator(documents, 25)  # Show 25 contacts per page.
+
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(request, 'main\\datagrid.html', context = {"sample_data":page_obj})
     
 def doc_info(request):
     if request.method == 'POST':
