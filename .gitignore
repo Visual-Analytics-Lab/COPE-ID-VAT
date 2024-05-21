@@ -1,16 +1,23 @@
 # Byte-compiled / optimized / DLL files
 __pycache__/*
 
+# Ignore pycache
 mysite/main/__pycache__/*
-
+# Ignore migrations
 mysite/main/migrations/*
+# Keep pycache directory
 !mysite/main/migrations/__pycache__/
+# Ignore pycache files
 mysite/main/migrations/__pycache__/*
 
+# Ignore pycache files
 mysite/mysite/__pycache__/*
 
+# Ignore migrations
 mysite/user_management/migrations/*
+# Keep pycache directory
 !mysite/user_management/migrations/__pycache__/
+# Ignore pycache files
 mysite/user_management/migrations/__pycache__/*
 
 
