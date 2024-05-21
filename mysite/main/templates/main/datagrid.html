@@ -4,65 +4,26 @@
 
 {% block content %}
 
-<style>
-  /* Compact styling for the data grid */
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px; /* Adjust font size as needed */
-  }
-  th, td {
-    padding: 6px; /* Reduce padding */
-    border-bottom: 1px solid #ddd;
-    text-align: left;
-    white-space: nowrap; /* Prevent text wrapping */
-    overflow: hidden; /* Hide overflow content */
-    text-overflow: ellipsis; /* Display ellipsis for truncated text */
-  }
-  th {
-    background-color: #f2f2f2;
-  }
-  tr:hover {
-    background-color: #f5f5f5;
-  }
+<div class="px-0 mx-0" style="max-width: 100vw;">
 
-  /* Limit the number of characters for person name */
-  .doc_text {
-    max-width: 150px; /* Adjust as needed */
-  }
-  .doc_json {
-    max-width: 150px; /* Adjust as needed */
-  }
-  .modal-content {
-    padding: initial;
-  }
-</style>
-
-<div>
-  <h2>Data Grid</h2>
+  <!-- Title -->
+  <h2 class="px-1">Data Grid</h2>
   
+  <!-- Search Form -->
   <form method="GET" action="{% url 'main:datagrid' %}" style="max-width: 600px; margin: auto;">
     <div style="display: flex; align-items: center;">
       <!-- Search Query Input -->
       <input type="text" name="search_query" placeholder="Search..." style="flex: 1;">
-  
-      <!-- Dropdown Menu -->
-      <!-- <label for="search_column">Column Dropdown</label>
-      <select name="search_column" id="search_column" style="margin-left: 25px;">
-        <option value="id">ID</option>
-        <option value="doc_text">Document Text</option>
-        <option value="doc_json">Document JSON</option>
-        <option value="doc_source">Document Source</option>
-      </select> -->
-  
+    
       <!-- Search Button -->
-      <button type="submit" style="margin-left: 5px;">Search</button>
+      <button class="btn btn-primary" type="submit" style="margin-left: 5px;">Search</button>
     </div>
   </form>
-</div>
 
-<div>
-  <table>
+  <!-- Data Table -->
+  <table class="table table-striped table-hover" style="max-width: 100vw;">
+
+    <!-- Column Names -->
     <thead>
       <tr>
         <th>ID</th>
@@ -72,29 +33,113 @@
         <th>Code</th>
       </tr>
     </thead>
-    <tbody>
+
+    <!-- Table Row Layout -->
+    <tbody class="table-group-divider">
+
+      <!-- Loop through Data -->
       {% for doc in sample_data %}
       <tr>
+
+        <!-- Data ID -->
         <td>
+          <div class="d-inline-block text-truncate" style="min-width: 5vw;">
           <!-- Form to submit doc ID for modal display -->
           <form action="{% url 'main:doc_info' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="doc_id" value="{{ doc.id }}">
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+
+            <!-- Jacob's attempt at a modal V0.1 -->
+            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
               {{ doc.id }}
-            </button>
-            <button type="submit">{{ doc.id }}</button>
+            </button> -->
+
+            <button class="btn btn-primary" type="submit">{{ doc.id }}</button>
+
           </form>
+          </div>
         </td>
-        <td class="doc_id d-none" id="id_{{ doc.id }}">{{ doc.id }}</td>
-        <td class="doc_text">{{ doc.doc_text }}</td>
-        <td class="doc_json">{{ doc.doc_json }}</td>
-        <td class="doc_source">{{ doc.doc_source }}</td>
+
+        <!-- Data Text -->
+        <td class="doc_text"><div class="d-inline-block text-truncate" style="max-width: 35vw;">{{ doc.doc_text }}</div></td>
+
+        <!-- Data JSON -->
+        <td class="doc_json"><div class="d-inline-block text-truncate" style="max-width: 35vw">{{ doc.doc_json }}</div></td>
+
+        <!-- Data Source -->
+        <td class="doc_source"><div class="d-inline-block text-truncate" style="min-width: 10vw">{{ doc.doc_source }}</div></td>
+
+        <!-- Data Code -->
+        <td class="doc_code"><div class="d-inline-block text-truncate" style="min-width: 10vw">PlaceHolder</div></td>
+
       </tr>
       {% endfor %}
     </tbody>
   </table>
+
+  <!-- Pagination -->
+  <nav aria-label="pagination">
+    <ul class="pagination justify-content-center">
+
+      <!-- Check if Previous -->
+      {% if sample_data.has_previous %}
+
+        <!-- Last Page -->
+        <li class="page-item">
+          <a class="page-link" href="?page=1" aria-label="First">
+            <span aria-hidden="true">&laquo;</span>
+          </a>
+        </li>
+
+        <!-- Previous Page -->
+        <li class="page-item"><a class="page-link" href="?page={{ sample_data.previous_page_number }}">Prev</a></li>
+      {% else %}
+
+        <!-- Disable Previous Button -->
+        <li class="page-item disabled"><a class="page-link">Prev</a></li>
+      {% endif %}
+
+      <!-- Iterate +/- 5 Pages -->
+      {% for current_page in  sample_data.paginator.page_range %}
+        {% if current_page <= sample_data.number|add:5 and current_page >= sample_data.number|add:-5 %}
+
+          <!-- Check if Counter == Current Page -->
+          {% if forloop.counter == sample_data.number %}
+
+            <!-- Disable Button for Current Page -->
+            <li class="page-item disabled"><a class="page-link" href="#">{{forloop.counter}}</a></li>
+          
+          {% else %}
+
+            <!-- Button for Page Navigation -->
+            <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
+          {% endif %}
+
+        {% endif %}
+      {% endfor %}
+
+      <!-- Check if Next -->
+      {% if sample_data.has_next %}
+        
+        <!-- Next Page -->
+        <li class="page-item"><a class="page-link" href="?page={{ sample_data.next_page_number }}">Next</a></li>
+
+        <!-- First Page -->
+        <li class="page-item">
+          <a class="page-link" href="?page={{ sample_data.paginator.num_pages }}" aria-label="Last">
+            <span aria-hidden="true">&raquo;</span>
+          </a>
+        </li>
+      {% else %}
+
+        <!-- Disable Next Button -->
+        <li class="page-item disabled"><a class="page-link">Next</a></li>
+      {% endif %}
+
+    </ul>
+  </nav>
 </div>
+
 
 <!-- Maybe a GET request to populate the modal, sending the data back through the views.py
 I believe that POST request would be necessary to update the DB, or maybe something through AJAX after the
