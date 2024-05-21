@@ -1,3 +1,8 @@
+{% extends 'main/index.html' %}
+
+
+{% block content %}
+
 <!-- <div id="sampleDataDetailsModal" class="modal">
     <div class="modal-content">
       <span class="close">&times;</span>
@@ -8,15 +13,86 @@
     </div>
   </div> -->
 
-<p>Document ID: {{ doc_info.doc_id }}</p>
-<p>Document Text: {{ doc_info.doc_text }}</p>
-<p>Document JSON: {{ doc_info.doc_json }}</p>
-<p>Document Source: {{ doc_info.doc_source }}</p>
-<!-- Dropdown Menu -->
-<label for="code_column">Document Code</label>
-<select name="code_column" id="code_column" style="margin-left: 25px;">
-  <option value="C1">Coding Variable1</option>
-  <option value="C2">Coding Variable2</option>
-  <option value="C3">Coding Variable3</option>
-  <option value="C4">Coding Variable4</option>
-</select>
+
+<div>
+
+  <!-- Update breadcrumb to return user to the data grid page # they left -->
+  <!-- Alternatively, we could do a Go Back/Previous Page button -->
+  <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="/datagrid">Data Grid</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Document: {{ doc_info.doc_id }}</li>
+    </ol>
+  </nav>
+
+  <!-- Title -->
+  <h2 class="mt-4">Post ID: {{ doc_info.doc_id }}</h2>
+  <h3>Source: {{ doc_info.doc_source }}</h3>
+
+  <div class="row mb-3 text-center">
+
+    <!-- Post Text & JSON -->
+    <div class="col-md-8 themed-grid-col">
+      <div class="pb-3">
+      </div>
+      <div class="row">
+
+        <!-- Post Text -->
+        <div class="col-md-6 themed-grid-col">
+          <div class="card" style="width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">Post Text</h5>
+              <p class="card-text">{{ doc_info.doc_text }}</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Post JSON -->
+        <div class="col-md-6 themed-grid-col">
+          <div class="card" style="width: 100%;">
+            <div class="card-body">
+              <h5 class="card-title">Post JSON</h5>
+              <p class="card-text">{{ doc_info.doc_json }}</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Codes -->
+    <div class="col-md-4 themed-grid-col">
+      <!-- Dropdown Menu -->
+      <div>
+        <label for="code_column">Post Code</label>
+        <select name="code_column" id="code_column" style="margin-left: 25px;">
+          <option value="C1">Coding Variable1</option>
+          <option value="C2">Coding Variable2</option>
+          <option value="C3">Coding Variable3</option>
+          <option value="C4">Coding Variable4</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Search query will need to be passed to this web page
+in order for the previous and next buttons to function correctly -->
+<!-- Navbar -->
+<nav aria-label="post nav">
+  <ul class="pagination justify-content-between p-3">
+
+        <!-- Previous Post -->
+        <li class="page-item">
+          <a class="page-link">Previous</a>
+        </li>
+
+        <!-- Next Post -->
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+  </ul>
+</nav>
+
+{% endblock %}
