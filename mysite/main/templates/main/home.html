@@ -2,128 +2,164 @@
 
 {% block content %}
 
-<div class="container-fluid h-100">
-    <!-- (Row) All Content -->
-    <div class="row ps-2 h-100">
-        <!-- (Column) Left Sidebar -->
-        <div class="col-2 d-flex flex-column py-2 mt-3 mb-2" style="background-color: #D3D3D3;">
-            <!-- (Flex) Navigation Buttons -->
-            <div class="flex-grow-1 overflow-auto">
+<div class="container" style="height: 94vh;">
 
+    <!-- Row 1 -->
+    <div class="row" style="height: 94vh;">
+
+        <!-- Row 1 Column 1 -->
+        <div class="col-1 justify-content-center">
+
+            <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
                 <!-- Explore -->
                 <a class="btn btn-primary w-100 mb-2" href="/datagrid">Explore</a>
+            </div>
 
+            <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
                 <!-- Add Project -->
                 <button class="btn btn-primary w-100 mb-2">Add Project</button>
+            </div>
 
+            <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+                <!-- Add Project -->
+                <button class="btn btn-primary w-100 mb-2">Add Project</button>
+            </div>
+
+            <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
                 <!-- Existing Projects -->
                 <button class="btn btn-primary w-100 mb-2">Existing Projects</button>
+            </div>
 
+            <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
                 <!-- Users -->
                 <button class="btn btn-primary w-100 mb-2">Users</button>
             </div>
+
         </div>
 
-        <!-- (Column) Main Content -->
-        <div class="col-10 d-flex flex-column">
-            <!-- (Row) Middle Content -->
-            <div class="row flex-grow-1 overflow-auto p-2">
-                <!-- (Column) Word List -->
-                <div class="col-2 py-2 my-2" style="background-color: #D3D3D3;">
-                    <!-- Extract -->
-                    <button class="btn btn-success w-100 mb-2">Extract</button>
+        <!-- Row 1 Column 2 -->
+        <div class="col-11 text-center">
 
-                    <!-- Search -->
-                    <input type="text" class="form-control mb-2" placeholder="Type to Search...">
-                    {% include 'main/includes/dashboardWordTable.html' %}
+            <!-- Row 1 Column 2 Row 1 -->
+            <div class="row">
+
+                <!-- Row 1 Column 2 Row 1 Column 1 -->
+                <div class="col-2 text-center" style="height: 46vh;">
+
+                    <!-- Row 1 Column 2 Row 1 Column 1 Row 1-->
+                    <div class="row p-1" style="height: 6vh;">
+                        <!-- Extract -->
+                        <button class="btn btn-success w-100 mb-2">Extract</button>
+                    </div>
+
+                    <!-- Row 1 Column 2 Row 1 Column 1 Row 2-->
+                    <div class="row p-1" style="height: 6vh;">
+                        <!-- Search -->
+                        <input type="text" class="form-control mb-2" placeholder="Type to Search...">
+                    </div>
+
+                    <!-- Row 1 Column 2 Row 1 Column 1 Row 3-->
+                    <div class="row" style="height: 40vh;">
+                        {% include 'main/includes/dashboardWordTable.html' %}
+                    </div>
+
                 </div>
 
-                <!-- (Column) Start & End Date Filter -->
-                <div class="col-10 pe-1 d-flex flex-column">
-                    <!-- (Row) Start & End Date Filter -->
-                    <div class="row flex-shrink-0">
-                        <!-- (Column) Start & End Date Filter -->
-                        <div class="col-12 d-flex justify-content-between align-items-center p-2">
-                            <!-- (Flex) Start & End Date Filter -->
-                            <div class="d-flex">
-                                <!-- Start -->
-                                <input type="text" class="form-control me-2" placeholder="Start Date">
+                <!-- Row 1 Column 2 Row 1 Column 2 -->
+                <div class="col-10 text-center">
 
-                                <!-- End -->
-                                <input type="text" class="form-control me-2" placeholder="End Date">
-                            </div>
+                    <!-- Row 1 Column 2 Row 1 Column 2 Row 1 -->
+                    <div class="row p-1" style="height: 6vh;">
+
+                        <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 1 -->
+                        <div class="col-6">
+                            {% include 'main/includes/dashboardDateTime.html' %}
                         </div>
+
+                        <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 2 -->
+                        <div class="col-6">
+                            <div class="d-none">place holder</div>
+                        </div>
+
                     </div>
 
-                    <!-- (Row) Buttons -->
-                    <div class="row flex-shrink-0">
-                        <!-- (Column) Buttons -->
-                        <div class="col d-flex flex-wrap justify-content-between">
-                            <!-- (Flex-Column) WordCloud -->
-                            <div class="d-flex flex-column flex-grow-1 me-2">
-                                <button class="btn btn-primary w-100 my-1">WordCloud</button>
-                            </div>
-                            <!-- (Flex-Column) PCP -->
-                            <div class="d-flex flex-column flex-grow-1 me-2">
-                                <button class="btn btn-primary w-100 my-1">PCP</button>
-                            </div>
-                            <!-- (Flex-Column) Tabular -->
-                            <div class="d-flex flex-column flex-grow-1 me-2">
-                                <button class="btn btn-primary w-100 my-1">Tabular</button>
-                            </div>
-                            <!-- (Flex-Column) Keyword's Context-->
-                            <div class="d-flex flex-column flex-grow-1 me-2">
-                                <button class="btn btn-primary w-100 my-1">Keyword's Context</button>
-                            </div>
-                            <!-- (Flex) Refresh -->
-                            <div class="d-flex align-items-center">
-                                <button class="btn btn-success">Refresh</button>
-                            </div>
+                    <!-- Row 1 Column 2 Row 1 Column 2 Row 2 -->
+                    <div class="row" style="height: 6vh;">
+
+                        <div class="col-2">
+                            <button class="btn btn-primary w-100 my-1">WordCloud</button>
                         </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-primary w-100 my-1">PCP</button>
+                        </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-primary w-100 my-1">Tabular</button>
+                        </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-primary w-100 my-1">Keyword's Context</button>
+                        </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-success w-100 my-1">Refresh</button>
+                        </div>
+
+                        <div class="col-2">
+                            <div class="d-none">place holder</div>
+                        </div>
+
                     </div>
 
-                    <!-- (Row) Overview, Platforms & Topics -->
-                    <div class="row flex-grow-1 overflow-auto">
-                        <!-- (Flex-Column) Overview Chart -->
-                        <div class="col-8 p-2 d-flex flex-column">
-                            <!-- (Flex) Overview Chart -->
-                            <div class="flex-grow-1 d-flex justify-content-center align-items-center"
-                                style="background-color: #D3D3D3;">
+                    <!-- Row 1 Column 2 Row 1 Column 2 Row 3 -->
+                    <div class="row" style="height: 40vh">
+                        
+                        <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 1-->
+                        <div class="col-10" style="border: 1px solid #777777;">
+                            <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
                                 Overview
                             </div>
                         </div>
-                        <!-- (Flex-Column) Platforms & Topics -->
-                        <div class="col-4 py-2 pe-2 d-flex flex-column">
-                            <!-- (Flex) Platforms & Topics -->
-                            <div class="flex-grow-1 d-flex justify-content-center align-items-center"
-                                style="background-color: #D3D3D3;">
-                                Platforms and topics
+
+                        <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 2 -->
+                        <div class="col-2" style="height: 40vh;">
+
+                            <div class="row p-1" style="height: 20vh;">
+                                {% include 'main/includes/dashboardPlatforms.html' %}
                             </div>
+
+                            <div class="row p-1" style="height: 20vh;">
+                                {% include 'main/includes/dashboardTopics.html' %}
+                            </div>
+
                         </div>
+
                     </div>
+
                 </div>
             </div>
+            
+            <!-- Row 1 Column 2 Row 2 -->
+            <div class="row" style="height: 40vh">
 
-            <!-- (Row) Time Chart and Bar Chart -->
-            <div class="row flex-grow-1 overflow-auto">
-                <!-- (Flex-Column) Time Chart of Keywords -->
-                <div class="col-6 p-2 d-flex flex-column">
-                    <!-- (Flex) Time Chart of Keywords -->
-                    <div class="flex-grow-1 d-flex justify-content-center align-items-center h-100"
-                        style="background-color: #D3D3D3;">
+                <!-- Row 1 Column 2 Row 2 Column 1-->
+                <div class="col-6" style="border: 1px solid #777777;">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
                         Time chart of selected keywords using line chart
                     </div>
                 </div>
-                <!-- (Flex-Column) Bar Chart of Keywords -->
-                <div class="col-6 p-2 d-flex flex-column">
-                    <!-- (Flex) Bar Chart of Keywords -->
-                    <div class="flex-grow-1 d-flex justify-content-center align-items-center h-100"
-                        style="background-color: #D3D3D3;">
-                        Bar chart of count and selected keywords across platforms
+
+                <!-- Row 1 Column 2 Row 2 Column 2 -->
+                <div class="col-6 " style="border: 1px solid #777777;">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
+                        Bar chart of count of selected keywords across platforms
                     </div>
                 </div>
+
             </div>
         </div>
+
     </div>
 </div>
 
