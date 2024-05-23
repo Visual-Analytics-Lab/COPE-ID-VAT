@@ -11,4 +11,5 @@ urlpatterns = [
     # path("login", views.login_request, name="login"),
     path("datagrid/", views.datagrid, name="datagrid"),
     path('doc-info/', views.doc_info, name='doc_info'),
+    path('test/', views.test, name='test'),
 ]

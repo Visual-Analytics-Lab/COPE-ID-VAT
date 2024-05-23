@@ -89,3 +89,8 @@ def doc_info(request):
         }
         # Return JSON response with person data
         return render(request, 'main\\datagrid_modal.html', {'doc_info': doc_info})
+    
+def test(request):
+        test = None
+        return render(request, 'main\\test.html', {'test': test})
+
