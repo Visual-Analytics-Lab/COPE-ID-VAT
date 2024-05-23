@@ -3,88 +3,122 @@
 {% block content %}
 
 <div class="container-fluid h-100">
+    <!-- (Row) All Content -->
     <div class="row ps-2 h-100">
-        <!-- Left Sidebar -->
+        <!-- (Column) Left Sidebar -->
         <div class="col-2 d-flex flex-column py-2 mt-3 mb-2" style="background-color: #D3D3D3;">
+            <!-- (Flex) Navigation Buttons -->
             <div class="flex-grow-1 overflow-auto">
-                <!-- Navigation Buttons -->
+
+                <!-- Explore -->
                 <a class="btn btn-primary w-100 mb-2" href="/datagrid">Explore</a>
+
+                <!-- Add Project -->
                 <button class="btn btn-primary w-100 mb-2">Add Project</button>
+
+                <!-- Existing Projects -->
                 <button class="btn btn-primary w-100 mb-2">Existing Projects</button>
+
+                <!-- Users -->
                 <button class="btn btn-primary w-100 mb-2">Users</button>
             </div>
         </div>
 
-        <!-- Main Content -->
+        <!-- (Column) Main Content -->
         <div class="col-10 d-flex flex-column">
-            <!-- Middle Content -->
+            <!-- (Row) Middle Content -->
             <div class="row flex-grow-1 overflow-auto p-2">
+                <!-- (Column) Word List -->
                 <div class="col-2 py-2 my-2" style="background-color: #D3D3D3;">
-                    <!-- Word List -->
+                    <!-- Extract -->
                     <button class="btn btn-success w-100 mb-2">Extract</button>
+
+                    <!-- Search -->
                     <input type="text" class="form-control mb-2" placeholder="Type to Search...">
                     {% include 'main/includes/dashboardWordTable.html' %}
                 </div>
 
+                <!-- (Column) Start & End Date Filter -->
                 <div class="col-10 pe-1 d-flex flex-column">
-                    <!-- Top Navigation -->
+                    <!-- (Row) Start & End Date Filter -->
                     <div class="row flex-shrink-0">
+                        <!-- (Column) Start & End Date Filter -->
                         <div class="col-12 d-flex justify-content-between align-items-center p-2">
+                            <!-- (Flex) Start & End Date Filter -->
                             <div class="d-flex">
+                                <!-- Start -->
                                 <input type="text" class="form-control me-2" placeholder="Start Date">
+
+                                <!-- End -->
                                 <input type="text" class="form-control me-2" placeholder="End Date">
                             </div>
                         </div>
                     </div>
 
-                    <!-- Button Row -->
+                    <!-- (Row) Buttons -->
                     <div class="row flex-shrink-0">
+                        <!-- (Column) Buttons -->
                         <div class="col d-flex flex-wrap justify-content-between">
+                            <!-- (Flex-Column) WordCloud -->
                             <div class="d-flex flex-column flex-grow-1 me-2">
                                 <button class="btn btn-primary w-100 my-1">WordCloud</button>
                             </div>
+                            <!-- (Flex-Column) PCP -->
                             <div class="d-flex flex-column flex-grow-1 me-2">
                                 <button class="btn btn-primary w-100 my-1">PCP</button>
                             </div>
+                            <!-- (Flex-Column) Tabular -->
                             <div class="d-flex flex-column flex-grow-1 me-2">
                                 <button class="btn btn-primary w-100 my-1">Tabular</button>
                             </div>
+                            <!-- (Flex-Column) Keyword's Context-->
                             <div class="d-flex flex-column flex-grow-1 me-2">
                                 <button class="btn btn-primary w-100 my-1">Keyword's Context</button>
                             </div>
+                            <!-- (Flex) Refresh -->
                             <div class="d-flex align-items-center">
                                 <button class="btn btn-success">Refresh</button>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Overview and Platforms & Topics -->
+                    <!-- (Row) Overview, Platforms & Topics -->
                     <div class="row flex-grow-1 overflow-auto">
-                      <div class="col-8 p-2 d-flex flex-column">
-                          <!-- Overview Chart -->
-                          <div class="flex-grow-1 d-flex justify-content-center align-items-center" style="background-color: #D3D3D3;">
-                              Overview
-                          </div>
-                      </div>
-                      <div class="col-4 py-2 pe-2 d-flex flex-column">
-                          <!-- Platforms & Topics -->
-                          <div class="flex-grow-1 d-flex justify-content-center align-items-center" style="background-color: #D3D3D3;">
-                              Platforms and topics
-                          </div>
-                      </div>
-                  </div>
+                        <!-- (Flex-Column) Overview Chart -->
+                        <div class="col-8 p-2 d-flex flex-column">
+                            <!-- (Flex) Overview Chart -->
+                            <div class="flex-grow-1 d-flex justify-content-center align-items-center"
+                                style="background-color: #D3D3D3;">
+                                Overview
+                            </div>
+                        </div>
+                        <!-- (Flex-Column) Platforms & Topics -->
+                        <div class="col-4 py-2 pe-2 d-flex flex-column">
+                            <!-- (Flex) Platforms & Topics -->
+                            <div class="flex-grow-1 d-flex justify-content-center align-items-center"
+                                style="background-color: #D3D3D3;">
+                                Platforms and topics
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- Row containing Time Chart and Bar Chart -->
+            <!-- (Row) Time Chart and Bar Chart -->
             <div class="row flex-grow-1 overflow-auto">
+                <!-- (Flex-Column) Time Chart of Keywords -->
                 <div class="col-6 p-2 d-flex flex-column">
-                    <div class="flex-grow-1 d-flex justify-content-center align-items-center h-100" style="background-color: #D3D3D3;">
+                    <!-- (Flex) Time Chart of Keywords -->
+                    <div class="flex-grow-1 d-flex justify-content-center align-items-center h-100"
+                        style="background-color: #D3D3D3;">
                         Time chart of selected keywords using line chart
                     </div>
                 </div>
+                <!-- (Flex-Column) Bar Chart of Keywords -->
                 <div class="col-6 p-2 d-flex flex-column">
-                    <div class="flex-grow-1 d-flex justify-content-center align-items-center h-100" style="background-color: #D3D3D3;">
+                    <!-- (Flex) Bar Chart of Keywords -->
+                    <div class="flex-grow-1 d-flex justify-content-center align-items-center h-100"
+                        style="background-color: #D3D3D3;">
                         Bar chart of count and selected keywords across platforms
                     </div>
                 </div>
