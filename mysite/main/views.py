@@ -5,16 +5,10 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core.paginator import Paginator
-import platform
 
 # Create your views here.
 def homepage(request):
-    if platform.platform().startswith('Windows'):
-        return render(request = request,
-                  template_name='main/home.html',
-                  context = {"tutorials":Tutorial.objects.all})
-    else:
-        return render(request = request,
+    return render(request = request,
                   template_name='main/home.html',
                   context = {"tutorials":Tutorial.objects.all})
 

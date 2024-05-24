@@ -8,7 +8,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django import forms
-import platform
 
 def register(request):
     if request.method == "POST":
