@@ -43,8 +43,21 @@ python3 manage.py runserver
 
    - mysite/    # Application folder (created using manage.py)  
 
-     - \_\_init\_\_.py  # Empty file that instructs Python to treat this directory as a Python package.  
+     - \_\_init\_\_.py  # Empty file that instructs Python to treat this directory as a Python package.
+       
+     - config.yml  # This file is not in the repo as it contains specific database and user information such as passwords.
+                     The file should follow the below template exactly and updated with the correct values.
+ 
+                     secret_key:
+                      key: <django-secret-key>
 
+                     databases:
+                        name: <database_name>
+                        user: <user_name>
+                        password: <password>
+                        host: 127.0.0.1
+                        port: 5432
+       
      - settings.py  # Contains all the website settings, including registering any applications we create,
                      the location of our static files, database configuration details, etc.  
 
