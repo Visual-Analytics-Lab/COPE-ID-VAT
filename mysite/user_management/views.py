@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import update_session_auth_hash
 from django import forms
+import platform
 
 def register(request):
     if request.method == "POST":
@@ -24,12 +25,12 @@ def register(request):
                 messages.error(request, f"{msg}: {form.error_messages[msg]}")
 
             return render(request = request,
-                          template_name = "main\\register.html",
+                          template_name = "main/register.html",
                           context={"form":form})
 
     form = NewUserForm
     return render(request = request,
-                  template_name = "main\\register.html",
+                  template_name = "main/register.html",
                   context={"form":form})
 
 def logout_request(request):

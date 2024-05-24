@@ -5,16 +5,22 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+import platform
 
 # Create your views here.
 def homepage(request):
-    return render(request = request,
-                  template_name='main\\home.html',
+    if platform.platform().startswith('Windows'):
+        return render(request = request,
+                  template_name='main/home.html',
+                  context = {"tutorials":Tutorial.objects.all})
+    else:
+        return render(request = request,
+                  template_name='main/home.html',
                   context = {"tutorials":Tutorial.objects.all})
 
 def addproject(request):
     return render(request = request,
-                  template_name='main\\addproject.html',
+                  template_name='main/addproject.html',
                   context = {"tutorials":Tutorial.objects.all})
 
 # def register(request):
@@ -77,7 +83,8 @@ def datagrid(request):
 
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
-    return render(request, 'main\\datagrid.html', context = {"sample_data":page_obj})
+
+    return render(request, 'main/datagrid.html', context = {"sample_data":page_obj})
     
 def doc_info(request):
     if request.method == 'POST':
@@ -93,9 +100,10 @@ def doc_info(request):
             'doc_source': doc.doc_source
         }
         # Return JSON response with person data
-        return render(request, 'main\\datagrid_modal.html', {'doc_info': doc_info})
+        return render(request, 'main/datagrid_modal.html', {'doc_info': doc_info})
     
 def test(request):
         test = None
-        return render(request, 'main\\test.html', {'test': test})
+
+        return render(request, 'main/test.html', {'test': test})
 
