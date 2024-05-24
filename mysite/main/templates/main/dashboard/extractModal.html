@@ -1,0 +1,126 @@
+<!-- Included in home.html -->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#extractModal">
+    Extract
+</button>
+  
+<!-- Modal -->
+<div class="modal fade" data-bs-backdrop="static" id="extractModal" tabindex="-1" aria-labelledby="extractModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Extract Sample Dataset Title -->
+                <h1 class="modal-title fs-5" id="extractModalLabel">Extract Sample Dataset</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Input Form -->
+            <form>
+                <div class="modal-body">
+
+                    <!-- Platforms -->
+                    <div class="col">
+
+                        <!-- Twitter -->
+                        <div class="row g-3 align-items-center justify-content-center">
+                            <div class="col-auto">
+                                <label for="twitterPosts" class="col-form-label">Number of Twitter Posts</label>
+                            </div>
+                            <div class="col-auto">
+                              <input type="number" id="twitterPosts" class="form-control" aria-describedby="twitterAdditional">
+                            </div>
+                            <div class="col-auto">
+                              <span id="twitterAdditional" class="form-text">
+                                Additional rules based on Twitter metadata
+                              </span>
+                            </div>
+                          </div>
+
+                          <!-- Reddit -->
+                          <div class="row g-3 align-items-center justify-content-center">
+                            <div class="col-auto">
+                                <label for="redditPosts" class="col-form-label">Number of Reddit Posts</label>
+                            </div>
+                            <div class="col-auto">
+                              <input type="number" id="redditPosts" class="form-control" aria-describedby="redditAdditional">
+                            </div>
+                            <div class="col-auto">
+                              <span id="redditAdditional" class="form-text">
+                                Additional rules based on Reddit metadata
+                              </span>
+                            </div>
+                          </div>
+
+                          <!-- Parler -->
+                          <div class="row g-3 align-items-center justify-content-center">
+                            <div class="col-auto">
+                                <label for="parlerPosts" class="col-form-label">Number of Parler Posts</label>
+                            </div>
+                            <div class="col-auto">
+                              <input type="number" id="parlerPosts" class="form-control" aria-describedby="parlerAdditional">
+                            </div>
+                            <div class="col-auto">
+                              <span id="parlerAdditional" class="form-text">
+                                Additional rules based on Parler metadata
+                              </span>
+                            </div>
+                          </div>
+
+                          <!-- Flickr -->
+                          <div class="row g-3 align-items-center justify-content-center">
+                            <div class="col-auto">
+                                <label for="flickrPosts" class="col-form-label">Number of Flickr Posts</label>
+                            </div>
+                            <div class="col-auto">
+                              <input type="number" id="flickrPosts" class="form-control" aria-describedby="flickrAdditional">
+                            </div>
+                            <div class="col-auto">
+                              <span id="flickrAdditional" class="form-text">
+                                Additional rules based on Flickr metadata
+                              </span>
+                            </div>
+                          </div>
+
+                          <!-- Tumblr -->
+                          <div class="row g-3 align-items-center justify-content-center">
+                            <div class="col-auto">
+                                <label for="tumblrPosts" class="col-form-label">Number of Tumblr Posts</label>
+                            </div>
+                            <div class="col-auto">
+                              <input type="number" id="tumblrPosts" class="form-control" aria-describedby="tumblrAdditional">
+                            </div>
+                            <div class="col-auto">
+                              <span id="tumblrAdditional" class="form-text">
+                                Additional rules based on Tumblr metadata
+                              </span>
+                            </div>
+                          </div>
+
+                          <!-- Template for when we connect DB -->
+                          <!-- Replace 'platform' with Django variable -->
+                          <div class="row g-3 align-items-center justify-content-center">
+                            <div class="col-auto">
+                                <label for="platformPosts" class="col-form-label">Number of Platform Posts</label>
+                            </div>
+                            <div class="col-auto">
+                              <input type="number" id="platformPosts" class="form-control" aria-describedby="platformAdditional">
+                            </div>
+                            <div class="col-auto">
+                              <span id="platformAdditional" class="form-text">
+                                Additional rules based on Platform metadata
+                              </span>
+                            </div>
+                          </div>
+                    </div>
+
+                </div>
+
+                <!-- Cancel and Create Buttons -->
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                    <button type="submit" class="btn btn-success">Create and download dataset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
