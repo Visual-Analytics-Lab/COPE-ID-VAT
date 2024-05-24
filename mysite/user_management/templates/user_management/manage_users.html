@@ -1,0 +1,57 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Manage Users</title>
+</head>
+<body>
+    <h1>Manage Users</h1>
+    <style>
+        table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+        th, td {
+            border: 1px solid #dddddd;
+            text-align: left;
+            padding: 8px;
+        }
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+    </style>
+    {% if users %}
+    <form method="post">
+        {% csrf_token %}
+        <table>
+            <tr>
+                <th>User</th>
+                <th>Groups</th>
+                <th>Permissions</th>
+            </tr>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>
+                    {% if groups %}
+                        {% for group in groups %}
+                        <input type="checkbox" name="user_{{ user.id }}_groups" value="{{ group.id }}" {% if group in user.groups.all %}checked{% endif %}> {{ group.name }}<br>
+                        {% endfor %}
+                    {% else %}
+                        <em>No groups available. <a href="{% url 'user_management:create_group' %}">Create a new group</a>.</em>
+                    {% endif %}
+                </td>
+                <td>
+                    {% for permission in permissions %}
+                    <input type="checkbox" name="user_{{ user.id }}_permissions" value="{{ permission.id }}" {% if permission in user.user_permissions.all %}checked{% endif %}> {{ permission.name }}<br>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+        <button type="submit">Save Changes</button>
+    </form>
+    {% else %}
+    <p>No Users Available</p>
+    {% endif %}
+
+</body>
+</html>

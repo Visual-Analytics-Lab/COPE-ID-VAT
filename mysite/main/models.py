@@ -11,6 +11,10 @@ class Tutorial(models.Model):
         return self.tutorial_title
     
 class sample_data(models.Model):
+    id = models.IntegerField
     doc_text = models.TextField()
     doc_json = models.TextField()
     doc_source = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.doc_json

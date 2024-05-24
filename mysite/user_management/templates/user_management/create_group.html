@@ -1,0 +1,23 @@
+<head>
+    <meta charset="UTF-8">
+    <title>Create Group</title>
+    {% load crispy_forms_tags %}
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"> <!-- Bootstrap CSS for styling -->
+    <script>
+        function handleClick() {
+            console.log("Button clicked!");
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Create Group</h1>
+        <form method="post">
+            {% csrf_token %}
+            <!-- {% crispy create_group_form %} Render the form using crispy_forms_tags -->
+            {{create_group_form.as_p}}
+            <button type="submit">Create</button>
+        </form>
+    </div>
+</body>
+</html>

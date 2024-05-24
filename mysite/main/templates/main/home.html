@@ -1,16 +1,141 @@
-{% extends 'main\\header.html' %}
+{% extends 'main/index.html' %}
 
 {% block content %}
-  <div class="row">
-    {% for tut in tutorials %}
-        <div class="col s12 m6">
-          <div class="card blue-grey darken-1 hoverable">
-            <div class="card-content white-text">
-              <span class="card-title">{{tut.tutorial_title}}</span>
-              <p style="font-size:70%">Published {{tut.tutorial_published}}</p>
-              <p>{{tut.tutorial_content|safe}}</p>
-            </div>
-          </div>
+
+<div class="container" style="height: 94vh;">
+
+    <!-- Row 1 -->
+    <div class="row" style="height: 94vh;">
+
+        <!-- Row 1 Column 1 -->
+        <div class="col-1 justify-content-center">
+            {% include 'main/includes/sidebar.html' %}
         </div>
-    {% endfor %}
+
+        <!-- Row 1 Column 2 -->
+        <div class="col-11 text-center">
+
+            <!-- Row 1 Column 2 Row 1 -->
+            <div class="row">
+
+                <!-- Row 1 Column 2 Row 1 Column 1 -->
+                <div class="col-2 text-center" style="height: 46vh;">
+
+                    <!-- Row 1 Column 2 Row 1 Column 1 Row 1-->
+                    <div class="row p-1" style="height: 6vh;">
+                        <!-- Extract -->
+                        <button class="btn btn-success w-100 mb-2">Extract</button>
+                    </div>
+
+                    <!-- Row 1 Column 2 Row 1 Column 1 Row 2-->
+                    <div class="row p-1" style="height: 6vh;">
+                        <!-- Search -->
+                        <input type="text" class="form-control mb-2" placeholder="Type to Search...">
+                    </div>
+
+                    <!-- Row 1 Column 2 Row 1 Column 1 Row 3-->
+                    <div class="row" style="height: 40vh;">
+                        {% include 'main/includes/dashboardWordTable.html' %}
+                    </div>
+
+                </div>
+
+                <!-- Row 1 Column 2 Row 1 Column 2 -->
+                <div class="col-10 text-center">
+
+                    <!-- Row 1 Column 2 Row 1 Column 2 Row 1 -->
+                    <div class="row p-1" style="height: 6vh;">
+
+                        <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 1 -->
+                        <div class="col-6">
+                            {% include 'main/includes/dashboardDateTime.html' %}
+                        </div>
+
+                        <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 2 -->
+                        <div class="col-6">
+                            <div class="d-none">placeholder</div>
+                        </div>
+
+                    </div>
+
+                    <!-- Row 1 Column 2 Row 1 Column 2 Row 2 -->
+                    <div class="row" style="height: 6vh;">
+
+                        <div class="col-2">
+                            <button class="btn btn-primary w-100 my-1">WordCloud</button>
+                        </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-primary w-100 my-1">PCP</button>
+                        </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-primary w-100 my-1">Tabular</button>
+                        </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-primary w-100 my-1">Keyword's Context</button>
+                        </div>
+
+                        <div class="col-2">
+                            <button class="btn btn-success w-100 my-1">Refresh</button>
+                        </div>
+
+                        <div class="col-2">
+                            <div class="d-none">placeholder</div>
+                        </div>
+
+                    </div>
+
+                    <!-- Row 1 Column 2 Row 1 Column 2 Row 3 -->
+                    <div class="row" style="height: 40vh">
+                        
+                        <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 1-->
+                        <div class="col-10" style="border: 1px solid #777777;">
+                            <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
+                                Overview
+                            </div>
+                        </div>
+
+                        <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 2 -->
+                        <div class="col-2" style="height: 40vh;">
+
+                            <div class="row p-1" style="height: 20vh;">
+                                {% include 'main/includes/dashboardPlatforms.html' %}
+                            </div>
+
+                            <div class="row p-1" style="height: 20vh;">
+                                {% include 'main/includes/dashboardTopics.html' %}
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+            
+            <!-- Row 1 Column 2 Row 2 -->
+            <div class="row" style="height: 40vh">
+
+                <!-- Row 1 Column 2 Row 2 Column 1-->
+                <div class="col-6" style="border: 1px solid #777777;">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
+                        Time chart of selected keywords using line chart
+                    </div>
+                </div>
+
+                <!-- Row 1 Column 2 Row 2 Column 2 -->
+                <div class="col-6 " style="border: 1px solid #777777;">
+                    <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
+                        Bar chart of count of selected keywords across platforms
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
 {% endblock %}

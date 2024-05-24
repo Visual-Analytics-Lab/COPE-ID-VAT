@@ -1,0 +1,42 @@
+<!-- Included in index.html -->
+
+<header style="background-color: #5D1725;">
+  <div class="px-3 py-2 border-bottom mb-3">
+    <div class="container d-flex flex-wrap justify-content-center">
+
+      <!-- Logo Image -->
+      <div class="col-12 col-lg-auto mb-2 mb-lg-0 me-lg-auto">
+        <!-- Name & Image -->
+        <!-- Button as place holder for now -->
+        <a class="btn text-white" href="/">COPE-ID</a>
+      </div>
+
+      <!-- Links -->
+      <ul class="nav justify-content-end">
+
+        <!-- Authenticated User Links -->
+        {% if user.is_authenticated %}
+        <li class="nav-item" style="margin-right: 0.25rem;">
+          <!-- Account -->
+          <a class="btn btn-primary" href="/account">{{user.username|title}}</a>
+        </li>
+        <li class="nav-item">
+          <!-- Logout -->
+          <a class="btn btn-primary" href="/logout">Logout</a>
+        </li>
+
+        <!-- New/Unauthenticated Users -->
+        {% else %}
+        <li class="nav-item" style="margin-right: 0.25rem;">
+          <!-- Login -->
+          <a class="btn btn-primary" href="/login">Login</a>
+        </li>
+        <li class="nav-item" style="margin-right: 0.125rem; margin-left: 0.125rem;">
+          <!-- Register -->
+          <a class="btn btn-primary" href="/register">Register</a>
+        </li>        
+        {% endif %}
+      </ul>
+    </div>
+  </div>
+</header>

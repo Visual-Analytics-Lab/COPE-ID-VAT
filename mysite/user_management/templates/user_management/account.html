@@ -1,0 +1,39 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+
+    <!-- Login -->
+    <div class="container px-1 py-3">
+        <div class="d-flex justify-content-center">
+            <section id="account">
+                <h2>Profile Information</h2>
+                <!-- Profile update form -->
+                <form id="profile_form" method="post" action="{% url 'user_management:account_update' %}">
+                    {% csrf_token %}
+                    <!-- Add form fields for profile update (e.g., name, email, etc.) -->
+                    <label for="first_name">First Name:</label>
+                    <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
+                    <label for="last_name">Last Name:</label>
+                    <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
+                    <label for="username">Username:</label>
+                    <input type="text" id="username" name="username" value="{{ user.username }}">
+                    <label for="email">Email:</label>
+                    <input type="email" id="email" name="email" value="{{ user.email }}">
+                    <button type="submit">Update Profile</button>
+                </form>
+                <form id="password_form" method="post" action="{% url 'user_management:account_update' %}">
+                    {% csrf_token %}
+                    <!-- Add form fields for profile update (e.g., name, email, etc.) -->
+                    <label for="old_password">Old Password:</label><br>
+                    <input type="password" id="old_password" name="old_password"><br><br>
+                    <label for="new_password1">New Password:</label><br>
+                    <input type="password" id="new_password1" name="new_password1"><br><br>
+                    <label for="new_password2">Confirm New Password:</label><br>
+                    <input type="password" id="new_password2" name="new_password2"><br><br>
+                    <button type="submit">Change Password</button>
+                </form>
+            </section>
+        </div>
+    </div>
+
+{% endblock %}
