@@ -1,8 +1,8 @@
 # COPE-ID-VAT
 
-# Description
+## Description
 
-# Requirements
+## Requirements
 * pgAdmin
 * WinSCP
 * PuTTY  
