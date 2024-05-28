@@ -22,6 +22,11 @@ def existingProjects(request):
                   template_name='main/existingProjects.html',
                   context = {"tutorials":Tutorial.objects.all})
 
+def users(request):
+    return render(request = request,
+                  template_name='main/users.html',
+                  context = {"tutorials":Tutorial.objects.all})
+
 # def register(request):
 #     if request.method == "POST":
 #         form = NewUserForm(request.POST)
