@@ -2,18 +2,18 @@
 
 {% block content %}
 
-<div class="container" style="height: 94vh;">
+<div class="container-fluid" style="height: 94vh;">
 
     <!-- Row 1 -->
     <div class="row" style="height: 94vh;">
 
         <!-- Row 1 Column 1 -->
-        <div class="col-1 justify-content-center">
+        <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
             {% include 'main/includes/sidebar.html' %}
         </div>
 
         <!-- Row 1 Column 2 -->
-        <div class="col-11 text-center">
+        <div class="col content">
 
             <!-- Row 1 Column 2 Row 1 -->
             <div class="row">
@@ -48,12 +48,12 @@
                     <div class="row p-1" style="height: 6vh;">
 
                         <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 1 -->
-                        <div class="col-6">
+                        <div class="col-12 col-sm-auto" style="background-color:blue">
                             {% include 'main/dashboard/dateTime.html' %}
                         </div>
 
                         <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 2 -->
-                        <div class="col-6">
+                        <div class="col d-none d-sm-block" style="background-color: purple;">
                             <div class="d-none">placeholder</div>
                         </div>
 
@@ -63,23 +63,23 @@
                     <div class="row" style="height: 6vh;">
 
                         <div class="col-2">
-                            <button class="btn btn-primary w-100 my-1">WordCloud</button>
+                            <button class="btn btn-primary w-100 my-1 text-truncate overflow-hidden">WordCloud</button>
                         </div>
 
                         <div class="col-2">
-                            <button class="btn btn-primary w-100 my-1">PCP</button>
+                            <button class="btn btn-primary w-100 my-1 text-truncate overflow-hidden">PCP</button>
                         </div>
 
                         <div class="col-2">
-                            <button class="btn btn-primary w-100 my-1">Tabular</button>
+                            <button class="btn btn-primary w-100 my-1 text-truncate overflow-hidden">Tabular</button>
                         </div>
 
                         <div class="col-2">
-                            <button class="btn btn-primary w-100 my-1">Keyword's Context</button>
+                            <button class="btn btn-primary w-100 my-1 text-truncate overflow-hidden">Keyword's Context</button>
                         </div>
 
                         <div class="col-2">
-                            <button class="btn btn-success w-100 my-1">Refresh</button>
+                            <button class="btn btn-success w-100 my-1 text-truncate overflow-hidden">Refresh</button>
                         </div>
 
                         <div class="col-2">

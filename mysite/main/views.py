@@ -12,9 +12,14 @@ def homepage(request):
                   template_name='main/home.html',
                   context = {"tutorials":Tutorial.objects.all})
 
-def addproject(request):
+def addProject(request):
     return render(request = request,
-                  template_name='main/addproject.html',
+                  template_name='main/addProject.html',
+                  context = {"tutorials":Tutorial.objects.all})
+
+def existingProjects(request):
+    return render(request = request,
+                  template_name='main/existingProjects.html',
                   context = {"tutorials":Tutorial.objects.all})
 
 # def register(request):
@@ -80,7 +85,7 @@ def datagrid(request):
 
     return render(request, 'main/datagrid.html', context = {"sample_data":page_obj})
     
-def doc_info(request):
+def docInfo(request):
     if request.method == 'POST':
         # Get the doc ID from the form submission
         doc_id = request.POST.get('doc_id')

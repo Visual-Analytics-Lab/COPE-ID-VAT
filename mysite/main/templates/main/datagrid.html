@@ -45,7 +45,7 @@
         <td>
           <div class="d-inline-block text-truncate" style="min-width: 5vw;">
           <!-- Form to submit doc ID for modal display -->
-          <form action="{% url 'main:doc_info' %}" method="post">
+          <form action="{% url 'main:docInfo' %}" method="post">
             {% csrf_token %}
             <input type="hidden" name="doc_id" value="{{ doc.id }}">
 

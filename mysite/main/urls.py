@@ -6,11 +6,12 @@ app_name = 'main'  # here for namespacing of urls.
 
 urlpatterns = [
     path("", views.homepage, name="homepage"),
-    path("addproject/", views.addproject, name="addproject"),
+    path("add_project/", views.addProject, name="addProject"),
+    path("existing_project/", views.existingProjects, name="existingProjects"),
     # path("register/", views.register, name="register"),
     # path("logout", views.logout_request, name="logout"),
     # path("login", views.login_request, name="login"),
     path("datagrid/", views.datagrid, name="datagrid"),
-    path('doc-info/', views.doc_info, name='doc_info'),
+    path('doc_info/', views.docInfo, name='docInfo'),
     path('test/', views.test, name='test'),
 ]
