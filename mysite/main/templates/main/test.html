@@ -3,46 +3,61 @@
 {% block content %}
 
 <style>
-  .trash-btn i.bi-trash {
-    color: black; /* Default color */
-    transition: color 0.3s; /* Smooth transition */
-  }
-  
-  .trash-btn:hover i.bi-trash {
-    color: red; /* Color on hover */
-  }
-  </style>
-  
+table td {
+  position: relative;
+}
+
+table td input {
+  position: absolute;
+  display: block;
+  top:0;
+  left:0;
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  border: none;
+  padding: 10px;
+  box-sizing: border-box;
+}
+</style>
 
 
-<div class="d-flex" style="background-color: blue;">
-  {% include 'main/includes/dashboardWordTable.html' %}
-</div>
 
-<div class="d-flex" style="height: 5vh; width:5vw;">
-  <button type="button" class="btn trash-btn"><i class="bi bi-trash"></i></button>
-</div>
+<div class="w-50">
+  <table class="table table-bordered">
+    <thead>
+      <tr>
+        <th class="col">Value</th>
+        <th class="col">Label</th>
+        <th class="col">Action</th>
+      </tr>
+    </thead>
+    <tbody>
 
-<div>
-  <form>
-    <div>
-      <label for="party">
-        Choose your preferred party date and time (required, June 1st 8.30am to
-        June 30th 4.30pm):
-      </label>
-      <input
-        id="party"
-        type="datetime-local"
-        name="partydate"
-        min="2017-06-01T08:30"
-        max="2017-06-30T16:30"
-        required />
-      <span class="validity"></span>
-    </div>
-    <div>
-      <input type="submit" value="Book party!" />
-    </div>
-  </form>
+      <tr>
+        <td><input type="text" placeholder="Value" value="1"></td>
+        <td><input type="text" placeholder="Label" value="Present"></td>
+        <td><button type="button" class="btn btn-danger p-1">Delete</button></td>
+      </tr>
+
+      <tr>
+        <td><input type="text" placeholder="Value" value="2"></td>
+        <td><input type="text" placeholder="Label" value="Not Present"></td>
+        <td><button type="button" class="btn btn-danger p-1">Delete</button></td>
+      </tr>
+
+      <tr>
+        <td><input type="text" placeholder="Value" value="99"></td>
+        <td><input type="text" placeholder="Label" value="Not Applicable"></td>
+        <td><button type="button" class="btn btn-danger p-1">Delete</button></td>
+      </tr>
+
+      <tr>
+        <td colspan="3"><button type="button" class="btn btn-success p-1">Add Code Value/Label</button></td>
+      </tr>
+
+    </tbody>
+  </table>
   
 
 </div>

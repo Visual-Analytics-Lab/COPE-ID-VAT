@@ -1,0 +1,102 @@
+<!-- Included in home.html -->
+
+<!-- Button for Add/Edit User(s) Modal -->
+<button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#addUsrModal">
+
+  <!-- Add Project Users Button -->
+  <i class="bi bi-plus-circle"></i> Add Project User(s)
+</button>
+
+<!-- Modal -->
+<div class="modal fade" data-bs-backdrop="static" id="addUsrModal" tabindex="-1" aria-labelledby="addUsrModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <!-- Add/Edit User Title -->
+        <h1 class="modal-title fs-5" id="addUsrModalLabel">{Project Name} - Add/Edit Users</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Users Form -->
+      <form>
+        <div class="modal-body">
+
+          <!-- Inputs -->
+          <div class="container text-center">
+
+            <div class="row justify-content-md-center">
+
+              <!-- Placeholder -->
+              <div class="col col-lg-2">
+                <div class="d-none">placeholder</div>
+              </div>
+
+              <!-- List of Users -->
+              <div class="col-md-auto">
+
+                <!-- Title -->
+                <p class="text-start fs-4 border-bottom">Users</p>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="checkUser1">
+                  <label class="form-check-label" for="checkUser1">
+                    Sanreddy
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="checkUser2">
+                  <label class="form-check-label" for="checkUser2">
+                    Megan
+                  </label>
+                </div>
+
+                <!-- Example of checked user -->
+                <!-- Will need to write JavaScript to show which users are checked -->
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="checkUser3" checked>
+                  <label class="form-check-label" for="checkUser3">
+                    Chris
+                  </label>
+                </div>
+
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="checkUser4">
+                  <label class="form-check-label" for="checkUser4">
+                    Terri
+                  </label>
+                </div>
+
+                <!-- Template for when we connect DB -->
+                <!-- Replace 'id' with Django variable -->
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" id="checkUserid">
+                  <label class="form-check-label" for="checkUserid">
+                    User
+                  </label>
+                </div>
+
+              </div>
+
+              <!-- Placeholder -->
+              <div class="col col-lg-2">
+                <div class="d-none">placeholder</div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Cancel and Done Buttons -->
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Done</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
