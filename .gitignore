@@ -188,3 +188,4 @@ mysite/mysite/__pycache__/__init__.cpython-312.pyc
 
 mysite/user_management/migrations/0001_initial.py
 
+mysite/main/templates/main/test.html
