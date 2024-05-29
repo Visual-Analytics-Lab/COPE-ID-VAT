@@ -1,0 +1,77 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+
+<div class="container" style="height: 94vh;">
+
+  <!-- Row 1 -->
+  <div class="row" style="height: 94vh;">
+
+    <!-- Row 1 Column 1 -->
+    <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
+      {% include 'main/includes/sidebar.html' %}
+    </div>
+
+    <!-- Row 1 Column 2 -->
+    <div class="col content">
+
+      <!-- Row 1 Column 2 Row 1 -->
+      <div class="row text-center" style="height: 6vh;">
+
+        <h2 class="border-bottom">Users</h2>
+
+      </div>
+
+      <!-- Row 1 Column 2 Row 2 -->
+      <div class="row p-1" style="height: 6vh; background-color: blue;">
+
+        <!-- Row 1 Column 2 Row 3 Column 1-->
+        <div class="col-8">
+          <div class="d-none">placeholder</div>
+        </div>
+
+        <!-- Row 1 Column 2 Row 3 Column 2-->
+        <div class="col-4">
+          <form>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="filter-label">Filter</span>
+              <input type="text" class="form-control" placeholder="Filter..." aria-label="Filter" aria-describedby="filter-label">
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Row 1 Column 2 Row 3 -->
+      <div class="row pb-1 px-1" style="height: 6vh; background-color: purple;">
+
+        <div class="col-2">
+          <!-- <a class="btn btn-success w-100 my-1 text-truncate overflow-hidden" role="button" aria-label="Add Project User"><i class="bi bi-plus-circle"></i> Add Project User</a> -->
+          {% include 'main/includes/users/addUserModal.html' %}
+        </div>
+
+        <div class="col-10">
+          <div class="d-none">placeholder</div>
+        </div>
+
+      </div>
+
+      <!-- Row 1 Column 2 Row 4 -->
+      <div class="row" style="height: 76vh; background-color: red;">
+
+        <div class="col px-3">
+
+          {% include 'main/includes/users/usersTable.html' %}
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}

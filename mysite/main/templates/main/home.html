@@ -25,7 +25,7 @@
                     <div class="row p-1" style="height: 6vh;">
                         <!-- Extract -->
                         <!-- <button class="btn btn-success w-100 mb-2">Extract</button> -->
-                        {% include 'main/dashboard/extractModal.html' %}
+                        {% include 'main/includes/dashboard/extractModal.html' %}
                     </div>
 
                     <!-- Row 1 Column 2 Row 1 Column 1 Row 2-->
@@ -36,7 +36,7 @@
 
                     <!-- Row 1 Column 2 Row 1 Column 1 Row 3-->
                     <div class="row" style="height: 40vh;">
-                        {% include 'main/dashboard/wordTable.html' %}
+                        {% include 'main/includes/dashboard/wordTable.html' %}
                     </div>
 
                 </div>
@@ -45,15 +45,15 @@
                 <div class="col-10 text-center">
 
                     <!-- Row 1 Column 2 Row 1 Column 2 Row 1 -->
-                    <div class="row p-1" style="height: 6vh;">
+                    <div class="row pt-1" style="height: 6vh;">
 
                         <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 1 -->
-                        <div class="col-12 col-sm-auto" style="background-color:blue">
-                            {% include 'main/dashboard/dateTime.html' %}
+                        <div class="col-12 col-sm-auto">
+                            {% include 'main/includes/dashboard/dateTime.html' %}
                         </div>
 
                         <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 2 -->
-                        <div class="col d-none d-sm-block" style="background-color: purple;">
+                        <div class="col d-none d-sm-block">
                             <div class="d-none">placeholder</div>
                         </div>
 
@@ -63,19 +63,19 @@
                     <div class="row" style="height: 6vh;">
 
                         <div class="col-2">
-                            <button class="btn btn-primary w-100 my-1 text-truncate overflow-hidden">WordCloud</button>
+                            <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden">WordCloud</button>
                         </div>
 
                         <div class="col-2">
-                            <button class="btn btn-primary w-100 my-1 text-truncate overflow-hidden">PCP</button>
+                            <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden">PCP</button>
                         </div>
 
                         <div class="col-2">
-                            <button class="btn btn-primary w-100 my-1 text-truncate overflow-hidden">Tabular</button>
+                            <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden">Tabular</button>
                         </div>
 
                         <div class="col-2">
-                            <button class="btn btn-primary w-100 my-1 text-truncate overflow-hidden">Keyword's Context</button>
+                            <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden">Keyword's Context</button>
                         </div>
 
                         <div class="col-2">
@@ -102,11 +102,11 @@
                         <div class="col-2" style="height: 40vh;">
 
                             <div class="row p-1" style="height: 20vh;">
-                                {% include 'main/dashboard/platformFilter.html' %}
+                                {% include 'main/includes/dashboard/platformFilter.html' %}
                             </div>
 
                             <div class="row p-1" style="height: 20vh;">
-                                {% include 'main/dashboard/topicFilter.html' %}
+                                {% include 'main/includes/dashboard/topicFilter.html' %}
                             </div>
 
                         </div>
