@@ -1,24 +1,75 @@
 <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
   <!-- Explore -->
-  <a class="btn btn-primary w-100 mb-2" href="/">Explore</a>
+  <a class="btn btn-secondary w-100 mb-2" href="/" id="explore-btn">Explore</a>
 </div>
 
 <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
   <!-- Add Project -->
-  <a class="btn btn-primary w-100 mb-2" href="/add_project">Add Project</a>
+  <a class="btn btn-secondary w-100 mb-2" href="/add_project" id="add_project-btn">Add Project</a>
 </div>
 
 <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
   <!-- Existing Projects -->
-  <a class="btn btn-primary w-100 mb-2" href="/existing_project">Existing Projects</a>
+  <a class="btn btn-secondary w-100 mb-2" href="/existing_project" id="existing_projects-btn">Existing Projects</a>
 </div>
 
 <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
   <!-- Users -->
-  <a class="btn btn-primary w-100 mb-2" href="/users">Users</a>
+  <a class="btn btn-secondary w-100 mb-2" href="/users" id="users-btn">Users</a>
 </div>
 
 <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
   <!-- Data Grid -->
-  <a class="btn btn-primary w-100 mb-2" href="/datagrid">Data Grid</a>
+  <a class="btn btn-secondary w-100 mb-2" href="/datagrid">Data Grid</a>
 </div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function()
+  {
+    // Get URL
+    const pathname = window.location.pathname;
+
+    // Pseudo-tokenize
+    const pathParts = pathname.split('/');
+
+    // Get path after first /
+    const tab = pathParts[1];
+
+    // Testing
+    console.log('Current Tab:', tab);
+
+    // Initialize variable to hold tab
+    let sidebarButton;
+
+    // Check which tab
+    if (tab === 'add_project')
+    {
+      sidebarButton = document.getElementById('add_project-btn');
+      // console.log('You are on the Add Project tab');
+    } 
+    else if (tab === 'existing_project')
+    {
+      sidebarButton = document.getElementById('existing_projects-btn');
+      // console.log('You are on the Existing Project tab');
+    } 
+    else if (tab === 'users')
+    {
+      sidebarButton = document.getElementById('users-btn');
+      // console.log('You are on the Users tab');
+    } else
+    {
+      sidebarButton = document.getElementById('explore-btn');
+      // console.log('You are on the Explore tab');
+    }
+
+    // Disable button
+    if (sidebarButton)
+    {
+      sidebarButton.classList.add('disabled');
+      sidebarButton.setAttribute('aria-disabled', 'true');
+      sidebarButton.setAttribute('tabindex', '-1');
+      sidebarButton.setAttribute('href', '#');
+    }
+
+  });
+</script>
