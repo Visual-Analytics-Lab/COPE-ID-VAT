@@ -37,9 +37,9 @@ def existingProjects_irrFeedback(request):
                   template_name='main/existingProjectsTabs/irrFeedback.html',
                   context = {"tutorials":Tutorial.objects.all})
 
-def existingProjects_users(request):
+def existingProjects_projectUsers(request):
     return render(request = request,
-                  template_name='main/existingProjectsTabs/users.html',
+                  template_name='main/existingProjectsTabs/projectUsers.html',
                   context = {"tutorials":Tutorial.objects.all})
 
 def users(request):
