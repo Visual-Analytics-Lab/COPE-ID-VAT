@@ -22,10 +22,33 @@ def existingProjects(request):
                   template_name='main/existingProjects.html',
                   context = {"tutorials":Tutorial.objects.all})
 
+def existingProjects_posts(request):
+    return render(request = request,
+                  template_name='main/existingProjectsTabs/posts.html',
+                  context = {"tutorials":Tutorial.objects.all})
+
+def existingProjects_codingVariables(request):
+    return render(request = request,
+                  template_name='main/existingProjectsTabs/codingVariables.html',
+                  context = {"tutorials":Tutorial.objects.all})
+
+def existingProjects_irrFeedback(request):
+    return render(request = request,
+                  template_name='main/existingProjectsTabs/irrFeedback.html',
+                  context = {"tutorials":Tutorial.objects.all})
+
+def existingProjects_users(request):
+    return render(request = request,
+                  template_name='main/existingProjectsTabs/users.html',
+                  context = {"tutorials":Tutorial.objects.all})
+
 def users(request):
     return render(request = request,
                   template_name='main/users.html',
                   context = {"tutorials":Tutorial.objects.all})
+
+
+
 
 # def register(request):
 #     if request.method == "POST":
