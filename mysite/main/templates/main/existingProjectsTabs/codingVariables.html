@@ -4,62 +4,85 @@
 
 <div class="container" style="height: 94vh;">
 
-    <!-- Row 1 -->
-    <div class="row" style="height: 94vh;">
+  <!-- Row 1 -->
+  <div class="row" style="height: 94vh;">
 
-        <!-- Row 1 Column 1 -->
-        <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
-            {% include 'main/includes/sidebar.html' %}
+    <!-- Row 1 Column 1 -->
+    <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
+      {% include 'main/includes/sidebar.html' %}
+    </div>
+
+    <!-- Row 1 Column 2 -->
+    <div class="col content">
+
+      <!-- Row 1 Column 2 Row 1 -->
+      <div class="row text-center" style="height: 6vh;">
+
+        <h2 class="border-bottom">Existing Project / Coding Variables</h2>
+
+      </div>
+
+      <!-- Row 1 Column 2 Row 2 -->
+      <div class="row" style="height: 6vh;">
+
+        <div class="col-2">
+          <a class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" href="/existing_project/posts">Posts</a>
         </div>
 
-        <!-- Row 1 Column 2 -->
-        <div class="col content">
+        <div class="col-2">
+          <a class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Coding Variables</a>
+        </div>
 
-            <!-- Row 1 Column 2 Row 1 -->
-            <div class="row text-center" style="height: 6vh;">
+        <div class="col-2">
+          <a class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" href="/existing_project/irr_feedback">IRR Feedback</a>
+        </div>
 
-                <h2 class="border-bottom">Existing Project / Coding Variables</h2>
+        <div class="col-2">
+          <a class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" href="/existing_project/project_users">Project Users</a>
+        </div>
 
-            </div>
+        <div class="col-4">
+          <div class="d-none">placeholder</div>
+        </div>
 
-            <!-- Row 1 Column 2 Row 2 -->
-            <div class="row" style="height: 6vh;">
+      </div>
 
-                <div class="col-2">
-                    <a class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" href="/existing_project/posts">Posts</a>
-                </div>
+      <!-- Row 1 Column 2 Row 3 -->
+      <div class="row p-1" style="height: 6vh; background-color: blue;">
 
-                <div class="col-2">
-                    <a class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Coding Variables</a>
-                </div>
-
-                <div class="col-2">
-                    <a class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" href="/existing_project/irr_feedback">IRR Feedback</a>
-                </div>
-
-                <div class="col-2">
-                    <a class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" href="/existing_project/project_users">Project Users</a>
-                </div>
-
-                <div class="col-4">
-                    <div class="d-none">placeholder</div>
-                </div>
-
-            </div>
-
-            <!-- Row 1 Column 2 Row 3 -->
-            <div class="row" style="height: 6vh; background-color: blue;">
-                Row 1 Column 2 Row 3
-            </div>
-
-            <!-- Row 1 Column 2 Row 4 -->
-            <div class="row" style="height: 76vh; background-color: purple;">
-                Row 1 Column 2 Row 4
-            </div>
+        <!-- Row 1 Column 2 Row 3 Column 1-->
+        <div class="col-4">
 
         </div>
+
+        <!-- Row 1 Column 2 Row 3 Column 2-->
+        <div class="col-4">
+
+
+        </div>
+
+        <!-- Row 1 Column 2 Row 3 Column 3-->
+        <div class="col-4">
+          <form>
+
+            <div class="input-group mb-3">
+              <span class="input-group-text" id="filter-label">Filter</span>
+              <input type="text" class="form-control" placeholder="Filter..." aria-label="Filter" aria-describedby="filter-label">
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+
+      <!-- Row 1 Column 2 Row 4 -->
+      <div class="row" style="height: 76vh; background-color: purple;">
+        Row 1 Column 2 Row 4
+      </div>
 
     </div>
+
+  </div>
 </div>
 
 {% endblock %}
