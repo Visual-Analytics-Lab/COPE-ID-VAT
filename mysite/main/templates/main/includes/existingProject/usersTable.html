@@ -21,6 +21,7 @@
         <tr>
           <th scope="col">Username</th>
           <th scope="col">User Role</th>
+          <th scope="col">Can Edit</th>
           <th scope="col">Email</th>
           <th scope="col">Action</th>
         </tr>
@@ -30,22 +31,28 @@
       <tbody class="table-group-divider">
         <tr>
           <th scope="row">Sanreddy</th>
-          <td><div class="role">Admin</div></td>
+          <td><div class="btn btn-role p-1">Admin</div></td>
+          <td>{% include 'main/includes/checkbox.html' %}</td>
           <td><a href="mailto:sujan.anreddy@ssrc.msstate.edu">sujan.anreddy@ssrc.msstate.edu</a></td>
-          <th scope="row"><button type="button" class="btn btn-danger p-1" aria-label="Delete">Delete</button></th>
+          <td>{% include 'main/includes/existingProject/deleteUserModal.html' %}</td>
         </tr>
         <tr>
           <th scope="row">MeganR</th>
-          <td><div class="role">Social Media Researcher</div></td>
+          <td><div class="btn btn-role p-1">Social Media Researcher</div></td>
+          <td>{% include 'main/includes/checkbox.html' %}</td>
           <td><a href="mailto:megan@ssrc.msstate.edu">megan@ssrc.msstate.edu</a></td>
-          <th scope="row"><button type="button" class="btn btn-danger p-1" aria-label="Delete">Delete</button></th>
+          <td>{% include 'main/includes/existingProject/deleteUserModal.html' %}</td>
         </tr>
         <tr>
           <th scope="row">Sra116</th>
-          <td><div class="role">Social Media Coder</div></td>
+          <td><div class="btn btn-role p-1">Social Media Coder</div></td>
+          <td>{% include 'main/includes/checkbox.html' %}</td>
           <td><a href="mailto:sra116@msstate.edu">sra116@msstate.edu</a></td>
-          <th scope="row"><button type="button" class="btn btn-danger p-1" aria-label="Delete">Delete</button></th>
+          <td>{% include 'main/includes/existingProject/deleteUserModal.html' %}</td>
         </tr>
       </tbody>
     </table>
   </div>
+
+
+  
