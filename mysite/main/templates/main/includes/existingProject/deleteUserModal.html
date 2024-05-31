@@ -1,0 +1,36 @@
+<!-- Included in existingProject/usersTable.html -->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger p-1 text-truncate overflow-hidden" data-bs-toggle="modal" data-bs-target="#removeUserModal">
+    Delete
+  </button>
+    
+  <!-- Modal -->
+  <div class="modal fade" data-bs-backdrop="static" id="removeUserModal" tabindex="-1" aria-labelledby="removeUserModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <!-- Remove User Confirmation Title -->
+                  <h1 class="modal-title fs-5" id="removeUserModalLabel"><i class="bi bi-exclamation-circle-fill"></i> Alert! Confirmation Needed.</h1>
+                  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+  
+              <!-- Warning Message -->
+              <div class="modal-body text-center">
+                  <p>You are about remove <strong>{ User }</strong> from:<br>
+                  <strong>{ Project Name}</strong><br>
+                  Do you wish to proceed?</p>
+              </div>
+  
+              <!-- Confirmation Form --> 
+              <form>
+                  <!-- Cancel and Confirm Buttons -->
+                  <div class="modal-footer justify-content-between">
+                      <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+                      <button type="submit" class="btn btn-warning">Remove</button>
+                  </div>
+              </form>
+          </div>
+      </div>
+  </div>
+  

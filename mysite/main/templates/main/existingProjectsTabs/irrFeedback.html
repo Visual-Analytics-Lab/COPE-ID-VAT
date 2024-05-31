@@ -48,18 +48,103 @@
             </div>
 
             <!-- Row 1 Column 2 Row 3 -->
-            <div class="row" style="height: 6vh; background-color: blue;">
-                Row 1 Column 2 Row 3
-            </div>
-
-            <!-- Row 1 Column 2 Row 4 -->
-            <div class="row" style="height: 76vh; background-color: purple;">
-                Row 1 Column 2 Row 4
+            <div class="row justify-content-center" style="height: 82vh;">
+                
+                <canvas id="myChart"></canvas>
+                  
             </div>
 
         </div>
 
     </div>
 </div>
+
+<script>
+    var barChartData = {
+        labels: [
+            "Relevance",
+            "News",
+            "G_misinfo",
+            "GC_misinfo",
+            "V_misinfo",
+        ],
+        datasets: [
+            {
+                label: "Cohen's Kappa",
+                backgroundColor: "#642F6C",
+                borderColor: "#642F6C",
+                borderWidth: 1,
+                data: [0.6, 0.4, 0.65, 0.85, 0.25]
+            },
+            {
+                label: "Percentage",
+                backgroundColor: "#007FA3",
+                borderColor: "#007FA3",
+                borderWidth: 1,
+                data: [0.8, 0.25, 0.8, 0.65, 0.6]
+            }
+        ]
+    };
+
+    var chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: "bottom",
+                display: true,
+                labels: {
+                    color: 'rgb(0, 0, 0)'
+                }
+            },
+            title: {
+                display: true,
+                text: "Inter Rater Reliability",
+                font: {
+                    size: 20,
+                    color: 'rgb(0, 0, 0)' // Set the title font color to black
+                }
+            }
+        },
+        scales: {
+            x: {
+                title: {
+                    display: true,
+                    text: "Coding Variables",
+                    color: 'black',
+                    font: {
+                        size: 16,
+                    }
+                },
+                ticks: {
+                    color: 'rgb(0, 0, 0)' // Set the x-axis labels color to black
+                }
+            },
+            y: {
+                beginAtZero: true,
+                title: {
+                    display: true,
+                    text: "Score",
+                    color: 'black',
+                    font: {
+                        size: 16,
+                    }
+                },
+                ticks: {
+                    color: 'black' // Set the y-axis labels color to black
+                }
+            }
+        }
+    };
+
+    window.onload = function() {
+        var ctx = document.getElementById("myChart").getContext("2d");
+        window.myBar = new Chart(ctx, {
+            type: "bar",
+            data: barChartData,
+            options: chartOptions
+        });
+    };
+</script>
+
 
 {% endblock %}
