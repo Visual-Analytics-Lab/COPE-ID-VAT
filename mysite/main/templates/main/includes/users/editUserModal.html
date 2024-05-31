@@ -1,0 +1,44 @@
+<!-- Included in users/usersTable.html -->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-role p-1 text-truncate overflow-hidden" data-bs-toggle="modal" data-bs-target="#updateUserModal">
+    { Role }
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" data-bs-backdrop="static" id="updateUserModal" tabindex="-1" aria-labelledby="updaetUserModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- Update User Role Title -->
+          <h1 class="modal-title fs-5" id="updaetUserModalLabel">Change User Role: <strong>{ User }</strong></h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <!-- Modal Body -->
+        <div class="modal-body">
+  
+          <!-- Update User Form -->
+          <form class="row g-3">
+    
+            <div class="col-12">
+              <select class="form-select" aria-label="Select Role" id="roleInput">
+                <option selected>-- Select a Role --</option>
+                <option value="1">SMC</option>
+                <option value="2">SMR</option>
+                <option value="3">Admin</option>
+              </select>
+            </div>
+  
+        </div>
+  
+        <!-- Cancel and Create Buttons -->
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Update</button>
+        </div>
+        </form>
+  
+      </div>
+    </div>
+  </div>
