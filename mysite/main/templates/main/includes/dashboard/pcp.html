@@ -1,0 +1,19 @@
+<script>
+    const objs = [
+    { label: 'A', f1: 5, f2: 3, f4: 3 },
+    { label: 'B', f1: 2, f2: 1, f4: 8 },
+    { label: 'C', f1: 10, f2: 6, f4: 2 },
+    ];
+    const attrs = ['f1', 'f2', 'f3'];
+    const config = {
+    type: 'pcp',
+    data: {
+        labels: objs.map((obj) => obj.label),
+        datasets: attrs.map((attr) => ({
+        label: attr,
+        data: objs.map((obj) => obj[attr]),
+        })),
+    },
+    options: {},
+    };
+</script>
