@@ -8,9 +8,11 @@ from django.core.paginator import Paginator
 
 # Create your views here.
 def homepage(request):
+    distinct_platforms = sample_data.objects.values_list('doc_source', flat=True).distinct()
     return render(request = request,
                   template_name='main/home.html',
-                  context = {"tutorials":Tutorial.objects.all})
+                  context = {"tutorials":Tutorial.objects.all,
+                             "distinct_platforms": distinct_platforms},)
 
 def addProject(request):
     return render(request = request,
@@ -133,4 +135,3 @@ def test(request):
         test = None
 
         return render(request, 'main/test.html', {'test': test})
-
