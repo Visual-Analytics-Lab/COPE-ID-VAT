@@ -4,129 +4,145 @@
 
 <div class="container-fluid" style="height: 94vh;">
 
-    <h2>Bootstrap Table Checkbox Select All and Cancel</h2>
-    <table class="table table-striped">
-        <tr>
-            <th class="active">
-                <input type="checkbox" class="select-all checkbox" name="select-all" />
-            </th>
-            <th class="success">Name</th>
-            <th class="warning">Gender</th>
-            <th class="danger">Age</th>
-            <th class="info">Birth</th>
-        </tr>
-        <tr>
-            <td class="active">
-                <input type="checkbox" class="select-item checkbox" name="select-item" value="1000" />
-            </td>
-            <td class="success">Tom</td>
-            <td class="warning">boy</td>
-            <td class="danger">20</td>
-            <td class="info">09-20</td>
-        </tr>
-        <tr>
-            <td class="active">
-                <input type="checkbox" class="select-item checkbox" name="select-item" value="1001" />
-            </td>
-            <td class="success">andy</td>
-            <td class="warning">girl</td>
-            <td class="danger">21</td>
-            <td class="info">09-21</td>
-        </tr>
-        <tr>
-            <td class="active">
-                <input type="checkbox" class="select-item checkbox" name="select-item" value="1002" />
-            </td>
-            <td class="success">Alina</td>
-            <td class="warning">girl</td>
-            <td class="danger">22</td>
-            <td class="info">09-22</td>
-        </tr>
-        <tr>
-            <td class="active">
-                <input type="checkbox" class="select-item checkbox" name="select-item" value="1003" />
-            </td>
-            <td class="success">Aaron </td>
-            <td class="warning">boy</td>
-            <td class="danger">23</td>
-            <td class="info">09-23</td>
-        </tr>
-    </table>
-    <button id="select-all" class="btn button-default">SelectAll/Cancel</button>
-    <button id="select-invert" class="btn button-default">Invert</button>
-    <button id="selected" class="btn button-default">GetSelected</button>
+    <!-- Row 1 -->
+    <div class="row" style="height: 94vh;">
+
+        <!-- Row 1 Column 1 -->
+        <div class="sidebar col-12 col-sm-auto d-none d-sm-block" style="max-width: max-content;">
+            <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+                <!-- Explore -->
+                <a class="btn btn-secondary w-100 mb-2" href="/" id="explore-btn">Explore</a>
+              </div>
+              
+              <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+                <!-- Add Project -->
+                <a class="btn btn-secondary w-100 mb-2" href="/add_project" id="add_project-btn">Add Project</a>
+              </div>
+
+              <div class="row p-1 px-2 justify-content-start" style="height: 6vh;" style="max-width: min-content;">
+              
+                <div class="list-group">
+                    <button type="button" class="list-group-item list-group-item-action" aria-current="true" id="existingProjectBtn">
+                      Existing Projects
+                    </button>
+                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-1">Project 1</button>
+                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-2">Project 2</button>
+                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-3">Project 3</button>
+                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-4">Project 4</button>
+                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-5">Project 5</button>
+                  </div>
+              
+              </div>
+
+              <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+                <!-- Existing Projects -->
+                <a class="btn btn-secondary w-100 mb-2" href="/existing_project" id="existing_projects-btn">Existing Projects</a>
+              </div>
+              
+              <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+                <!-- Users -->
+                <a class="btn btn-secondary w-100 mb-2" href="/users" id="users-btn">Users</a>
+              </div>
+              
+              <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+                <!-- Data Grid -->
+                <a class="btn btn-secondary w-100 mb-2" href="/datagrid">Data Grid</a>
+              </div>
+              
 
 
+        </div>
 
-    <script src="//cdn.bootcss.com/jquery/2.2.1/jquery.min.js"></script>
-    <script src="//cdn.bootcss.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-    <script>
-        $(function(){
-    
-            //button select all or cancel
-            $("#select-all").click(function () {
-                var all = $("input.select-all")[0];
-                all.checked = !all.checked
-                var checked = all.checked;
-                $("input.select-item").each(function (index,item) {
-                    item.checked = checked;
-                });
-            });
-    
-            //button select invert
-            $("#select-invert").click(function () {
-                $("input.select-item").each(function (index,item) {
-                    item.checked = !item.checked;
-                });
-                checkSelected();
-            });
-    
-            //button get selected info
-            $("#selected").click(function () {
-                var items=[];
-                $("input.select-item:checked:checked").each(function (index,item) {
-                    items[index] = item.value;
-                });
-                if (items.length < 1) {
-                    alert("no selected items!!!");
-                }else {
-                    var values = items.join(',');
-                    console.log(values);
-                    var html = $("<div></div>");
-                    html.html("selected:"+values);
-                    html.appendTo("body");
-                }
-            });
-    
-            //column checkbox select all or cancel
-            $("input.select-all").click(function () {
-                var checked = this.checked;
-                $("input.select-item").each(function (index,item) {
-                    item.checked = checked;
-                });
-            });
-    
-            //check selected items
-            $("input.select-item").click(function () {
-                var checked = this.checked;
-                console.log(checked);
-                checkSelected();
-            });
-    
-            //check is all selected
-            function checkSelected() {
-                var all = $("input.select-all")[0];
-                var total = $("input.select-item").length;
-                var len = $("input.select-item:checked:checked").length;
-                console.log("total:"+total);
-                console.log("len:"+len);
-                all.checked = len===total;
-            }
-        });
-    </script>
+        <!-- Row 1 Column 2 -->
+        <div class="col content w-auto">
 
+        </div>
 
-
+    </div>
 </div>
+
+              
+<script>
+    document.addEventListener("DOMContentLoaded", function()
+    {
+      // Get URL
+      const pathname = window.location.pathname;
+  
+      // Pseudo-tokenize
+      const pathParts = pathname.split("/");
+  
+      // Get path after first /
+      const tab = pathParts[1];
+  
+      // Testing
+      console.log("Current Tab:", tab);
+  
+      // Initialize variable to hold tab
+      let sidebarButton;
+  
+      // Check which tab
+      if (tab === "add_project")
+      {
+        sidebarButton = document.getElementById("add_project-btn");
+        // console.log("You are on the Add Project tab");
+      } 
+      else if (tab === "existing_project")
+      {
+        sidebarButton = document.getElementById("existing_projects-btn");
+        // console.log("You are on the Existing Project tab");
+      } 
+      else if (tab === "users")
+      {
+        sidebarButton = document.getElementById("users-btn");
+        // console.log("You are on the Users tab");
+      } else
+      {
+        sidebarButton = document.getElementById("explore-btn");
+        // console.log("You are on the Explore tab");
+      }
+  
+      // Disable button
+      if (sidebarButton)
+      {
+        sidebarButton.classList.add("disabled");
+        sidebarButton.setAttribute("aria-disabled", "true");
+        sidebarButton.setAttribute("tabindex", "-1");
+        sidebarButton.setAttribute("href", "#");
+      }
+  
+    });
+
+    const element = document.getElementById("existingProjectBtn");
+    element.addEventListener("click", myFunction);
+
+    function myFunction() {
+        console.log("TEST CLICK");
+
+        var boolDisplay = document.getElementById("project-1").style.display;
+
+
+        
+        console.log(boolDisplay);
+
+        if (boolDisplay === "none")
+        {
+            document.getElementById("project-1").style.display = "block";
+            document.getElementById("project-2").style.display = "block";
+            document.getElementById("project-3").style.display = "block";
+            document.getElementById("project-4").style.display = "block";
+            document.getElementById("project-5").style.display = "block";
+        }
+        else
+        {
+            document.getElementById("project-1").style.display = "none";
+            document.getElementById("project-2").style.display = "none";
+            document.getElementById("project-3").style.display = "none";
+            document.getElementById("project-4").style.display = "none";
+            document.getElementById("project-5").style.display = "none";
+        }
+
+
+    }
+  </script>
 
 {% endblock %}
