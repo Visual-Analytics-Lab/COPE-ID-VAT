@@ -25,60 +25,37 @@
             </div>
 
             <!-- Row 1 Column 2 Row 2 -->
-            <div class="row p-1" style="height: 6vh;">
+            <div class="row justify-content-center p-1" style="height: 6vh;">
 
                 <!-- Row 1 Column 2 Row 2 Column 1-->
-                <div class="col-4">
-
-                </div>
-
-                <!-- Row 1 Column 2 Row 2 Column 2-->
-                <div class="col-4">
+                <div class="col-auto">
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="project_name">Enter unique project name:</span>
                         <input type="text" class="form-control" placeholder="Project Name" aria-label="Project Name">
-                      </div> 
-
-                </div>
-
-                <!-- Row 1 Column 2 Row 2 Column 3-->
-                <div class="col-4">
+                    </div> 
 
                 </div>
 
             </div>
 
             <!-- Row 1 Column 2 Row 3 -->
-            <div class="row p-1" style="height: 6vh;">
+            <div class="row justify-content-center p-1" style="height: 6vh;">
 
                 <!-- Row 1 Column 2 Row 3 Column 1-->
-                <div class="col-3">
-
-                </div>
-
-                <!-- Row 1 Column 2 Row 3 Column 2-->
-                <div class="col-6">
+                <div class="col-auto">
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="project_name">Upload or attach an existing dataset:</span>
-                        <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Datasets</button>
-                        <ul class="dropdown-menu">
-                          <li><a class="dropdown-item" href="#">Dataset 1</a></li>
-                          <li><a class="dropdown-item" href="#">Dataset 2</a></li>
-                          <li><a class="dropdown-item" href="#">Dataset 3</a></li>
-                          <li><a class="dropdown-item" href="#">Dataset 4</a></li>
-                        </ul>
+                        <select id="selectDataset" class="form-select">
+                          <option selected>Datasets</option>
+                          <option>Dataset 1</option>
+                          <option>Dataset 2</option>
+                          <option>Dataset 3</option>
+                        </select>
                         <input type="file" class="form-control" id="project_name" aria-describedby="uploadFile" aria-label="Upload">
-                      </div>
-                      
-                      
+                    </div>
 
-                </div>
-
-                <!-- Row 1 Column 2 Row 3 Column 3-->
-                <div class="col-3 p-1">
-                      
                 </div>
 
             </div>

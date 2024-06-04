@@ -42,6 +42,11 @@ def existingProjects_projectUsers(request):
                   template_name='main/existingProjectsTabs/projectUsers.html',
                   context = {"tutorials":Tutorial.objects.all})
 
+def existingProjects_projectRoles(request):
+    return render(request = request,
+                  template_name='main/existingProjectsTabs/projectRoles.html',
+                  context = {"tutorials":Tutorial.objects.all})
+
 def users(request):
     return render(request = request,
                   template_name='main/users.html',

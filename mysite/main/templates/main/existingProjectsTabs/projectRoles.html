@@ -18,7 +18,7 @@
       <!-- Row 1 Column 2 Row 1 -->
       <div class="row text-center" style="height: 6vh;">
 
-        <h2 class="border-bottom">Coding Variables</h2>
+        <h2 class="border-bottom">Project Roles</h2>
 
       </div>
 
@@ -30,7 +30,7 @@
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Coding Variables</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/coding_variables">Coding Variables</a>
         </div>
 
         <div class="col-2">
@@ -42,12 +42,12 @@
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/project_roles">Project Roles</a>
-      </div>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Project Roles</a>
+        </div>
 
-      <div class="col-2">
+        <div class="col-2">
           <div class="d-none">placeholder</div>
-      </div>
+        </div>
 
       </div>
 
@@ -76,25 +76,49 @@
       <!-- Row 1 Column 2 Row 4 -->
       <div class="row pb-1 px-1" style="height: 6vh;">
         <div class="col-2">
-          <a class="btn btn-success w-100 my-1 pb-2 text-truncate overflow-hidden" role="button" aria-label="Add Project User"><i class="bi bi-plus-circle"></i> Add Coding Variable</a>
+          <!-- <a class="btn btn-success w-100 my-1 text-truncate overflow-hidden" role="button" aria-label="Add Project User"><i class="bi bi-plus-circle"></i> Add Project User</a> -->
+          {% include 'main/includes/existingProject/addUserModal.html' %}
         </div>
+
+        <div class="col-6">
+          <div class="d-none">placeholder</div>
+        </div>
+
+        <div class="col-2">
+          <a class="btn btn-info w-100 my-1 pb-2 text-truncate overflow-hidden" role="button" aria-label="Download Project Data"><i class="bi bi-download"></i> Download Project Data</a>
+        </div>
+
+        <div class="col-2">
+          <!-- <a class="btn btn-danger w-100 my-1 text-truncate overflow-hidden" role="button" aria-label="Delete Project" href="#">Delete Project</a> -->
+          {% include 'main/includes/existingProject/deleteProjectModal.html' %}
+        </div>
+      </div>
+
+      <!-- Row 1 Column 2 Row 5 -->
+      <div class="row" style="height: 64vh;">
+
+        <div class="col px-3">
+
+          {% include 'main/includes/existingProject/rolesTable.html' %}
+
+        </div>
+
+      </div>
+
+      <!-- Row 1 Column 2 Row 6 -->
+      <div class="row pb-1 px-1" style="height: 6vh;">
 
         <div class="col-10">
           <div class="d-none">placeholder</div>
         </div>
 
-      </div>
-
-      <!-- Row 1 Column 2 Row 5 -->
-      <div class="row" style="height: 70vh;">
-
-        <div class="col px-3">
-
-          {% include 'main/includes/existingProject/codingVariablesTable.html' %}
-
+        <div class="col-2">
+          <a class="btn btn-success w-100 my-1 pb-2 text-truncate overflow-hidden" role="button" aria-label="Update Roles">Update Roles</a>
         </div>
 
       </div>
+
+    </div>
 
   </div>
 </div>

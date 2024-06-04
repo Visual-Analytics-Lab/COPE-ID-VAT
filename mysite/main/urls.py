@@ -13,6 +13,7 @@ urlpatterns = [
     path("existing_project/coding_variables/", views.existingProjects_codingVariables, name="existingProjects_coding_variables"),
     path("existing_project/irr_feedback/", views.existingProjects_irrFeedback, name="existingProjects_irrFeedback"),
     path("existing_project/project_users/", views.existingProjects_projectUsers, name="existingProjects_projectUsers"),
+    path("existing_project/project_roles/", views.existingProjects_projectRoles, name="existingProjects_projectRoles"),
     # path("register/", views.register, name="register"),
     # path("logout", views.logout_request, name="logout"),
     # path("login", views.login_request, name="login"),
