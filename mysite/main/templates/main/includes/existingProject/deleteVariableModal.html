@@ -1,0 +1,36 @@
+<!-- Included in existingProject/projectUsers.html -->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger p-1" data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
+  Delete
+</button>
+  
+<!-- Modal -->
+<div class="modal fade" data-bs-backdrop="static" id="deleteProjectModal" tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Delete Project Confirmation Title -->
+                <h1 class="modal-title fs-5" id="deleteProjectModalLabel"><i class="bi bi-exclamation-circle-fill"></i> Alert! Confirmation Needed.</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Warning Message -->
+            <div class="modal-body text-center">
+                <p>You are about to delete the coding variable:<br>
+                <strong>{ Variable Name }</strong><br>
+                Note: Once deleted, a variable <u><em>cannot be restored</em></u>!<br>
+                Do you wish to proceed?</p>
+            </div>
+
+            <!-- Confirmation Form --> 
+            <form>
+                <!-- Cancel and Confirm Buttons -->
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No, Cancel.</button>
+                    <button type="submit" class="btn btn-warning">Yes, Delete!</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
