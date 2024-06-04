@@ -51,7 +51,12 @@
     } 
     else if (tab === 'existing_project')
     {
-      sidebarButton = document.getElementById('existing_projects-btn');
+      const tab2 = pathParts[2];
+      console.log(tab2)
+      if (!tab2)
+      {
+        sidebarButton = document.getElementById('existing_projects-btn');
+      }
       // console.log('You are on the Existing Project tab');
     } 
     else if (tab === 'users')

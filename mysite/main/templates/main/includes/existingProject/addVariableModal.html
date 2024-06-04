@@ -1,0 +1,133 @@
+<!-- Included in existingProjectsTabs/codingVariables.html -->
+
+<!-- CSS for List of Variable Codes -->
+<style>
+  table td {
+    position: relative;
+  }
+
+  table td input {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
+  }
+</style>
+
+<!-- Button Trigger Modal -->
+<button type="button" class="btn btn-success w-100 my-1 pb-2 text-truncate overflow-hidden" data-bs-toggle="modal" data-bs-target="#addVarModal">
+
+  <!-- Add Coding Variable Button -->
+  <i class="bi bi-plus-circle"></i> Add Coding Variable
+</button>
+
+<!-- Modal -->
+<div class="modal fade" data-bs-backdrop="static" id="addVarModal" tabindex="-1" aria-labelledby="addVarModalLabel"aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+
+        <!-- Add/Edit Coding Variable Title -->
+        <h1 class="modal-title fs-5" id="addVarModalLabel">{Project Name} - Add/Edit Code Variable</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <!-- Variable Form -->
+      <form>
+        <div class="modal-body">
+
+          <!-- Inputs -->
+          <div class="col">
+
+            <!-- Code Variable Name -->
+            <div class="row g-3 mb-2 align-items-center justify-content-center">
+              <div class="col-auto">
+                <label for="variableName" class="col-form-label">Name of the code variable</label>
+              </div>
+              <div class="col-auto">
+                <input type="text" id="variableName" class="form-control" placeholder="Variable name" aria-label="Variable name">
+              </div>
+            </div>
+
+            <!-- List of Code Values -->
+            <div class="row g-3 mb-2 align-items-center justify-content-center">
+
+              <div class="col-sm-3">
+                <label for="variableName" class="col-form-label">List of code values</label>
+              </div>
+
+              <!-- Variable Table with Add/Delete -->
+              <div class="col-lg-9">
+                <table class="table table-bordered">
+                  <thead>
+                    <tr>
+                      <th class="col">Value</th>
+                      <th class="col">Label</th>
+                      <th class="col">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    <tr>
+                      <td><input type="text" placeholder="Value" value="1"></td>
+                      <td><input type="text" placeholder="Label" value="Present"></td>
+                      <td><button type="button" class="btn btn-danger p-1">Delete</button></td>
+                    </tr>
+
+                    <tr>
+                      <td><input type="text" placeholder="Value" value="2"></td>
+                      <td><input type="text" placeholder="Label" value="Not Present"></td>
+                      <td><button type="button" class="btn btn-danger p-1">Delete</button></td>
+                    </tr>
+
+                    <tr>
+                      <td><input type="text" placeholder="Value" value="99"></td>
+                      <td><input type="text" placeholder="Label" value="Not Applicable"></td>
+                      <td><button type="button" class="btn btn-danger p-1">Delete</button></td>
+                    </tr>
+
+                    <!-- Add Coding Variable -->
+                    <tr>
+                      <td colspan="3"><button type="button" class="btn btn-success p-1">Add Code Value/Label</button>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+
+              </div>
+
+            </div>
+
+            <!-- Description -->
+            <div class="row g-3 mb-2 align-items-center justify-content-center">
+
+              <div class="col-md">
+                <label for="variableDescription" class="form-label">Description</label>
+              </div>
+
+              <div class="col-md">
+                <textarea class="form-control" id="variableDescription" placeholder="Variable description" aria-label="Variable description" rows="3"></textarea>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- Cancel and Done Buttons -->
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Done</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
