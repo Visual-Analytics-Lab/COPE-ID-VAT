@@ -2,7 +2,7 @@
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-success w-100 my-1 pb-2 text-truncate overflow-hidden" data-bs-toggle="modal" data-bs-target="#addUserModal">
-    <i class="bi bi-plus-circle"></i> Add Project User
+    <i class="bi bi-plus-circle"></i> Invite Project User
   </button>
     
   <!-- Modal -->
@@ -11,14 +11,18 @@
           <div class="modal-content">
               <div class="modal-header">
                   <!-- Delete Project Confirmation Title -->
-                  <h1 class="modal-title fs-5" id="addUserModalLabel">Add Users to { Project Name }</h1>
+                  <h1 class="modal-title fs-5" id="addUserModalLabel">Invite User to { Project Name }</h1>
                   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
   
               <!-- Warning Message -->
-              <div class="modal-body text-center">
-                Drop down of users
-                Search feature or add in email
+              <div class="modal-body text-center justify-content-center">
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="emailLabel">Email</span>
+                    <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="emailLabel">
+                </div>
+                  
               </div>
   
               <!-- Confirmation Form --> 
@@ -26,7 +30,7 @@
                   <!-- Cancel and Add Buttons -->
                   <div class="modal-footer justify-content-between">
                       <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-                      <button type="submit" class="btn btn-success">Add User(s)</button>
+                      <button type="submit" class="btn btn-success">Invite User</button>
                   </div>
               </form>
           </div>
