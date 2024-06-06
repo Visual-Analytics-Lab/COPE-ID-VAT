@@ -2,147 +2,162 @@
 
 {% block content %}
 
+<style>
+  .modal-link {
+    padding: 0 !important;
+    border: 0 !important;
+    margin: 0 !important;
+    color: blue;
+    text-decoration: underline;
+  }
+</style>
+
 <div class="container-fluid" style="height: 94vh;">
 
-    <!-- Row 1 -->
-    <div class="row" style="height: 94vh;">
+  <!-- <div id="sampleDataDetailsModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <h2>{{ doc.id }}</h2>
+      <p>Document Text: {{ doc.doc_text }}</p>
+      <p>Document JSON: {{ doc.doc_json }}</p>
+      <p>Document Source: {{ doc.doc_source }}</p>
+    </div>
+  </div> -->
 
-        <!-- Row 1 Column 1 -->
-        <div class="sidebar col-12 col-sm-auto d-none d-sm-block" style="max-width: max-content;">
-            <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
-                <!-- Explore -->
-                <a class="btn btn-secondary w-100 mb-2" href="/" id="explore-btn">Explore</a>
-              </div>
-              
-              <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
-                <!-- Add Project -->
-                <a class="btn btn-secondary w-100 mb-2" href="/add_project" id="add_project-btn">Add Project</a>
-              </div>
 
-              <div class="row p-1 px-2 justify-content-start" style="height: 6vh;" style="max-width: min-content;">
-              
-                <div class="list-group">
-                    <button type="button" class="list-group-item list-group-item-action" aria-current="true" id="existingProjectBtn">
-                      Existing Projects
-                    </button>
-                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-1">Project 1</button>
-                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-2">Project 2</button>
-                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-3">Project 3</button>
-                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-4">Project 4</button>
-                    <button type="button" class="list-group-item list-group-item-action" style="display: none;" id="project-5">Project 5</button>
-                  </div>
-              
-              </div>
+  <div>
 
-              <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
-                <!-- Existing Projects -->
-                <a class="btn btn-secondary w-100 mb-2" href="/existing_project" id="existing_projects-btn">Existing Projects</a>
-              </div>
-              
-              <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
-                <!-- Users -->
-                <a class="btn btn-secondary w-100 mb-2" href="/users" id="users-btn">Users</a>
-              </div>
-              
-              <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
-                <!-- Data Grid -->
-                <a class="btn btn-secondary w-100 mb-2" href="/datagrid">Data Grid</a>
-              </div>
-              
+    <!-- Update breadcrumb to return user to the data grid page # they left -->
+    <!-- Alternatively, we could do a Go Back/Previous Page button -->
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="/datagrid">Data Grid</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Document: 9</li>
+      </ol>
+    </nav>
 
+    <!-- Title -->
+    <h2 class="mt-4">Post ID: 9</h2>
+    <h3>Source: 4chan</h3>
+
+    <div class="row mb-3 text-center">
+
+      <!-- Post Text & JSON -->
+      <div class="col-md-8 themed-grid-col">
+        <div class="pb-3">
+        </div>
+        <div class="row">
+
+          <!-- Post Text -->
+          <div class="col-md-6 themed-grid-col">
+            <div class="card" style="width: 100%;">
+              <div class="card-body">
+                <h5 class="card-title">Post Text</h5>
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Post JSON -->
+          <div class="col-md-6 themed-grid-col">
+            <div class="card" style="width: 100%;">
+              <div class="card-body">
+                <h5 class="card-title">Post JSON</h5>
+                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+              </div>
+            </div>
+          </div>
 
         </div>
+      </div>
 
-        <!-- Row 1 Column 2 -->
-        <div class="col content w-auto">
-
+      <!-- Codes -->
+      <div class="col-md-4 themed-grid-col">
+        <!-- Dropdown Menu -->
+        <div>
+          <label for="code_column">Post Code</label>
+          <select name="code_column" id="code_column" style="margin-left: 25px;">
+            <option value="C1">Coding Variable1</option>
+            <option value="C2">Coding Variable2</option>
+            <option value="C3">Coding Variable3</option>
+            <option value="C4">Coding Variable4</option>
+          </select>
         </div>
+      </div>
 
     </div>
+  </div>
+
+  <!-- Search query will need to be passed to this web page
+  in order for the previous and next buttons to function correctly -->
+  <div class="fixed-bottom py-3">
+    <!-- Navbar -->
+    <nav aria-label="post nav">
+      <ul class="pagination justify-content-between p-3">
+  
+        <!-- Previous Post -->
+        <li class="page-item">
+          <a class="page-link">Previous</a>
+        </li>
+  
+        <!-- Next Post -->
+        <li class="page-item">
+          <a class="page-link" href="#">Next</a>
+        </li>
+      </ul>
+    </nav>
+  </div>
+
+  <!-- Button trigger modal -->
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="externalLinkModal" tabindex="-1" aria-labelledby="externalLinkModal" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="externalLinkModalLabel"><i class="bi bi-exclamation-circle-fill"></i> Alert!</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="alert alert-danger">This is an external link and its safety and authenticity can not be confirmed, proceed with caution.</div>
+          <span class="modal-link-clickable"></span>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
-              
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
 <script>
-    document.addEventListener("DOMContentLoaded", function()
-    {
-      // Get URL
-      const pathname = window.location.pathname;
-  
-      // Pseudo-tokenize
-      const pathParts = pathname.split("/");
-  
-      // Get path after first /
-      const tab = pathParts[1];
-  
-      // Testing
-      console.log("Current Tab:", tab);
-  
-      // Initialize variable to hold tab
-      let sidebarButton;
-  
-      // Check which tab
-      if (tab === "add_project")
-      {
-        sidebarButton = document.getElementById("add_project-btn");
-        // console.log("You are on the Add Project tab");
-      } 
-      else if (tab === "existing_project")
-      {
-        sidebarButton = document.getElementById("existing_projects-btn");
-        // console.log("You are on the Existing Project tab");
-      } 
-      else if (tab === "users")
-      {
-        sidebarButton = document.getElementById("users-btn");
-        // console.log("You are on the Users tab");
-      } else
-      {
-        sidebarButton = document.getElementById("explore-btn");
-        // console.log("You are on the Explore tab");
-      }
-  
-      // Disable button
-      if (sidebarButton)
-      {
-        sidebarButton.classList.add("disabled");
-        sidebarButton.setAttribute("aria-disabled", "true");
-        sidebarButton.setAttribute("tabindex", "-1");
-        sidebarButton.setAttribute("href", "#");
-      }
-  
+  function linkify(str) {
+    var newStr = str.replace(/(<a href=")?((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)))(">(.*)<\/a>)?/gi, function () {
+      var url = arguments[2];
+      var displayText = arguments[7] || arguments[2];
+      return '<a type="button" class="modal-link" data-bs-toggle="modal" data-bs-target="#externalLinkModal" data-url="' + url + '" data-display-text="' + displayText + '">' + displayText + '</a>';
     });
+    console.log(newStr)
+    $('div').html(newStr); //fill output area
+  }
 
-    const element = document.getElementById("existingProjectBtn");
-    element.addEventListener("click", myFunction);
+  var data = $('div').html(); //get input (content)
+  linkify(data); //run function on content
 
-    function myFunction() {
-        console.log("TEST CLICK");
-
-        var boolDisplay = document.getElementById("project-1").style.display;
-
-
-        
-        console.log(boolDisplay);
-
-        if (boolDisplay === "none")
-        {
-            document.getElementById("project-1").style.display = "block";
-            document.getElementById("project-2").style.display = "block";
-            document.getElementById("project-3").style.display = "block";
-            document.getElementById("project-4").style.display = "block";
-            document.getElementById("project-5").style.display = "block";
-        }
-        else
-        {
-            document.getElementById("project-1").style.display = "none";
-            document.getElementById("project-2").style.display = "none";
-            document.getElementById("project-3").style.display = "none";
-            document.getElementById("project-4").style.display = "none";
-            document.getElementById("project-5").style.display = "none";
-        }
+  $(document).ready(function () {
+    $('.modal-link').on('click', function () {
+      var url = $(this).data('url'); // Fetch URL stored in modal
+      var displayText = $(this).data('display-text'); // Fetch text stored in modal
+      var linkHtml = '<a href="' + url + '" target="_blank">' + displayText + '</a>'; // Create hyperlink
+      $('#externalLinkModal .modal-link-clickable').html(linkHtml); // Display hyperlink in modal
+    });
+  });
+</script>
 
 
-    }
-  </script>
 
 {% endblock %}

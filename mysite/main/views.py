@@ -5,6 +5,7 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core.paginator import Paginator
+from django.db.models import Q
 
 # Create your views here.
 def homepage(request):
@@ -111,7 +112,7 @@ def datagrid(request):
     else:
         documents = sample_data.objects.all().order_by('id')
 
-    paginator = Paginator(documents, 25)  # Show 25 contacts per page.
+    paginator = Paginator(documents, 25)  # Show 25 docs per page.
 
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -119,20 +120,48 @@ def datagrid(request):
     return render(request, 'main/datagrid.html', context = {"sample_data":page_obj})
     
 def docInfo(request):
-    if request.method == 'POST':
-        # Get the doc ID from the form submission
-        doc_id = request.POST.get('doc_id')
-        # Retrieve the person object from the database
-        doc = get_object_or_404(sample_data, pk=doc_id)
-        # Prepare person data to be sent back as JSON response
-        doc_info = {
-            'doc_id': doc.id,
-            'doc_text': doc.doc_text,
-            'doc_json': doc.doc_json,
-            'doc_source': doc.doc_source
-        }
-        # Return JSON response with person data
-        return render(request, 'main/datagrid_modal.html', {'doc_info': doc_info})
+    page = int(request.GET.get('page'))
+    doc_id = int(request.GET.get('doc_id'))
+    search_query = request.GET.get('search_query', '')
+
+    if search_query:
+        docs = list(sample_data.objects.filter(Q(doc_text__icontains=search_query)).order_by('id'))
+    else:
+        docs = list(sample_data.objects.all().order_by('id'))
+
+    # Get index of document being viewed
+    current_index = next((index for (index, d) in enumerate(docs) if d.id == doc_id), None)
+
+    # Return if index is not found
+    if current_index is None:
+        return redirect('main:datagrid')
+
+    # Check that previous index exists
+    if current_index > 0:
+        previous_doc_id = docs[current_index - 1].id
+    else:
+        previous_doc_id = None
+
+    # Check that next index exists
+    if current_index < len(docs) - 1:
+        next_doc_id = docs[current_index + 1].id
+    else:
+        previous_doc_id = None
+
+    doc = docs[current_index]
+
+    doc_info = {
+        'doc_id': doc.id,
+        'doc_text': doc.doc_text,
+        'doc_json': doc.doc_json,
+        'doc_source': doc.doc_source,
+        'search_query': search_query,
+        'previous_doc_id': previous_doc_id,
+        'next_doc_id': next_doc_id,
+        'page': page
+    }
+
+    return render(request, 'main/datagrid_modal.html', {'doc_info': doc_info})
     
 def test(request):
         test = None
