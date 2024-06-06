@@ -1,170 +1,189 @@
 {% extends 'main/index.html' %}
 
-{% block title %}Data Grid Template{% endblock %}
-
 {% block content %}
 
-<div class="px-0 mx-0" style="max-width: 100vw;">
+<div class="container-fluid" style="height: 94vh;">
 
-  <!-- Title -->
-  <h2 class="px-1">Data Grid</h2>
-  
-  <!-- Search Form -->
-  <form method="GET" action="{% url 'main:datagrid' %}" style="max-width: 600px; margin: auto;">
-    <div style="display: flex; align-items: center;">
-      <!-- Search Query Input -->
-      <input type="text" name="search_query" placeholder="Search..." style="flex: 1;">
-    
-      <!-- Search Button -->
-      <button class="btn btn-secondary" type="submit" style="margin-left: 5px;">Search</button>
-    </div>
-  </form>
+  <!-- Row 1 -->
+  <div class="row" style="height: 94vh;">
 
-  <!-- Data Table -->
-  <table class="table table-striped table-hover" style="max-width: 100vw;">
+    <!-- Row 1 Column 1 -->
+    <div class="col">
 
-    <!-- Column Names -->
-    <thead>
-      <tr>
-        <th>ID</th>
-        <th>Text</th>
-        <th>JSON</th>
-        <th>Source</th>
-        <th>Code</th>
-      </tr>
-    </thead>
+      <!-- Row 1 Column 1 Row 1 -->
+      <div class="row text-center" style="height: 6vh;">
 
-    <!-- Table Row Layout -->
-    <tbody class="table-group-divider">
+        <h2 class="border-bottom">Data Grid</h2>
 
-      <!-- Loop through Data -->
-      {% for doc in sample_data %}
-      <tr>
+      </div>
 
-        <!-- Data ID -->
-        <td>
-          <div class="d-inline-block text-truncate" style="min-width: 5vw;">
-          <!-- Form to submit doc ID for modal display -->
-          <form action="{% url 'main:docInfo' %}" method="post">
-            {% csrf_token %}
-            <input type="hidden" name="doc_id" value="{{ doc.id }}">
+      <!-- Row 1 Column 1 Row 2 -->
+      <div class="row" style="height: 6vh;">
 
-            <!-- Jacob's attempt at a modal V0.1 -->
-            <!-- <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-              {{ doc.id }}
-            </button> -->
+        <div class="col-12">
 
-            <button class="btn btn-secondary" type="submit">{{ doc.id }}</button>
+          <form method="GET" action="{% url 'main:datagrid' %}" class="row justify-content-center g-3">
+            <div class="col-auto">
+              <label for="search_query" class="visually-hidden">Search</label>
 
+              <!-- Search Query Input -->
+              {% if request.GET.search_query %}
+                <input type="text" class="form-control" id="search_query" name="search_query" placeholder="Search..." value="{{ request.GET.search_query }}">
+              {% else %}
+                <input type="text" class="form-control" id="search_query" name="search_query" placeholder="Search...">
+              {% endif %}
+            </div>
+            <div class="col-auto">
+
+              <!-- Search Button -->
+              <button type="submit" class="btn btn-secondary mb-3">Search</button>
+            </div>
           </form>
-          </div>
-        </td>
 
-        <!-- Data Text -->
-        <td class="doc_text"><div class="d-inline-block text-truncate" style="max-width: 35vw;">{{ doc.doc_text }}</div></td>
+        </div>
 
-        <!-- Data JSON -->
-        <td class="doc_json"><div class="d-inline-block text-truncate" style="max-width: 35vw">{{ doc.doc_json }}</div></td>
-
-        <!-- Data Source -->
-        <td class="doc_source"><div class="d-inline-block text-truncate" style="min-width: 10vw">{{ doc.doc_source }}</div></td>
-
-        <!-- Data Code -->
-        <td class="doc_code"><div class="d-inline-block text-truncate" style="min-width: 10vw">PlaceHolder</div></td>
-
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-
-  <!-- Pagination -->
-  <nav aria-label="pagination">
-    <ul class="pagination justify-content-center">
-
-      <!-- Check if Previous -->
-      {% if sample_data.has_previous %}
-
-        <!-- Last Page -->
-        <li class="page-item">
-          <a class="page-link" href="?page=1" aria-label="First">
-            <span aria-hidden="true">&laquo;</span>
-          </a>
-        </li>
-
-        <!-- Previous Page -->
-        <li class="page-item"><a class="page-link" href="?page={{ sample_data.previous_page_number }}">Prev</a></li>
-      {% else %}
-
-        <!-- Disable Previous Button -->
-        <li class="page-item disabled"><a class="page-link">Prev</a></li>
-      {% endif %}
-
-      <!-- Iterate +/- 5 Pages -->
-      {% for current_page in  sample_data.paginator.page_range %}
-        {% if current_page <= sample_data.number|add:5 and current_page >= sample_data.number|add:-5 %}
-
-          <!-- Check if Counter == Current Page -->
-          {% if forloop.counter == sample_data.number %}
-
-            <!-- Disable Button for Current Page -->
-            <li class="page-item disabled"><a class="page-link" href="#">{{forloop.counter}}</a></li>
-          
-          {% else %}
-
-            <!-- Button for Page Navigation -->
-            <li class="page-item"><a class="page-link" href="?page={{forloop.counter}}">{{forloop.counter}}</a></li>
-          {% endif %}
-
-        {% endif %}
-      {% endfor %}
-
-      <!-- Check if Next -->
-      {% if sample_data.has_next %}
-        
-        <!-- Next Page -->
-        <li class="page-item"><a class="page-link" href="?page={{ sample_data.next_page_number }}">Next</a></li>
-
-        <!-- First Page -->
-        <li class="page-item">
-          <a class="page-link" href="?page={{ sample_data.paginator.num_pages }}" aria-label="Last">
-            <span aria-hidden="true">&raquo;</span>
-          </a>
-        </li>
-      {% else %}
-
-        <!-- Disable Next Button -->
-        <li class="page-item disabled"><a class="page-link">Next</a></li>
-      {% endif %}
-
-    </ul>
-  </nav>
-</div>
-
-
-<!-- Maybe a GET request to populate the modal, sending the data back through the views.py
-I believe that POST request would be necessary to update the DB, or maybe something through AJAX after the
-get request? -->
-
-<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
-      <div class="modal-body">
-        {{ doc.id }}
+
+      <!-- Row 1 Column 1 Row 3 -->
+      <div class="row">
+        <!-- Data Table -->
+        <table class="table table-striped table-hover" style="max-width: 100vw;">
+
+          <!-- Column Names -->
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Text</th>
+              <th>JSON</th>
+              <th>Source</th>
+              <th>Code</th>
+            </tr>
+          </thead>
+
+          <!-- Table Row Layout -->
+          <tbody class="table-group-divider">
+
+            <!-- Loop through Data -->
+            {% for doc in sample_data %}
+              <tr>
+
+                <!-- Data ID -->
+                <td>
+
+                  <div class="d-inline-block text-truncate" style="min-width: 5vw;">
+
+                    <!-- Form to submit doc ID for modal display -->
+                    <form action="{% url 'main:docInfo' %}" method="get">
+                      <input type="hidden" name="page" value="{{ sample_data.number }}">
+                      <input type="hidden" name="doc_id" value="{{ doc.id }}">
+                      <input type="hidden" name="search_query" value="{{ request.GET.search_query }}">
+                      <button class="btn btn-secondary" type="submit">{{ doc.id }}</button>
+                    </form>
+
+                  </div>
+                </td>
+
+                <!-- Data Text -->
+                <td class="doc_text">
+                  <div class="d-inline-block text-truncate" style="max-width: 35vw;">{{ doc.doc_text }}</div>
+                </td>
+
+                <!-- Data JSON -->
+                <td class="doc_json">
+                  <div class="d-inline-block text-truncate" style="max-width: 35vw">{{ doc.doc_json }}</div>
+                </td>
+
+                <!-- Data Source -->
+                <td class="doc_source">
+                  <div class="d-inline-block text-truncate" style="min-width: 10vw">{{ doc.doc_source }}</div>
+                </td>
+
+                <!-- Data Code -->
+                <td class="doc_code">
+                  <div class="d-inline-block text-truncate" style="min-width: 10vw">PlaceHolder</div>
+                </td>
+
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-secondary">Save changes</button>
+
+      <!-- Row 1 Column 1 Row 4 -->
+      <div class="row">
+
+        <!-- Pagination -->
+        <nav aria-label="pagination">
+          <ul class="pagination justify-content-center">
+
+            <!-- Check if Previous -->
+            {% if sample_data.has_previous %}
+
+              <!-- First Page -->
+              <li class="page-item">
+                <a class="page-link" href="?page=1&search_query={{ request.GET.search_query }}" aria-label="First">
+                  <span aria-hidden="true">&laquo;</span>
+                </a>
+              </li>
+
+              <!-- Previous Page -->
+              <li class="page-item">
+                <a class="page-link" href="?page={{ sample_data.previous_page_number }}&search_query={{ request.GET.search_query }}">Prev</a>
+              </li>
+            {% else %}
+
+              <!-- Disable Previous Button -->
+              <li class="page-item disabled"><a class="page-link">Prev</a></li>
+            {% endif %}
+
+            <!-- Iterate +/- 5 Pages -->
+            {% for current_page in sample_data.paginator.page_range %}
+              {% if current_page <= sample_data.number|add:5 and current_page >= sample_data.number|add:-5 %}
+
+                <!-- Check if Counter == Current Page -->
+                {% if forloop.counter == sample_data.number %}
+
+                  <!-- Disable Button for Current Page -->
+                  <li class="page-item disabled"><a class="page-link" href="#">{{forloop.counter}}</a></li>
+
+                {% else %}
+
+                  <!-- Button for Page Navigation -->
+                  <li class="page-item">
+                    <a class="page-link" href="?page={{forloop.counter}}&search_query={{ request.GET.search_query }}">{{forloop.counter}}</a>
+                  </li>
+                {% endif %}
+
+              {% endif %}
+            {% endfor %}
+
+            <!-- Check if Next -->
+            {% if sample_data.has_next %}
+
+              <!-- Next Page -->
+              <li class="page-item"><a class="page-link" href="?page={{ sample_data.next_page_number }}&search_query={{ request.GET.search_query }}">Next</a>
+              </li>
+
+              <!-- Last Page -->
+              <li class="page-item">
+                <a class="page-link" href="?page={{ sample_data.paginator.num_pages }}&search_query={{ request.GET.search_query }}" aria-label="Last">
+                  <span aria-hidden="true">&raquo;</span>
+                </a>
+              </li>
+              {% else %}
+
+              <!-- Disable Next Button -->
+              <li class="page-item disabled"><a class="page-link">Next</a></li>
+            {% endif %}
+
+          </ul>
+        </nav>
+
       </div>
+
     </div>
+
   </div>
 </div>
-
-<script>
-
-</script>
 
 {% endblock %}
