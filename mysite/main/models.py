@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 import uuid
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 class Tutorial(models.Model):
@@ -21,6 +22,7 @@ class sample_data(models.Model):
     def __str__(self):
         return self.doc_json
 
+# Create your models here.
 class organization_model(models.Model):
     org_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     org_name = models.CharField(max_length=128, unique=True, null=False, blank=False)
@@ -39,6 +41,8 @@ class project_model(models.Model):
     project_name = models.CharField(max_length=128, null=False, blank=False)
     project_org = models.ForeignKey(organization_model, on_delete=models.CASCADE, default='')
     principal_investigator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
+    timestamp = models.DateTimeField(default=timezone.now)
+    N = models.PositiveIntegerField(default=0) # Total number of unique units
 
     def __str__(self):
         return self.project_name
@@ -71,11 +75,12 @@ class permission_model(models.Model):
         verbose_name = "Permission"
         verbose_name_plural = "Permissions"
 
-class user_project_role_model(models.Model):
+class user_project_model(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     project = models.ForeignKey(project_model, on_delete=models.CASCADE)
     role = models.ForeignKey(role_model, on_delete=models.CASCADE)
     custom_permissions = models.ManyToManyField(permission_model, blank=True)
+    n = models.PositiveIntegerField(default=0) # Total number of units assigned
 
     class Meta:
         unique_together = ('user', 'project')
@@ -102,8 +107,10 @@ class coding_variable(models.Model):
     
 class coding_value(models.Model):
     variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE)
-    value = models.CharField(max_length=8, null=False, blank=False)
     label = models.CharField(max_length=128)
+    value = models.CharField(max_length=8, null=False, blank=False)
+    other = models.CharField(max_length=128, null=True, blank=True)
+    other_bool = models.BooleanField(default=False)
 
     def __str__(self):
         return self.value
@@ -111,6 +118,22 @@ class coding_value(models.Model):
     class Meta:
         verbose_name = "Coding Value"
         verbose_name_plural = "Coding Values"
+
+class inbox_model(models.Model):
+    sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_invites')
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_invites')
+    project = models.ForeignKey(project_model, on_delete=models.CASCADE)
+    message = models.TextField(max_length=256, blank=True)
+    timestamp = models.DateTimeField(auto_now_add=True)
+    accepted = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"From {self.sender} to {self.recipient} for {self.project.project_name}"
+
+    class Meta:
+        verbose_name = "Inbox"
+        verbose_name_plural = "Inbox"
+    
     
     
     
