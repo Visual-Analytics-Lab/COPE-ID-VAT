@@ -23,33 +23,53 @@ class sample_data(models.Model):
 
 class organization_model(models.Model):
     org_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    org_name = models.CharField(max_length=128)
-    org_users = models.ManyToManyField(User)
+    org_name = models.CharField(max_length=128, unique=True, null=False, blank=False)
+    org_super_admin = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='organization_super_admin')
+    org_users = models.ManyToManyField(User, related_name='organization_users')
 
     def __str__(self):
         return self.org_name
+    
+    class Meta:
+        verbose_name = "Organization"
+        verbose_name_plural = "Organizations"
 
 class project_model(models.Model):
     project_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
-    project_name = models.CharField(max_length=128)
+    project_name = models.CharField(max_length=128, null=False, blank=False)
     project_org = models.ForeignKey(organization_model, on_delete=models.CASCADE, default='')
     principal_investigator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.project_name
+    
+    class Meta:
+        verbose_name = "Project"
+        verbose_name_plural = "Projects"
 
 class role_model(models.Model):
-    role_name = models.CharField(max_length=64)
-    role_permissions = models.ManyToManyField('permission_model', related_name='roles')
+    role_name = models.CharField(max_length=64, unique=True, null=False, blank=False)
+    role_acronym = models.CharField(max_length=8, unique=True, null=False, blank=False)
+    role_description = models.TextField(max_length=128, blank=True, default='')
+    role_permissions = models.ManyToManyField('permission_model', related_name='roles', blank=True)
 
     def __str__(self):
         return self.role_name
+    
+    class Meta:
+        verbose_name = "Role"
+        verbose_name_plural = "Roles"
 
 class permission_model(models.Model):
-    permission_name = models.CharField(max_length=64)
+    permission_name = models.CharField(max_length=64, unique=True, null=False, blank=False)
+    permission_description = models.TextField(max_length=128, default='')
 
     def __str__(self):
         return self.permission_name
+    
+    class Meta:
+        verbose_name = "Permission"
+        verbose_name_plural = "Permissions"
 
 class user_project_role_model(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -62,23 +82,36 @@ class user_project_role_model(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.project.project_name} - {self.role.role_name}"
+    
+    class Meta:
+        verbose_name = "User Project Role"
+        verbose_name_plural = "Users Projects Roles"
 
 class coding_variable(models.Model):
     variable_id = models.AutoField(primary_key=True)
-    variable_name = models.CharField(max_length=128)
-    variable_description = models.TextField()
-    project_id = models.ForeignKey(project_model, on_delete=models.CASCADE)
+    variable_name = models.CharField(max_length=128, null=False, blank=False)
+    variable_description = models.TextField(max_length=128, default='')
+    variable_project = models.ForeignKey(project_model, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.variable_name
     
+    class Meta:
+        verbose_name = "Coding Variable"
+        verbose_name_plural = "Coding Variables"
+    
 class coding_value(models.Model):
     variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE)
-    value = models.CharField(max_length=8)
+    value = models.CharField(max_length=8, null=False, blank=False)
     label = models.CharField(max_length=128)
 
     def __str__(self):
         return self.value
+    
+    class Meta:
+        verbose_name = "Coding Value"
+        verbose_name_plural = "Coding Values"
+    
     
     
 # ▒▒▒▒▒▒▒▒▒▄▄▄▄▒▒▒▒▒▒▒
