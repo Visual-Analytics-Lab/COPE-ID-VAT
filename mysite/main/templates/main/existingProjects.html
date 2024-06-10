@@ -83,9 +83,11 @@
             <!-- Word Table Column Headers -->
             <thead class="sticky-top">
               <tr>
+                <th scope="col"><span data-bs-toggle="tooltip" data-bs-title="Default tooltip">Organization</span></th>
                 <th scope="col">Project</th>
-                <th scope="col">% Coded</th>
-                <th scope="col">Owner</th>
+                <th scope="col">Principal Investigator</th>
+                <th scope="col">% Partially Coded</th>
+                <th scope="col">% Completely Coded</th>
                 <th scope="col">Download</th>
               </tr>
             </thead>
@@ -93,34 +95,44 @@
             <!-- Word Table Rows -->
             <tbody class="table-group-divider">
               <tr>
-                <th scope="row">Project 1</th>
+                <th scope="row">MSU SSRC</th>
+                <td>Project 1</td>
+                <td scope="row">PI</td>
+                <td>10%</td>
                 <td>25%</td>
-                <td>Owner</td>
-                <td></td>
-              </tr>
-              <tr>
-                <th scope="row">Project 2</th>
-                <td>25%</td>
-                <td>Owner</td>
                 <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
               </tr>
               <tr>
-                <th scope="row">Project 3</th>
+                <th scope="row">MSU SSRC</th>
+                <td>Project 2</td>
+                <td scope="row">PI</td>
+                <td>10%</td>
                 <td>25%</td>
-                <td>Owner</td>
-                <td></td>
-              </tr>
-              <tr>
-                <th scope="row">Project 4</th>
-                <td>25%</td>
-                <td>Owner</td>
                 <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
               </tr>
               <tr>
-                <th scope="row">Project 5</th>
+                <th scope="row">MSU SSRC</th>
+                <td>Project 3</td>
+                <td scope="row">PI</td>
+                <td>10%</td>
                 <td>25%</td>
-                <td>Owner</td>
-                <td></td>
+                <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
+              </tr>
+              <tr>
+                <th scope="row">MSU SSRC</th>
+                <td>Project 4</td>
+                <td scope="row">PI</td>
+                <td>10%</td>
+                <td>25%</td>
+                <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
+              </tr>
+              <tr>
+                <th scope="row">MSU SSRC</th>
+                <td>Project 5</td>
+                <td scope="row">PI</td>
+                <td>10%</td>
+                <td>25%</td>
+                <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
               </tr>
             </tbody>
           </table>
@@ -131,5 +143,14 @@
 
     </div>
   </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    });
+  </script>
 
   {% endblock %}
