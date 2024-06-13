@@ -2,7 +2,11 @@ from django.db import models
 from datetime import datetime
 import uuid
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 from django.utils import timezone
+from django.utils.text import slugify
+
 
 # Create your models here.
 class Tutorial(models.Model):
@@ -22,7 +26,6 @@ class sample_data(models.Model):
     def __str__(self):
         return self.doc_json
 
-# Create your models here.
 class organization_model(models.Model):
     org_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     org_name = models.CharField(max_length=128, unique=True, null=False, blank=False)
@@ -65,8 +68,27 @@ class role_model(models.Model):
         verbose_name_plural = "Roles"
 
 class permission_model(models.Model):
-    permission_name = models.CharField(max_length=64, unique=True, null=False, blank=False)
-    permission_description = models.TextField(max_length=128, default='')
+    permission_name = models.CharField(max_length=64, unique=False, null=False, blank=False)
+    permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=False)
+    permission_description = models.TextField(max_length=128, default='', null=True, blank=True)
+
+    PERM_CATEGORY = (
+    ('select', 'Select a Category'),
+    ('profile', 'Project Profile Privileges'),
+    ('codebook', 'Codebook Privileges'),
+    ('analysis', 'Units of Analysis & Coding Privileges'),
+    ('irr', 'Inter-Rater Reliability Privileges'),
+    ('results', 'Sample & Results Privileges'),
+    ('export', 'Download & Export Privileges'),
+    )
+
+    permission_category = models.CharField(
+        max_length=16,
+        choices=PERM_CATEGORY,
+        blank=False,
+        default='select',
+        help_text='Permission Category',
+    )
 
     def __str__(self):
         return self.permission_name
@@ -75,22 +97,36 @@ class permission_model(models.Model):
         verbose_name = "Permission"
         verbose_name_plural = "Permissions"
 
+    # Handle creation and updating of slugified name
+    # Slug used to check permissions
+    def save(self, *args, **kwargs):
+        self.permission_slug = slugify(self.permission_name)
+        super(permission_model, self).save(*args, **kwargs)
+
 class user_project_model(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    project = models.ForeignKey(project_model, on_delete=models.CASCADE)
-    role = models.ForeignKey(role_model, on_delete=models.CASCADE)
-    custom_permissions = models.ManyToManyField(permission_model, blank=True)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
+    project = models.ForeignKey(project_model, on_delete=models.CASCADE, blank=False)
+    role = models.ForeignKey(role_model, on_delete=models.CASCADE, blank=False)
+    permissions = models.ManyToManyField(permission_model, blank=True)
     n = models.PositiveIntegerField(default=0) # Total number of units assigned
 
     class Meta:
         unique_together = ('user', 'project')
+        verbose_name = "User Project Role"
+        verbose_name_plural = "Users Projects Roles"
 
     def __str__(self):
         return f"{self.user.username} - {self.project.project_name} - {self.role.role_name}"
     
-    class Meta:
-        verbose_name = "User Project Role"
-        verbose_name_plural = "Users Projects Roles"
+    def reset_permissions(self):
+        print("1 self.permissions:", list(self.permissions.all()))
+        self.permissions.clear()
+        self.permissions.add(*self.role.role_permissions.all())
+        print("2 self.permissions:", list(self.permissions.all()))
+
+@receiver(post_save, sender=user_project_model)
+def reset_permissions_post_save(sender, instance, **kwargs):
+    instance.reset_permissions()
 
 class coding_variable(models.Model):
     variable_id = models.AutoField(primary_key=True)
@@ -134,20 +170,3 @@ class inbox_model(models.Model):
         verbose_name = "Inbox"
         verbose_name_plural = "Inbox"
     
-    
-    
-    
-# ▒▒▒▒▒▒▒▒▒▄▄▄▄▒▒▒▒▒▒▒
-# ▒▒▒▒▒▒▄▀▀▓▓▓▀█▒▒▒▒▒▒
-# ▒▒▒▒▄▀▓▓▄██████▄▒▒▒▒
-# ▒▒▒▄█▄█▀░░▄░▄░█▀▒▒▒▒
-# ▒▒▄▀░██▄░░▀░▀░▀▄▒▒▒▒
-# ▒▒▀▄░░▀░▄█▄▄░░▄█▄▒▒▒
-# ▒▒▒▒▀█▄▄░░▀▀▀█▀▒▒▒▒▒
-# ▒▒▒▄▀▓▓▓▀██▀▀█▄▀▀▄▒▒
-# ▒▒█▓▓▄▀▀▀▄█▄▓▓▀█░█▒▒
-# ▒▒▀▄█░░░░░█▀▀▄▄▀█▒▒▒
-# ▒▒▒▄▀▀▄▄▄██▄▄█▀▓▓█▒▒
-# ▒▒█▀▓█████████▓▓▓█▒▒
-# ▒▒█▓▓██▀▀▀▒▒▒▀▄▄█▀▒▒
-# ▒▒▒▀▀▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒

@@ -81,16 +81,21 @@ class role_model_admin(admin.ModelAdmin):
 
 class permission_model_admin(admin.ModelAdmin):
     # Set display columns
-    list_display = ('name', 'description')
+    list_display = ('name', 'category', 'description')
 
     # Set display order
-    ordering = ('permission_name',)
+    ordering = ('permission_category', 'permission_name',)
 
     # Set column names & custom sorting
     def name(self, obj):
         return obj.permission_name
     name.short_description = 'Permission'
     name.admin_order_field = 'permission_name'
+
+    def category(self, obj):
+        return obj.permission_category
+    category.short_description = 'Category'
+    category.admin_order_field = 'permission_category'
 
     def description(self, obj):
         return obj.permission_description
@@ -123,6 +128,14 @@ class user_project_model_admin(admin.ModelAdmin):
     def role(self, obj):
         return obj.role
     role.short_description = 'Role'
+
+    def save_model(self, request, obj, form, change):
+        super().save_model(request, obj, form, change)
+
+    def save_related(self, request, form, formsets, change):
+        super().save_related(request, form, formsets, change)
+        obj = form.instance
+        obj.reset_permissions()
 
 class coding_variable_admin(admin.ModelAdmin):
     # Set display columns
