@@ -69,7 +69,7 @@ class role_model(models.Model):
 
 class permission_model(models.Model):
     permission_name = models.CharField(max_length=64, unique=False, null=False, blank=False)
-    permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=False)
+    permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=True)
     permission_description = models.TextField(max_length=128, default='', null=True, blank=True)
 
     PERM_CATEGORY = (

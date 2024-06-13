@@ -1,7 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Tutorial, sample_data
+from .models import Tutorial, sample_data, organization_model, project_model, role_model, \
+    permission_model, user_project_model, coding_variable, coding_value, inbox_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core.paginator import Paginator
@@ -13,41 +15,93 @@ def homepage(request):
                   template_name='main/home.html',
                   context = {"tutorials":Tutorial.objects.all})
 
+@login_required
 def addProject(request):
     return render(request = request,
                   template_name='main/addProject.html',
                   context = {"tutorials":Tutorial.objects.all})
 
+@login_required
 def existingProjects(request):
-    return render(request = request,
-                  template_name='main/existingProjects.html',
-                  context = {"tutorials":Tutorial.objects.all})
+    user_projects = user_project_model.objects.filter(user=request.user)
+    context = {
+        'user_projects': user_projects,
+    }
+    return render(request, 'main/existingProjects.html', context)
 
-def existingProjects_posts(request):
-    return render(request = request,
-                  template_name='main/existingProjectsTabs/posts.html',
-                  context = {"tutorials":Tutorial.objects.all})
+@login_required
+def existingProjects_posts(request, project_id):
+    project = get_object_or_404(project_model, project_id=project_id)
+    
+    context = {
+        'project': project,
+    }
+    return render(request, 'main/existingProjectsTabs/posts.html', context)
 
-def existingProjects_codingVariables(request):
-    return render(request = request,
-                  template_name='main/existingProjectsTabs/codingVariables.html',
-                  context = {"tutorials":Tutorial.objects.all})
+@login_required
+def existingProjects_codingVariables(request, project_id):
+    project = get_object_or_404(project_model, project_id=project_id)
+    
+    context = {
+        'project': project,
+    }
+    return render(request, 'main/existingProjectsTabs/codingVariables.html', context)
 
-def existingProjects_irrFeedback(request):
-    return render(request = request,
-                  template_name='main/existingProjectsTabs/irrFeedback.html',
-                  context = {"tutorials":Tutorial.objects.all})
+@login_required
+def existingProjects_irrFeedback(request, project_id):
+    project = get_object_or_404(project_model, project_id=project_id)
 
-def existingProjects_projectUsers(request):
-    return render(request = request,
-                  template_name='main/existingProjectsTabs/projectUsers.html',
-                  context = {"tutorials":Tutorial.objects.all})
+    context = {
+        'project': project,
+    }
+    return render(request, 'main/existingProjectsTabs/irrFeedback.html', context)
 
-def existingProjects_projectRoles(request):
-    return render(request = request,
-                  template_name='main/existingProjectsTabs/projectRoles.html',
-                  context = {"tutorials":Tutorial.objects.all})
+@login_required
+def existingProjects_projectUsers(request, project_id):
+    project = get_object_or_404(project_model, project_id=project_id)
 
+    users = user_project_model.objects.filter(project=project).select_related('user')
+
+    # Get all user_project_model instances related to the specific project
+    user_projects = user_project_model.objects.filter(project=project).select_related('user', 'role')
+
+    # Check if the user has the 'invite users' permission
+    has_addedit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='addedit-project-users').exists()
+    has_download_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='codebook-all-variables-values-labels-etct').exists()
+    has_delete_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='delete-the-project').exists()
+
+    context = {
+        'project': project,
+        'users': users,
+        'user_projects': user_projects,
+        'has_addedit_permission': has_addedit_permission,
+        'has_download_permission': has_download_permission,
+        'has_delete_permission': has_delete_permission,
+    }
+    return render(request, 'main/existingProjectsTabs/projectUsers.html', context)
+
+@login_required
+def existingProjects_projectRoles(request, project_id):
+    project = get_object_or_404(project_model, project_id=project_id)
+
+    # Get all user_project_model instances related to the specific project
+    user_projects = user_project_model.objects.filter(project=project).select_related('user', 'role')
+
+    # Check if the user has the 'invite users' permission
+    has_addedit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='addedit-project-users').exists()
+    has_download_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='codebook-all-variables-values-labels-etct').exists()
+    has_delete_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='delete-the-project').exists()
+
+    context = {
+        'project': project,
+        'user_projects': user_projects,
+        'has_addedit_permission': has_addedit_permission,
+        'has_download_permission': has_download_permission,
+        'has_delete_permission': has_delete_permission,
+    }
+    return render(request, 'main/existingProjectsTabs/projectRoles.html', context)
+
+@login_required
 def users(request):
     return render(request = request,
                   template_name='main/users.html',
