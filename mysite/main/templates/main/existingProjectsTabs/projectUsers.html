@@ -18,7 +18,7 @@
       <!-- Row 1 Column 2 Row 1 -->
       <div class="row text-center" style="height: 6vh;">
 
-        <h2 class="border-bottom">Project Users</h2>
+        <h2 class="border-bottom">{{ project.project_name }} Users</h2>
 
       </div>
 
@@ -26,15 +26,15 @@
       <div class="row px-1" style="height: 6vh;">
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/posts">Posts</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_posts' project.project_id %}">Posts</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/coding_variables">Coding Variables</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_coding_variables' project.project_id %}">Coding Variables</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/irr_feedback">IRR Feedback</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_irrFeedback' project.project_id %}">IRR Feedback</a>
         </div>
 
         <div class="col-2">
@@ -42,12 +42,12 @@
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/project_roles">Project Roles</a>
-      </div>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_projectRoles' project.project_id %}">Project Roles</a>
+        </div>
 
-      <div class="col-2">
+        <div class="col-2">
           <div class="d-none">placeholder</div>
-      </div>
+        </div>
 
       </div>
 
@@ -76,8 +76,9 @@
       <!-- Row 1 Column 2 Row 4 -->
       <div class="row pb-1 px-1" style="height: 6vh;">
         <div class="col-2">
-          <!-- <a class="btn btn-success w-100 my-1 text-truncate overflow-hidden" role="button" aria-label="Add Project User"><i class="bi bi-plus-circle"></i> Add Project User</a> -->
-          {% include 'main/includes/existingProject/inviteUserModal.html' %}
+          {% if has_addedit_permission %}
+            {% include 'main/includes/existingProject/inviteUserModal.html' %}
+          {% endif %}
         </div>
 
         <div class="col-6">
@@ -85,12 +86,15 @@
         </div>
 
         <div class="col-2">
-          <a class="btn btn-info w-100 my-1 pb-2 text-truncate overflow-hidden" role="button" aria-label="Download Project Data"><i class="bi bi-download"></i> Download Project Data</a>
+          {% if has_download_permission %}
+            <a class="btn btn-info w-100 my-1 pb-2 text-truncate overflow-hidden" role="button" aria-label="Download Project Data"><i class="bi bi-download"></i> Download Project Data</a>
+          {% endif %}
         </div>
 
         <div class="col-2">
-          <!-- <a class="btn btn-danger w-100 my-1 text-truncate overflow-hidden" role="button" aria-label="Delete Project" href="#">Delete Project</a> -->
-          {% include 'main/includes/existingProject/deleteProjectModal.html' %}
+          {% if has_delete_permission %}
+            {% include 'main/includes/existingProject/deleteProjectModal.html' %}
+          {% endif %}
         </div>
       </div>
 

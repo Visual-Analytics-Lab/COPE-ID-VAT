@@ -94,46 +94,16 @@
 
             <!-- Word Table Rows -->
             <tbody class="table-group-divider">
-              <tr>
-                <th scope="row">MSU SSRC</th>
-                <td>Project 1</td>
-                <td scope="row">PI</td>
-                <td>10%</td>
-                <td>25%</td>
-                <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
-              </tr>
-              <tr>
-                <th scope="row">MSU SSRC</th>
-                <td>Project 2</td>
-                <td scope="row">PI</td>
-                <td>10%</td>
-                <td>25%</td>
-                <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
-              </tr>
-              <tr>
-                <th scope="row">MSU SSRC</th>
-                <td>Project 3</td>
-                <td scope="row">PI</td>
-                <td>10%</td>
-                <td>25%</td>
-                <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
-              </tr>
-              <tr>
-                <th scope="row">MSU SSRC</th>
-                <td>Project 4</td>
-                <td scope="row">PI</td>
-                <td>10%</td>
-                <td>25%</td>
-                <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
-              </tr>
-              <tr>
-                <th scope="row">MSU SSRC</th>
-                <td>Project 5</td>
-                <td scope="row">PI</td>
-                <td>10%</td>
-                <td>25%</td>
-                <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
-              </tr>
+              {% for user_project in user_projects %}
+                <tr>
+                  <th scope="row">{{ user_project.project.project_org }}</th>
+                  <td><a href="{% url 'main:existingProjects_posts' user_project.project.project_id %}">{{ user_project.project.project_name }}</a></td>
+                  <td scope="row">{{ user_project.project.principal_investigator }}</td>
+                  <td>10%</td>
+                  <td>25%</td>
+                  <th scope="row"><button type="button" class="btn btn-info p-1" aria-label="Download"><i class="bi bi-download"></i> Data</a></button></th>
+                </tr>
+              {% endfor %}
             </tbody>
           </table>
 

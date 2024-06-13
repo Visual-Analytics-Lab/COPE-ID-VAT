@@ -26,19 +26,19 @@
       <div class="row px-1" style="height: 6vh;">
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/posts">Posts</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_posts' project.project_id %}">Posts</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/coding_variables">Coding Variables</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_coding_variables' project.project_id %}">Coding Variables</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/irr_feedback">IRR Feedback</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_irrFeedback' project.project_id %}">IRR Feedback</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/project_users">Project Users</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_projectUsers' project.project_id %}">Project Users</a>
         </div>
 
         <div class="col-2">
