@@ -207,6 +207,8 @@ class inbox_model_admin(admin.ModelAdmin):
 
 
 # Register admin pages
+admin.site.register(Tutorial, TutorialAdmin)
+admin.site.register(sample_data, DataGridAdmin)
 admin.site.register(organization_model, organization_model_admin)
 admin.site.register(project_model, project_model_admin)
 admin.site.register(role_model, role_model_admin)
