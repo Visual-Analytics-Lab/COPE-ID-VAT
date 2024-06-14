@@ -40,10 +40,66 @@ def existingProjects_posts(request, project_id):
 
 @login_required
 def existingProjects_codingVariables(request, project_id):
+    # Fetch project
     project = get_object_or_404(project_model, project_id=project_id)
-    
+
+    # Fetch project variables from database
+    coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values')
+
+    # Check if form was submitted
+    if request.method == 'POST':
+
+        # Check if variable id is in form
+        if 'variable-id' in request.POST:
+
+            # Get variable id
+            id = request.POST.get('variable-id')
+
+            # Get project id
+            project_id = request.POST.get('project-id')
+
+            # Fetch variable from database
+            variable = get_object_or_404(coding_variable, pk=id, variable_project=project_id)
+
+            # Delete the variable
+            variable.delete()
+
+        else:
+            # Get variable name
+            variable_name = request.POST.get('variable-name')
+
+            # Get variable description
+            variable_description = request.POST.get('variable-description')
+
+            # Get variable values
+            values = request.POST.getlist('value[]')
+
+            # Get variable labels
+            labels = request.POST.getlist('label[]')
+
+            # Create variable
+            new_variable = coding_variable(
+                variable_name=variable_name,
+                variable_description=variable_description,
+                variable_project=project
+            )
+            new_variable.save()
+
+            # Create values and labels
+            for value, label in zip(values, labels):
+                new_value = coding_value(
+                    variable=new_variable,
+                    value=value,
+                    label=label
+                )
+                new_value.save()
+
+        # Redirect/refresh page after form submission
+        return redirect(request.path_info)
+
     context = {
         'project': project,
+        'coding_variables': coding_variables,
     }
     return render(request, 'main/existingProjectsTabs/codingVariables.html', context)
 
@@ -58,16 +114,19 @@ def existingProjects_irrFeedback(request, project_id):
 
 @login_required
 def existingProjects_projectUsers(request, project_id):
+    # Fetch project
     project = get_object_or_404(project_model, project_id=project_id)
 
-    users = user_project_model.objects.filter(project=project).select_related('user')
+    # Fetch project users from database
+    users = user_project_model.objects.filter(project=project).select_related('user') # I need to remove this line at some point and use user_projects instead
 
-    # Get all user_project_model instances related to the specific project
+    # Fetch project users and their roles from database
     user_projects = user_project_model.objects.filter(project=project).select_related('user', 'role')
 
-    # Check if the user has the 'invite users' permission
+    # Check user permissions
     has_addedit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='addedit-project-users').exists()
-    has_download_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='codebook-all-variables-values-labels-etct').exists()
+    has_edit_user_privileges = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='edit-project-users-privileges').exists()
+    has_download_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='codebook-all-variables-values-labels-etc').exists()
     has_delete_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='delete-the-project').exists()
 
     context = {
@@ -75,6 +134,7 @@ def existingProjects_projectUsers(request, project_id):
         'users': users,
         'user_projects': user_projects,
         'has_addedit_permission': has_addedit_permission,
+        'has_edit_user_privileges': has_edit_user_privileges,
         'has_download_permission': has_download_permission,
         'has_delete_permission': has_delete_permission,
     }
@@ -84,10 +144,10 @@ def existingProjects_projectUsers(request, project_id):
 def existingProjects_projectRoles(request, project_id):
     project = get_object_or_404(project_model, project_id=project_id)
 
-    # Get all user_project_model instances related to the specific project
+    # Fetch project users and their roles from database
     user_projects = user_project_model.objects.filter(project=project).select_related('user', 'role')
 
-    # Check if the user has the 'invite users' permission
+    # Check user permissions
     has_addedit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='addedit-project-users').exists()
     has_download_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='codebook-all-variables-values-labels-etct').exists()
     has_delete_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='delete-the-project').exists()
@@ -106,58 +166,6 @@ def users(request):
     return render(request = request,
                   template_name='main/users.html',
                   context = {"tutorials":Tutorial.objects.all})
-
-
-
-
-# def register(request):
-#     if request.method == "POST":
-#         form = NewUserForm(request.POST)
-#         if form.is_valid():
-#             user = form.save()
-#             username = form.cleaned_data.get('username')
-#             messages.success(request, f"New account created: {username}")
-#             login(request, user)
-#             return redirect("main:homepage")
-
-#         else:
-#             for msg in form.error_messages:
-#                 messages.error(request, f"{msg}: {form.error_messages[msg]}")
-
-#             return render(request = request,
-#                           template_name = "main\\register.html",
-#                           context={"form":form})
-
-#     form = NewUserForm
-#     return render(request = request,
-#                   template_name = "main\\register.html",
-#                   context={"form":form})
-
-# def logout_request(request):
-#     logout(request)
-#     messages.info(request, "Logged out successfully")
-#     return redirect("main:homepage")
-
-
-# def login_request(request):
-#     if request.method == 'POST':
-#         form = AuthenticationForm(request=request, data=request.POST)
-#         if form.is_valid():
-#             username = form.cleaned_data.get('username')
-#             password = form.cleaned_data.get('password')
-#             user = authenticate(username=username, password=password)
-#             if user is not None:
-#                 login(request, user)
-#                 messages.info(request, f"You are now logged in as {username}")
-#                 return redirect('/')
-#             else:
-#                 messages.error(request, "Invalid username or password.")
-#         else:
-#             messages.error(request, "Invalid username or password.")
-#     form = AuthenticationForm()
-#     return render(request = request,
-#                     template_name = "main/login.html",
-#                     context={"form":form})
 
 def datagrid(request):
     search_query = request.GET.get('search_query')
