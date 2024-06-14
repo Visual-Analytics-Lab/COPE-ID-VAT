@@ -140,9 +140,14 @@ class coding_variable(models.Model):
     class Meta:
         verbose_name = "Coding Variable"
         verbose_name_plural = "Coding Variables"
+
+    # Get a list of variable values
+    def get_values(self):
+        values = self.values.all()
+        return ", ".join([f"{value.value}" for value in values])
     
 class coding_value(models.Model):
-    variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE)
+    variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE, related_name='values')
     label = models.CharField(max_length=128)
     value = models.CharField(max_length=8, null=False, blank=False)
     other = models.CharField(max_length=128, null=True, blank=True)
