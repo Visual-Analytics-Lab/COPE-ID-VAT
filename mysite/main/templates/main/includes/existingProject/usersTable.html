@@ -30,10 +30,11 @@
 
       <!-- User Table Rows -->
       <tbody class="table-group-divider">
+        <!-- Loop through users -->
         {% for user in users %}
           <tr>
             <th scope="row">{{ user.user.username }}</th>
-            {% if has_addedit_permission %}
+            {% if has_edit_user_privileges %}
               <td>{% include 'main/includes/existingProject/editUserModal.html' %}</td>
             {% else %}
               <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>
