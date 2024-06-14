@@ -3,161 +3,70 @@
 {% block content %}
 
 <style>
-  .modal-link {
-    padding: 0 !important;
-    border: 0 !important;
-    margin: 0 !important;
-    color: blue;
-    text-decoration: underline;
+  .list-group li {
+    position: relative;
+    width: 10vw;
+  }
+
+  .list-group li input {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    border: none;
+    padding: 10px;
+    box-sizing: border-box;
   }
 </style>
 
 <div class="container-fluid" style="height: 94vh;">
 
-  <!-- <div id="sampleDataDetailsModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <h2>{{ doc.id }}</h2>
-      <p>Document Text: {{ doc.doc_text }}</p>
-      <p>Document JSON: {{ doc.doc_json }}</p>
-      <p>Document Source: {{ doc.doc_source }}</p>
-    </div>
-  </div> -->
-
-
-  <div>
-
-    <!-- Update breadcrumb to return user to the data grid page # they left -->
-    <!-- Alternatively, we could do a Go Back/Previous Page button -->
-    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
-      <ol class="breadcrumb">
-        <li class="breadcrumb-item"><a href="/datagrid">Data Grid</a></li>
-        <li class="breadcrumb-item active" aria-current="page">Document: 9</li>
-      </ol>
-    </nav>
-
-    <!-- Title -->
-    <h2 class="mt-4">Post ID: 9</h2>
-    <h3>Source: 4chan</h3>
-
-    <div class="row mb-3 text-center">
-
-      <!-- Post Text & JSON -->
-      <div class="col-md-8 themed-grid-col">
-        <div class="pb-3">
-        </div>
-        <div class="row">
-
-          <!-- Post Text -->
-          <div class="col-md-6 themed-grid-col">
-            <div class="card" style="width: 100%;">
-              <div class="card-body">
-                <h5 class="card-title">Post Text</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-              </div>
-            </div>
-          </div>
-
-          <!-- Post JSON -->
-          <div class="col-md-6 themed-grid-col">
-            <div class="card" style="width: 100%;">
-              <div class="card-body">
-                <h5 class="card-title">Post JSON</h5>
-                <p class="card-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-              </div>
-            </div>
-          </div>
-
-        </div>
-      </div>
-
-      <!-- Codes -->
-      <div class="col-md-4 themed-grid-col">
-        <!-- Dropdown Menu -->
-        <div>
-          <label for="code_column">Post Code</label>
-          <select name="code_column" id="code_column" style="margin-left: 25px;">
-            <option value="C1">Coding Variable1</option>
-            <option value="C2">Coding Variable2</option>
-            <option value="C3">Coding Variable3</option>
-            <option value="C4">Coding Variable4</option>
-          </select>
-        </div>
-      </div>
-
-    </div>
+  <ul class="list-group list-group-horizontal">
+    <li class="list-group-item">Value</li>
+    <li class="list-group-item">Label</li>
+    <li class="list-group-item">Action</li>
+  </ul>
+  <div id="value-rows">
+    <ul class="list-group list-group-horizontal">
+      <li class="list-group-item"><input type="text" placeholder="Value"></li>
+      <li class="list-group-item"><input type="text" placeholder="Label"></li>
+      <li class="list-group-item"><button type="button" class="btn btn-danger p-1 delete-btn">Delete</button></li>
+    </ul>
   </div>
 
-  <!-- Search query will need to be passed to this web page
-  in order for the previous and next buttons to function correctly -->
-  <div class="fixed-bottom py-3">
-    <!-- Navbar -->
-    <nav aria-label="post nav">
-      <ul class="pagination justify-content-between p-3">
-  
-        <!-- Previous Post -->
-        <li class="page-item">
-          <a class="page-link">Previous</a>
-        </li>
-  
-        <!-- Next Post -->
-        <li class="page-item">
-          <a class="page-link" href="#">Next</a>
-        </li>
-      </ul>
-    </nav>
-  </div>
-
-  <!-- Button trigger modal -->
-
-
-  <!-- Modal -->
-  <div class="modal fade" id="externalLinkModal" tabindex="-1" aria-labelledby="externalLinkModal" aria-hidden="true">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h1 class="modal-title fs-5" id="externalLinkModalLabel"><i class="bi bi-exclamation-circle-fill"></i> Alert!</h1>
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-        </div>
-        <div class="modal-body">
-          <div class="alert alert-danger">This is an external link and its safety and authenticity can not be confirmed, proceed with caution.</div>
-          <span class="modal-link-clickable"></span>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
-        </div>
-      </div>
-    </div>
-  </div>
+  <!-- Add Coding Variable -->
+  <ul class="list-group list-group-horizontal">
+    <button type="button" class="btn btn-success p-1" id="add-btn">Add Code Value/Label</button>
+  </ul>
 
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
-  function linkify(str) {
-    var newStr = str.replace(/(<a href=")?((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)))(">(.*)<\/a>)?/gi, function () {
-      var url = arguments[2];
-      var displayText = arguments[7] || arguments[2];
-      return '<a type="button" class="modal-link" data-bs-toggle="modal" data-bs-target="#externalLinkModal" data-url="' + url + '" data-display-text="' + displayText + '">' + displayText + '</a>';
-    });
-    console.log(newStr)
-    $('div').html(newStr); //fill output area
-  }
-
-  var data = $('div').html(); //get input (content)
-  linkify(data); //run function on content
-
   $(document).ready(function () {
-    $('.modal-link').on('click', function () {
-      var url = $(this).data('url'); // Fetch URL stored in modal
-      var displayText = $(this).data('display-text'); // Fetch text stored in modal
-      var linkHtml = '<a href="' + url + '" target="_blank">' + displayText + '</a>'; // Create hyperlink
-      $('#externalLinkModal .modal-link-clickable').html(linkHtml); // Display hyperlink in modal
+    // Listen for add button click
+    $('#add-btn').on('click', function () {
+      // Populate html for new row
+      const newValue =
+        `<ul class="list-group list-group-horizontal">
+          <li class="list-group-item"><input type="text" placeholder="Value"></li>
+          <li class="list-group-item"><input type="text" placeholder="Label"></li>
+          <li class="list-group-item"><button type="button" class="btn btn-danger p-1">Delete</button></li>
+        </ul>`;
+      // Add new row to bottom of rows
+      $('#value-rows').append(newValue);
+    });
+
+    // Listen for delete button click
+    $('#value-rows').on('click', '.delete-btn', function () {
+      // Fetch nearest row and delete
+      $(this).closest('ul').remove();
     });
   });
 </script>
-
-
 
 {% endblock %}
