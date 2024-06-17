@@ -1,0 +1,36 @@
+<!-- Included in myProjectsTabs/editProject.html -->
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-danger w-100 my-1 pb-2 text-truncate overflow-hidden" data-bs-toggle="modal" data-bs-target="#deleteProjectModal">
+  Delete Project
+</button>
+  
+<!-- Modal -->
+<div class="modal fade" data-bs-backdrop="static" id="deleteProjectModal" tabindex="-1" aria-labelledby="deleteProjectModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Delete Project Confirmation Title -->
+                <h1 class="modal-title fs-5" id="deleteProjectModalLabel"><i class="bi bi-exclamation-circle-fill"></i> Alert! Confirmation Needed.</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Warning Message -->
+            <div class="modal-body text-center">
+                <p>You are about to close the project:<br>
+                <strong>{{ project.project_name }}</strong><br>
+                Note: Once closed, a project <u><em>cannot be reopened</em></u>!<br>
+                Do you wish to proceed?</p>
+            </div>
+
+            <!-- Confirmation Form --> 
+            <form>
+                <!-- Cancel and Confirm Buttons -->
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No, Cancel.</button>
+                    <button type="submit" class="btn btn-warning">Yes, Close!</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
