@@ -9,8 +9,8 @@
 </div>
 
 <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
-  <!-- Existing Projects -->
-  <a class="btn btn-secondary w-100 mb-2" href="/existing_project" id="existing_projects-btn">Existing Projects</a>
+  <!-- My Projects -->
+  <a class="btn btn-secondary w-100 mb-2" href="/my_projects" id="my_projects-btn">My Projects</a>
 </div>
 
 <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
@@ -49,13 +49,13 @@
       sidebarButton = document.getElementById('add_project-btn');
       // console.log('You are on the Add Project tab');
     } 
-    else if (tab === 'existing_project')
+    else if (tab === 'my_projects')
     {
       const tab2 = pathParts[2];
       console.log(tab2)
       if (!tab2)
       {
-        sidebarButton = document.getElementById('existing_projects-btn');
+        sidebarButton = document.getElementById('my_projects-btn');
       }
       // console.log('You are on the Existing Project tab');
     } 
