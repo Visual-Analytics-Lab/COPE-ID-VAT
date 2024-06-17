@@ -18,7 +18,7 @@
       <!-- Row 1 Column 2 Row 1 -->
       <div class="row text-center" style="height: 6vh;">
 
-        <h2 class="border-bottom">Posts</h2>
+        <h2 class="border-bottom">{{ project.project_name }} Posts</h2>
 
       </div>
 
@@ -30,24 +30,24 @@
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/coding_variables">Coding Variables</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_coding_variables' project.project_id %}">Coding Variables</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/irr_feedback">IRR Feedback</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_irrFeedback' project.project_id %}">IRR Feedback</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/project_users">Project Users</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_projectUsers' project.project_id %}">Project Users</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/project_roles">Project Roles</a>
-      </div>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_projectRoles' project.project_id %}">Project Roles</a>
+        </div>
 
-      <div class="col-2">
+        <div class="col-2">
           <div class="d-none">placeholder</div>
-      </div>
+        </div>
 
       </div>
 

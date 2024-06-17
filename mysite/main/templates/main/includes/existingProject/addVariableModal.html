@@ -2,11 +2,12 @@
 
 <!-- CSS for List of Variable Codes -->
 <style>
-  table td {
+  .list-group li {
     position: relative;
+    width: 10vw;
   }
 
-  table td input {
+  .list-group li input {
     position: absolute;
     display: block;
     top: 0;
@@ -34,12 +35,13 @@
       <div class="modal-header">
 
         <!-- Add/Edit Coding Variable Title -->
-        <h1 class="modal-title fs-5" id="addVarModalLabel">{Project Name} - Add/Edit Code Variable</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <h1 class="modal-title fs-5" id="addVarModalLabel">{{ project.project_name }} - Add/Edit Code Variable</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-btn"></button>
       </div>
 
       <!-- Variable Form -->
-      <form>
+      <form method="post">
+        {% csrf_token %}
         <div class="modal-body">
 
           <!-- Inputs -->
@@ -51,7 +53,7 @@
                 <label for="variableName" class="col-form-label">Name of the code variable</label>
               </div>
               <div class="col-auto">
-                <input type="text" id="variableName" class="form-control" placeholder="Variable name" aria-label="Variable name">
+                <input type="text" id="variable-name" name="variable-name" class="form-control" placeholder="Variable name" aria-label="Variable name">
               </div>
             </div>
 
@@ -62,44 +64,26 @@
                 <label for="variableName" class="col-form-label">List of code values</label>
               </div>
 
-              <!-- Variable Table with Add/Delete -->
+              <!-- Variable Grid with Add/Delete -->
               <div class="col-lg-9">
-                <table class="table table-bordered">
-                  <thead>
-                    <tr>
-                      <th class="col">Value</th>
-                      <th class="col">Label</th>
-                      <th class="col">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
 
-                    <tr>
-                      <td><input type="text" placeholder="Value" value="1"></td>
-                      <td><input type="text" placeholder="Label" value="Present"></td>
-                      <td><button type="button" class="btn btn-danger p-1">Delete</button></td>
-                    </tr>
-
-                    <tr>
-                      <td><input type="text" placeholder="Value" value="2"></td>
-                      <td><input type="text" placeholder="Label" value="Not Present"></td>
-                      <td><button type="button" class="btn btn-danger p-1">Delete</button></td>
-                    </tr>
-
-                    <tr>
-                      <td><input type="text" placeholder="Value" value="99"></td>
-                      <td><input type="text" placeholder="Label" value="Not Applicable"></td>
-                      <td><button type="button" class="btn btn-danger p-1">Delete</button></td>
-                    </tr>
-
-                    <!-- Add Coding Variable -->
-                    <tr>
-                      <td colspan="3"><button type="button" class="btn btn-success p-1">Add Code Value/Label</button>
-                      </td>
-                    </tr>
-
-                  </tbody>
-                </table>
+                <ul class="list-group list-group-horizontal">
+                  <li class="list-group-item">Value</li>
+                  <li class="list-group-item">Label</li>
+                  <li class="list-group-item">Action</li>
+                </ul>
+                <div id="value-rows">
+                  <ul class="list-group list-group-horizontal">
+                    <li class="list-group-item"><input type="text" name="value[]" placeholder="Value"></li>
+                    <li class="list-group-item"><input type="text" name="label[]" placeholder="Label"></li>
+                    <li class="list-group-item"><button type="button" class="btn btn-danger p-1 delete-btn">Delete</button></li>
+                  </ul>
+                </div>
+              
+                <!-- Add Coding Variable -->
+                <ul class="list-group list-group-horizontal pt-1">
+                  <button type="button" class="btn btn-success p-1" id="add-btn">Add Code Value/Label</button>
+                </ul>
 
               </div>
 
@@ -113,7 +97,7 @@
               </div>
 
               <div class="col-md">
-                <textarea class="form-control" id="variableDescription" placeholder="Variable description" aria-label="Variable description" rows="3"></textarea>
+                <textarea class="form-control" id="variable-description" name="variable-description" placeholder="Variable description" aria-label="Variable description" rows="3"></textarea>
               </div>
 
             </div>
@@ -124,10 +108,53 @@
 
         <!-- Cancel and Done Buttons -->
         <div class="modal-footer justify-content-between">
-          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal" id="cancel-btn">Cancel</button>
           <button type="submit" class="btn btn-success">Done</button>
         </div>
       </form>
     </div>
   </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    // Listen for add button click
+    $('#add-btn').on('click', function () {
+      // Populate html for new row
+      const newValue =
+        `<ul class="list-group list-group-horizontal">
+          <li class="list-group-item"><input type="text" name="value[]" placeholder="Value"></li>
+          <li class="list-group-item"><input type="text" name="label[]" placeholder="Label"></li>
+          <li class="list-group-item"><button type="button" class="btn btn-danger p-1 delete-btn">Delete</button></li>
+        </ul>`;
+      // Add new row to bottom of rows
+      $('#value-rows').append(newValue);
+    });
+
+    // Listen for delete button click
+    $('#value-rows').on('click', '.delete-btn', function () {
+      // Fetch nearest row and delete
+      $(this).closest('ul').remove();
+    });
+
+    // Listen for cancel button click
+    $('#cancel-btn').on('click', function () {
+      // Clear all inputs fields in the first row
+      $('#value-rows ul:first-child input').val('');
+
+      // Remove all rows except the first one
+      $('#value-rows ul:not(:first-child)').remove();
+    });
+
+    // Listen for close button click
+    $('#close-btn').on('click', function () {
+      // Clear all inputs fields in the first row
+      $('#value-rows ul:first-child input').val('');
+
+      // Remove all rows except the first one
+      $('#value-rows ul:not(:first-child)').remove();
+    });
+  });
+</script>

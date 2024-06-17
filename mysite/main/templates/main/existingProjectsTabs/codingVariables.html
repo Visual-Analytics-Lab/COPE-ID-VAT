@@ -18,7 +18,7 @@
       <!-- Row 1 Column 2 Row 1 -->
       <div class="row text-center" style="height: 6vh;">
 
-        <h2 class="border-bottom">Coding Variables</h2>
+        <h2 class="border-bottom">{{ project.project_name }} Coding Variables</h2>
 
       </div>
 
@@ -26,7 +26,7 @@
       <div class="row px-1" style="height: 6vh;">
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/posts">Posts</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_posts' project.project_id %}">Posts</a>
         </div>
 
         <div class="col-2">
@@ -34,20 +34,20 @@
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/irr_feedback">IRR Feedback</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_irrFeedback' project.project_id %}">IRR Feedback</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/project_users">Project Users</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_projectUsers' project.project_id %}">Project Users</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="/existing_project/project_roles">Project Roles</a>
-      </div>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_projectRoles' project.project_id %}">Project Roles</a>
+        </div>
 
-      <div class="col-2">
+        <div class="col-2">
           <div class="d-none">placeholder</div>
-      </div>
+        </div>
 
       </div>
 
@@ -76,7 +76,6 @@
       <!-- Row 1 Column 2 Row 4 -->
       <div class="row pb-1 px-1" style="height: 6vh;">
         <div class="col-2">
-          <!-- <a class="btn btn-success w-100 my-1 pb-2 text-truncate overflow-hidden" role="button" aria-label="Add Coding Variable"><i class="bi bi-plus-circle"></i> Add Coding Variable</a> -->
           {% include 'main/includes/existingProject/addVariableModal.html' %}
         </div>
 
@@ -90,9 +89,7 @@
       <div class="row" style="height: 70vh;">
 
         <div class="col px-3">
-
           {% include 'main/includes/existingProject/codingVariablesTable.html' %}
-
         </div>
 
       </div>

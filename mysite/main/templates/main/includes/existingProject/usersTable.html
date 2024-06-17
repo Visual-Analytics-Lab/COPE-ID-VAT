@@ -22,30 +22,29 @@
           <th scope="col">Username</th>
           <th scope="col">User Role</th>
           <th scope="col">Email</th>
-          <th scope="col">Action</th>
+          {% if has_addedit_permission %}
+            <th scope="col">Action</th>
+          {% endif %}
         </tr>
       </thead>
 
       <!-- User Table Rows -->
       <tbody class="table-group-divider">
-        <tr>
-          <th scope="row">Sanreddy</th>
-          <td>{% include 'main/includes/existingProject/editUserModal.html' %}</td>
-          <td><a href="mailto:sujan.anreddy@ssrc.msstate.edu">sujan.anreddy@ssrc.msstate.edu</a></td>
-          <td>{% include 'main/includes/existingProject/deleteUserModal.html' %}</td>
-        </tr>
-        <tr>
-          <th scope="row">MeganR</th>
-          <td>{% include 'main/includes/existingProject/editUserModal.html' %}</td>
-          <td><a href="mailto:megan@ssrc.msstate.edu">megan@ssrc.msstate.edu</a></td>
-          <td>{% include 'main/includes/existingProject/deleteUserModal.html' %}</td>
-        </tr>
-        <tr>
-          <th scope="row">Sra116</th>
-          <td>{% include 'main/includes/existingProject/editUserModal.html' %}</td>
-          <td><a href="mailto:sra116@msstate.edu">sra116@msstate.edu</a></td>
-          <td>{% include 'main/includes/existingProject/deleteUserModal.html' %}</td>
-        </tr>
+        <!-- Loop through users -->
+        {% for user in users %}
+          <tr>
+            <th scope="row">{{ user.user.username }}</th>
+            {% if has_edit_user_privileges %}
+              <td>{% include 'main/includes/existingProject/editUserModal.html' %}</td>
+            {% else %}
+              <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>
+            {% endif %}
+            <td><a href="mailto:{{ users.user.email }}">{{ user.user.email }}</a></td>
+            {% if has_addedit_permission %}
+              <td>{% include 'main/includes/existingProject/deleteUserModal.html' %}</td>
+            {% endif %}
+          </tr>
+        {% endfor %}
       </tbody>
     </table>
   </div>
