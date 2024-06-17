@@ -18,7 +18,7 @@
       <!-- Row 1 Column 2 Row 1 -->
       <div class="row text-center" style="height: 6vh;">
 
-        <h2 class="border-bottom">Existing Projects</h2>
+        <h2 class="border-bottom">My Projects</h2>
 
       </div>
 
@@ -69,7 +69,7 @@
               {% for user_project in user_projects %}
                 <tr>
                   <th scope="row">{{ user_project.project.project_org }}</th>
-                  <td><a href="{% url 'main:existingProjects_posts' user_project.project.project_id %}">{{ user_project.project.project_name }}</a></td>
+                  <td><a href="{% url 'main:myProjects_units' user_project.project.project_id %}">{{ user_project.project.project_name }}</a></td>
                   <td scope="row">{{ user_project.project.principal_investigator }}</td>
                   <td>10%</td>
                   <td>25%</td>

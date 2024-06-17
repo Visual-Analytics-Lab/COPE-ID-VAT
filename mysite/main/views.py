@@ -28,24 +28,24 @@ def addProject(request):
                   context = {"tutorials":Tutorial.objects.all})
 
 @login_required
-def existingProjects(request):
+def myProjects(request):
     user_projects = user_project_model.objects.filter(user=request.user)
     context = {
         'user_projects': user_projects,
     }
-    return render(request, 'main/existingProjects.html', context)
+    return render(request, 'main/myProjects.html', context)
 
 @login_required
-def existingProjects_posts(request, project_id):
+def myProjects_units(request, project_id):
     project = get_object_or_404(project_model, project_id=project_id)
     
     context = {
         'project': project,
     }
-    return render(request, 'main/existingProjectsTabs/posts.html', context)
+    return render(request, 'main/myProjectsTabs/units.html', context)
 
 @login_required
-def existingProjects_codingVariables(request, project_id):
+def myProjects_codebook(request, project_id):
     # Fetch project
     project = get_object_or_404(project_model, project_id=project_id)
 
@@ -107,19 +107,19 @@ def existingProjects_codingVariables(request, project_id):
         'project': project,
         'coding_variables': coding_variables,
     }
-    return render(request, 'main/existingProjectsTabs/codingVariables.html', context)
+    return render(request, 'main/myProjectsTabs/codebook.html', context)
 
 @login_required
-def existingProjects_irrFeedback(request, project_id):
+def myProjects_irr(request, project_id):
     project = get_object_or_404(project_model, project_id=project_id)
 
     context = {
         'project': project,
     }
-    return render(request, 'main/existingProjectsTabs/irrFeedback.html', context)
+    return render(request, 'main/myProjectsTabs/irr.html', context)
 
 @login_required
-def existingProjects_projectUsers(request, project_id):
+def myProjects_editProject(request, project_id):
     # Fetch project
     project = get_object_or_404(project_model, project_id=project_id)
 
@@ -144,10 +144,10 @@ def existingProjects_projectUsers(request, project_id):
         'has_download_permission': has_download_permission,
         'has_delete_permission': has_delete_permission,
     }
-    return render(request, 'main/existingProjectsTabs/projectUsers.html', context)
+    return render(request, 'main/myProjectsTabs/editProject.html', context)
 
 @login_required
-def existingProjects_projectRoles(request, project_id):
+def myProjects_projectRoles(request, project_id):
     project = get_object_or_404(project_model, project_id=project_id)
 
     # Fetch project users and their roles from database
@@ -165,7 +165,7 @@ def existingProjects_projectRoles(request, project_id):
         'has_download_permission': has_download_permission,
         'has_delete_permission': has_delete_permission,
     }
-    return render(request, 'main/existingProjectsTabs/projectRoles.html', context)
+    return render(request, 'main/myProjectsTabs/projectRoles.html', context)
 
 @login_required
 def users(request):

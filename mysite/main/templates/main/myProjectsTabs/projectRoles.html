@@ -26,19 +26,19 @@
       <div class="row px-1" style="height: 6vh;">
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_posts' project.project_id %}">Posts</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_coding_variables' project.project_id %}">Coding Variables</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_irrFeedback' project.project_id %}">IRR Feedback</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_projectUsers' project.project_id %}">Project Users</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
         </div>
 
         <div class="col-2">
@@ -86,7 +86,7 @@
 
         <div class="col-2">
           <!-- <a class="btn btn-danger w-100 my-1 text-truncate overflow-hidden" role="button" aria-label="Delete Project" href="#">Delete Project</a> -->
-          {% include 'main/includes/existingProject/deleteProjectModal.html' %}
+          {% include 'main/includes/myProjects/deleteProjectModal.html' %}
         </div>
       </div>
 
@@ -95,7 +95,7 @@
 
         <div class="col px-3">
 
-          {% include 'main/includes/existingProject/rolesTable.html' %}
+          {% include 'main/includes/myProjects/rolesTable.html' %}
 
         </div>
 

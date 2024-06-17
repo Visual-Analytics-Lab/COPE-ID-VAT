@@ -18,7 +18,7 @@
             <!-- Row 1 Column 2 Row 1 -->
             <div class="row text-center" style="height: 6vh;">
 
-                <h2 class="border-bottom">{{ project.project_name }} IRR Feedback</h2>
+                <h2 class="border-bottom">{{ project.project_name }} Inter-Rater Reliability</h2>
 
             </div>
 
@@ -26,23 +26,23 @@
             <div class="row px-1" style="height: 6vh;">
 
                 <div class="col-2">
-                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_posts' project.project_id %}">Posts</a>
+                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
                   </div>
           
                   <div class="col-2">
-                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_coding_variables' project.project_id %}">Coding Variables</a>
+                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
                   </div>
 
                 <div class="col-2">
-                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">IRR Feedback</a>
+                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Inter-Rater Reliability</a>
                 </div>
 
                 <div class="col-2">
-                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_projectUsers' project.project_id %}">Project Users</a>
+                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
                   </div>
           
                   <div class="col-2">
-                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:existingProjects_projectRoles' project.project_id %}">Project Roles</a>
+                    <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_projectRoles' project.project_id %}">Project Roles</a>
                 </div>
 
                 <div class="col-2">

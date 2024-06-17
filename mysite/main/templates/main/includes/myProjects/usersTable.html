@@ -1,4 +1,4 @@
-<!-- Included in addProject.html -->
+<!-- Included in myProjectsTabs/editProject.html -->
 
 <!-- Make sure buttons have a padding of 1 -->
 
@@ -35,13 +35,13 @@
           <tr>
             <th scope="row">{{ user.user.username }}</th>
             {% if has_edit_user_privileges %}
-              <td>{% include 'main/includes/existingProject/editUserModal.html' %}</td>
+              <td>{% include 'main/includes/myProjects/editUserModal.html' %}</td>
             {% else %}
               <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>
             {% endif %}
             <td><a href="mailto:{{ users.user.email }}">{{ user.user.email }}</a></td>
             {% if has_addedit_permission %}
-              <td>{% include 'main/includes/existingProject/deleteUserModal.html' %}</td>
+              <td>{% include 'main/includes/myProjects/deleteUserModal.html' %}</td>
             {% endif %}
           </tr>
         {% endfor %}
