@@ -9,7 +9,9 @@
           <th scope="col">Variable</th>
           <th scope="col">Values</th>
           <th scope="col">Description</th>
-          <th scope="col">Action</th>
+          {% if has_edit_permission %}
+            <th scope="col">Action</th>
+          {% endif %}
         </tr>
       </thead>
   
@@ -21,7 +23,9 @@
             <th scope="row">{{ variable.variable_name }}</th>
             <td>{{ variable.get_values }}</td>
             <td>{{ variable.variable_description }}</td>
-            <td>{% include 'main/includes/myProjects/deleteVariableModal.html' %}</td>
+            {% if has_edit_permission %}
+              <td>{% include 'main/includes/myProjects/deleteVariableModal.html' %}</td>
+            {% endif %}
           </tr>
         {% endfor %}
       </tbody>
