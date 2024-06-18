@@ -2,9 +2,9 @@
 
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-role p-1 text-truncate overflow-hidden" data-bs-toggle="modal" data-bs-target="#updateUserModal-{{ user.user.username }}">
-    {{ user.role }}
+  {{ user.role }}
 </button>
-  
+
 <!-- Modal -->
 <div class="modal fade" data-bs-backdrop="static" id="updateUserModal-{{ user.user.username }}" tabindex="-1" aria-labelledby="updaetUserModalLabel-{{ user.user.username }}" aria-hidden="true">
   <div class="modal-dialog modal-lg">
@@ -19,14 +19,16 @@
       <div class="modal-body">
 
         <!-- Update User Form -->
-        <form class="row g-3">
-  
+        <form class="row g-3" method="post">
+          {% csrf_token %}
+
           <div class="col-12">
-            <select class="form-select" aria-label="Select Role" id="roleInput">
+            <input type="text" class="form-control d-none" name="user-id" value="{{ user.user.id }}">
+            <select class="form-select" aria-label="Select Role" name="role-pk" id="role-pk">
               <option selected>{{ user.role }}</option>
-              <option value="1">SMR</option>
-              <option value="2">SMC</option>
-              <option value="3">SMC+</option>
+              {% for role in roles %}
+                <option value="{{ role.pk }}">{{ role.role_name }}</option>
+              {% endfor %}
             </select>
           </div>
 
