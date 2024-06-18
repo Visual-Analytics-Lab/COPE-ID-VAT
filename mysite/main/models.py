@@ -25,6 +25,17 @@ class sample_data(models.Model):
 
     def __str__(self):
         return self.doc_json
+    
+class bert_main_sample_data(models.Model):
+    topic_id = models.IntegerField(primary_key=True)
+    topic_name = models.TextField()
+    documents = models.CharField()
+ 
+    def __str__(self):
+        return self.doc_json
+   
+    class Meta:
+        db_table = 'main_bert_main_sample_data'
 
 class organization_model(models.Model):
     org_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -71,6 +82,8 @@ class permission_model(models.Model):
     permission_name = models.CharField(max_length=64, unique=False, null=False, blank=False)
     permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=True)
     permission_description = models.TextField(max_length=128, default='', null=True, blank=True)
+    permission_rank = models.DecimalField(max_digits=4, decimal_places=2, default=0.0, null=True, blank=True)
+    permission_assignable = models.BooleanField(default=False)
 
     PERM_CATEGORY = (
     ('select', 'Select a Category'),
@@ -107,7 +120,7 @@ class user_project_model(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
     project = models.ForeignKey(project_model, on_delete=models.CASCADE, blank=False)
     role = models.ForeignKey(role_model, on_delete=models.CASCADE, blank=False)
-    permissions = models.ManyToManyField(permission_model, blank=True)
+    permissions = models.ManyToManyField(permission_model, blank=True, related_name='permissions')
     n = models.PositiveIntegerField(default=0) # Total number of units assigned
 
     class Meta:
