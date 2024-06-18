@@ -38,11 +38,11 @@
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
         </div>
 
         <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_projectRoles' project.project_id %}">Project Roles</a>
+          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
         </div>
 
         <div class="col-2">
@@ -76,7 +76,9 @@
       <!-- Row 1 Column 2 Row 4 -->
       <div class="row pb-1 px-1" style="height: 6vh;">
         <div class="col-2">
-          {% include 'main/includes/myProjects/addVariableModal.html' %}
+          {% if has_edit_permission %}
+            {% include 'main/includes/myProjects/addVariableModal.html' %}
+          {% endif %}
         </div>
 
         <div class="col-10">
