@@ -4,7 +4,7 @@
 <h5 class="pb-2 border-bottom">Platforms</h5>
 
 <!-- Platforms to Filter By -->
-<div class="overflow-y-scroll m-0 px-0 py-2" style="height: 15vh;">
+<!-- <div class="overflow-y-scroll m-0 px-0 py-2" style="height: 15vh;">
   <div class="form-check">
     <input class="form-check-input" type="checkbox" value="" id="platform1">
     <label class="form-check-label" for="platform1">
@@ -40,5 +40,24 @@
     <label class="form-check-label" for="platform6">
       Flickr
     </label>
+  </div> 
+</div>-->
+
+<div class="overflow-y-scroll m-0 px-0 py-2" style="height: 15vh;">
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="" id="platform1">
+    <label class="form-check-label" for="platform1">
+      Select All
+    </label>
   </div>
+
+  <!-- Loop through all platforms -->
+  {% for platform in distinct_platforms %}
+  <div class="form-check">
+    <input class="form-check-input" type="checkbox" value="{{ platform }}" id="platform{{ forloop.counter }}">
+    <label class="form-check-label" for="platform{{ forloop.counter }}">
+      {{ platform }}
+    </label>
+  </div>
+  {% endfor %}
 </div>

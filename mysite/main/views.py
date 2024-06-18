@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Tutorial, sample_data, User, organization_model, project_model, role_model, \
+from .models import Tutorial, sample_data, bert_main_sample_data, User, organization_model, project_model, role_model, \
     permission_model, user_project_model, coding_variable, coding_value, inbox_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
@@ -16,9 +16,13 @@ from django.db.models import Q, OuterRef, Subquery, Exists
 # =============================================================
 
 def homepage(request):
+    distinct_platforms = sample_data.objects.values_list('doc_source', flat=True).distinct()
+    distinct_topics = bert_main_sample_data.objects.values_list('topic_name', flat=True).distinct()
     return render(request = request,
                   template_name='main/home.html',
-                  context = {"tutorials":Tutorial.objects.all})
+                  context = {"tutorials":Tutorial.objects.all,
+                             "distinct_platforms": distinct_platforms,
+                             "distinct_topics": distinct_topics})
 
 # =============================================================
 # Add Project
@@ -26,6 +30,8 @@ def homepage(request):
 
 @login_required
 def addProject(request):
+    
+
     return render(request = request,
                   template_name='main/addProject.html',
                   context = {"tutorials":Tutorial.objects.all})
@@ -81,7 +87,7 @@ def myProjects_codebook(request, project_id):
 
             # Get variable id
             id = request.POST.get('variable-id')
-
+            
             # Get project id
             project_id = request.POST.get('project-id')
 
@@ -399,4 +405,3 @@ def test(request):
         test = None
 
         return render(request, 'main/test.html', {'test': test})
-
