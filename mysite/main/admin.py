@@ -81,10 +81,10 @@ class role_model_admin(admin.ModelAdmin):
 
 class permission_model_admin(admin.ModelAdmin):
     # Set display columns
-    list_display = ('name', 'category', 'description')
+    list_display = ('permission_rank', 'name', 'category', 'description', 'permission_assignable')
 
     # Set display order
-    ordering = ('permission_category', 'permission_name',)
+    ordering = ('permission_rank', 'permission_category', 'permission_name', 'permission_assignable',)
 
     # Set column names & custom sorting
     def name(self, obj):
@@ -93,7 +93,7 @@ class permission_model_admin(admin.ModelAdmin):
     name.admin_order_field = 'permission_name'
 
     def category(self, obj):
-        return obj.permission_category
+        return obj.get_permission_category_display()
     category.short_description = 'Category'
     category.admin_order_field = 'permission_category'
 
