@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Tutorial, sample_data, organization_model, project_model, role_model, \
+from .models import Tutorial, sample_data, User, organization_model, project_model, role_model, \
     permission_model, user_project_model, coding_variable, coding_value, inbox_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
@@ -7,13 +7,22 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.http import JsonResponse
 from django.core.paginator import Paginator
-from django.db.models import Q
+from django.db.models import Q, OuterRef, Subquery, Exists
 
 # Create your views here.
+
+# =============================================================
+# Homepage
+# =============================================================
+
 def homepage(request):
     return render(request = request,
                   template_name='main/home.html',
                   context = {"tutorials":Tutorial.objects.all})
+
+# =============================================================
+# Add Project
+# =============================================================
 
 @login_required
 def addProject(request):
@@ -21,16 +30,27 @@ def addProject(request):
                   template_name='main/addProject.html',
                   context = {"tutorials":Tutorial.objects.all})
 
+# =============================================================
+# My Projects
+# =============================================================
+
 @login_required
 def myProjects(request):
+    # Fetch user's projects
     user_projects = user_project_model.objects.filter(user=request.user)
+
     context = {
         'user_projects': user_projects,
     }
     return render(request, 'main/myProjects.html', context)
 
+# =============================================================
+# My Projects - Units
+# =============================================================
+
 @login_required
 def myProjects_units(request, project_id):
+    # Fetch project
     project = get_object_or_404(project_model, project_id=project_id)
     
     context = {
@@ -38,10 +58,17 @@ def myProjects_units(request, project_id):
     }
     return render(request, 'main/myProjectsTabs/units.html', context)
 
+# =============================================================
+# My Projects - Codebook
+# =============================================================
+
 @login_required
 def myProjects_codebook(request, project_id):
     # Fetch project
     project = get_object_or_404(project_model, project_id=project_id)
+
+    # Check user permissions
+    has_edit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='edit-codebook').exists()
 
     # Fetch project variables from database
     coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values')
@@ -100,8 +127,13 @@ def myProjects_codebook(request, project_id):
     context = {
         'project': project,
         'coding_variables': coding_variables,
+        'has_edit_permission': has_edit_permission,
     }
     return render(request, 'main/myProjectsTabs/codebook.html', context)
+
+# =============================================================
+# My Projects - Iter-Rater Reliability
+# =============================================================
 
 @login_required
 def myProjects_irr(request, project_id):
@@ -112,16 +144,21 @@ def myProjects_irr(request, project_id):
     }
     return render(request, 'main/myProjectsTabs/irr.html', context)
 
+# =============================================================
+# My Projects - Edit Project
+# =============================================================
+
 @login_required
 def myProjects_editProject(request, project_id):
     # Fetch project
     project = get_object_or_404(project_model, project_id=project_id)
 
     # Fetch project users from database
-    users = user_project_model.objects.filter(project=project).select_related('user') # I need to remove this line at some point and use user_projects instead
+    users = user_project_model.objects.filter(project=project).select_related('user')
 
-    # Fetch project users and their roles from database
-    user_projects = user_project_model.objects.filter(project=project).select_related('user', 'role')
+    roles = role_model.objects.exclude(role_name="Principal Investigator")
+
+    # 
 
     # Check user permissions
     has_addedit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='addedit-project-users').exists()
@@ -129,10 +166,57 @@ def myProjects_editProject(request, project_id):
     has_download_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='codebook-all-variables-values-labels-etc').exists()
     has_delete_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='delete-the-project').exists()
 
+    if request.method == 'POST':
+        user_id = request.POST.get('user-id')
+        print("user_id", user_id)
+        project_id = project.project_id
+        print("project_id", project_id)
+        role_pk = request.POST.get('role-pk')
+        print("role_name", role_pk)
+        role = get_object_or_404(role_model, pk=role_pk)
+        
+        print("role:", role)
+
+        user = get_object_or_404(User, pk=user_id)
+        print("user", user)
+        project = get_object_or_404(project_model, project_id=project_id)
+        print("project", project)
+        print("TEST0")
+
+        user_project = get_object_or_404(user_project_model, user__pk=user_id, project__project_id=project_id)
+
+        # Check if an instance with the same user and project exists (excluding the current instance)
+        existing_user_project = user_project_model.objects.filter(user=user, project=project).exclude(pk=user_project.pk).first()
+
+        print(user_id)
+        print(project_id)
+        print("TEST1")
+        
+        print("TEST2")
+        if existing_user_project:
+            print("TEST3")
+            # Update the existing instance
+            existing_user_project.role = role
+            existing_user_project.save()
+            existing_user_project.reset_permissions()
+        else:
+            print("TEST4")
+            # Update the current instance
+            user_project.user = user
+            user_project.project = project
+            user_project.role = role
+            user_project.save()
+            user_project.reset_permissions()
+
+        print("TEST")
+        return redirect('main:myProjects_editProject', project_id=project.project_id)
+    
+        
+
     context = {
         'project': project,
         'users': users,
-        'user_projects': user_projects,
+        'roles': roles,
         'has_addedit_permission': has_addedit_permission,
         'has_edit_user_privileges': has_edit_user_privileges,
         'has_download_permission': has_download_permission,
@@ -140,32 +224,110 @@ def myProjects_editProject(request, project_id):
     }
     return render(request, 'main/myProjectsTabs/editProject.html', context)
 
+# =============================================================
+# My Projects - User Profile
+# =============================================================
+
 @login_required
-def myProjects_projectRoles(request, project_id):
+def myProjects_userProfile(request, project_id, user_id):
+
+    # Fetch project
+    project = get_object_or_404(project_model, pk=project_id)
+
+    # Fetch user
+    user = get_object_or_404(User, pk=user_id)
+
+    # Fetch user project instance
+    user_project = user_project_model.objects.prefetch_related('permissions').get(user=user, project=project_id)
+
+    # annotated_permissions = []
+    # for perm in permissions:
+    #     annotated_permission = {
+    #         'permission': perm,
+    #         'assigned': perm.permission_slug in user_permissions_set
+    #     }
+    #     annotated_permissions.append(annotated_permission)
+
+    # Create a subquery to check if a permission is assigned to the user project
+    user_project_permissions = user_project.permissions.filter(pk=OuterRef('pk'))
+
+    # Annotate the permissions queryset with a boolean indicating if they are assigned to the user
+    permissions = permission_model.objects.filter(permission_assignable=True).order_by('permission_rank').annotate(assigned=Exists(user_project_permissions))
+
+    # Fetch roles, exclude PI
+    roles = role_model.objects.exclude(role_name="Principal Investigator")
+
+    if request.method == 'POST':
+
+        # Get project ID from project instance
+        project_id = project.project_id
+
+        # Get user ID from HTTP POST request
+        user_id = request.POST.get('user-id')
+
+        # Get role key from HTTP POST request
+        role_pk = request.POST.get('role-pk')
+
+        # Fetch role instance from key
+        role = get_object_or_404(role_model, pk=role_pk)
+
+        user_project = get_object_or_404(user_project_model, user__pk=user_id, project__project_id=project_id)
+
+        # Check if an instance with the same user and project exists (excluding the current instance)
+        existing_user_project = user_project_model.objects.filter(user=user, project=project).exclude(pk=user_project.pk).first()
+        
+        if existing_user_project:
+            # Update the existing instance
+            existing_user_project.role = role
+            existing_user_project.save()
+            existing_user_project.reset_permissions()
+        else:
+            # Update the current instance
+            user_project.user = user
+            user_project.project = project
+            user_project.role = role
+            user_project.save()
+            user_project.reset_permissions()
+
+        return redirect('main:myProjects_userProfile', project_id=project.project_id, user_id=user_id)
+
+    context = {
+        'roles': roles,
+        'user': user,
+        'user_project': user_project,
+        'project': project,
+        'permissions': permissions,
+    }
+    
+    return render(request, 'main/myProjectsTabs/userProfile.html', context)
+
+# =============================================================
+# My Projects - Sample & Results
+# =============================================================
+
+@login_required
+def myProjects_sampleResults(request, project_id):
+    # Fetch project
     project = get_object_or_404(project_model, project_id=project_id)
-
-    # Fetch project users and their roles from database
-    user_projects = user_project_model.objects.filter(project=project).select_related('user', 'role')
-
-    # Check user permissions
-    has_addedit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='addedit-project-users').exists()
-    has_download_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='codebook-all-variables-values-labels-etct').exists()
-    has_delete_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='delete-the-project').exists()
 
     context = {
         'project': project,
-        'user_projects': user_projects,
-        'has_addedit_permission': has_addedit_permission,
-        'has_download_permission': has_download_permission,
-        'has_delete_permission': has_delete_permission,
     }
-    return render(request, 'main/myProjectsTabs/projectRoles.html', context)
+    return render(request, 'main/myProjectsTabs/sampleResults.html', context)
+
+# =============================================================
+# Users
+# =============================================================
 
 @login_required
 def users(request):
     return render(request = request,
                   template_name='main/users.html',
                   context = {"tutorials":Tutorial.objects.all})
+
+# =============================================================
+# Datagrid
+# =============================================================
 
 def datagrid(request):
     search_query = request.GET.get('search_query')
@@ -181,6 +343,10 @@ def datagrid(request):
 
     return render(request, 'main/datagrid.html', context = {"sample_data":page_obj})
     
+# =============================================================
+# Doc Info
+# =============================================================
+
 def docInfo(request):
     page = int(request.GET.get('page'))
     doc_id = int(request.GET.get('doc_id'))
@@ -225,6 +391,10 @@ def docInfo(request):
 
     return render(request, 'main/datagrid_modal.html', {'doc_info': doc_info})
     
+# =============================================================
+# Testing and Debugging
+# =============================================================
+
 def test(request):
         test = None
 
