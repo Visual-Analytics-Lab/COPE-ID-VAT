@@ -1,14 +1,26 @@
 from django.contrib import admin
 from .models import Tutorial, sample_data, organization_model, project_model, role_model, permission_model, user_project_model, coding_variable, coding_value, inbox_model
 
+# =============================================================
+# Tutorial Admin
+# =============================================================
+
 class TutorialAdmin(admin.ModelAdmin):
     fieldsets = [
         ("Title/date", {'fields': ["tutorial_title", "tutorial_published"]}),
         ("Content", {"fields": ["tutorial_content"]})
     ]
 
+# =============================================================
+# Data Grid Admin
+# =============================================================
+
 class DataGridAdmin(admin.ModelAdmin):
     fieldsets = [('Document Info', {'fields': ['doc_json', 'doc_source', 'doc_text']})]
+
+# =============================================================
+# Organization Model Admin
+# =============================================================
 
 class organization_model_admin(admin.ModelAdmin):
     # Set display columns
@@ -30,6 +42,10 @@ class organization_model_admin(admin.ModelAdmin):
         return obj.org_super_admin
     super_admin.short_description = 'Super Admin'
     super_admin.admin_order_field = 'org_super_admin'
+
+# =============================================================
+# Project Model Admin
+# =============================================================
 
 class project_model_admin(admin.ModelAdmin):
     # Set display columns
@@ -57,6 +73,10 @@ class project_model_admin(admin.ModelAdmin):
     project_pi.short_description = 'Principal Investigator'
     project_pi.admin_order_field = 'principal_investigator'
 
+# =============================================================
+# Role Model Admin
+# =============================================================
+
 class role_model_admin(admin.ModelAdmin):
     # Set display columns
     list_display = ('acronym', 'name', 'description')
@@ -79,6 +99,10 @@ class role_model_admin(admin.ModelAdmin):
         return obj.role_description
     description.short_description = 'Description'
 
+# =============================================================
+# Permission Model Admin
+# =============================================================
+
 class permission_model_admin(admin.ModelAdmin):
     # Set display columns
     list_display = ('permission_rank', 'name', 'category', 'description', 'permission_assignable')
@@ -100,6 +124,10 @@ class permission_model_admin(admin.ModelAdmin):
     def description(self, obj):
         return obj.permission_description
     description.short_description = 'Description'
+
+# =============================================================
+# User Project Model Admin
+# =============================================================
 
 class user_project_model_admin(admin.ModelAdmin):
     # Set display columns
@@ -137,6 +165,10 @@ class user_project_model_admin(admin.ModelAdmin):
         obj = form.instance
         obj.reset_permissions()
 
+# =============================================================
+# Coding Variable Admin
+# =============================================================
+
 class coding_variable_admin(admin.ModelAdmin):
     # Set display columns
     list_display = ('organization', 'project', 'name')
@@ -163,6 +195,10 @@ class coding_variable_admin(admin.ModelAdmin):
     name.short_description = 'Name'
     name.admin_order_field = 'variable_name'
 
+# =============================================================
+# Coding Value Admin
+# =============================================================
+
 class coding_value_admin(admin.ModelAdmin):
     # Set display columns
     list_display = ('organization', 'project', 'variable', 'value')
@@ -183,6 +219,10 @@ class coding_value_admin(admin.ModelAdmin):
         return obj.variable.variable_project
     project.short_description = 'Project'
     project.admin_order_field = 'variable__variable_project'
+
+# =============================================================
+# Inbox Model Admin
+# =============================================================
 
 class inbox_model_admin(admin.ModelAdmin):
     # Set display columns
@@ -206,7 +246,11 @@ class inbox_model_admin(admin.ModelAdmin):
     project.admin_order_field = 'variable__variable_project'
 
 
-# Register admin pages
+
+# =============================================================
+# Admin Page Registration
+# =============================================================
+
 admin.site.register(Tutorial, TutorialAdmin)
 admin.site.register(sample_data, DataGridAdmin)
 admin.site.register(organization_model, organization_model_admin)
