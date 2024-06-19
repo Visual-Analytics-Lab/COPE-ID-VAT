@@ -245,27 +245,38 @@ def myProjects_userProfile(request, project_id, user_id):
 
     # Check if form was submitted
     if request.method == 'POST':
-        # Get role key from HTTP POST request
-        role_pk = request.POST.get('role-pk')
+        # Check if role key is in form
+        if 'role-pk' in request.POST:
+            # Get role key from HTTP POST request
+            role_pk = request.POST.get('role-pk')
 
-        # Fetch role instance with key
-        role = get_object_or_404(role_model, pk=role_pk)
+            # Fetch role instance with key
+            role = get_object_or_404(role_model, pk=role_pk)
 
-        # Check if an instance with the same user and project exists (excluding the current instance)
-        existing_user_project = user_project_model.objects.filter(user=user, project=project).exclude(pk=user_project.pk).first()
-        
-        if existing_user_project:
-            # Update the existing instance
-            existing_user_project.role = role
-            existing_user_project.save()
-            existing_user_project.reset_permissions()
+            # Check if an instance with the same user and project exists (excluding the current instance)
+            existing_user_project = user_project_model.objects.filter(user=user, project=project).exclude(pk=user_project.pk).first()
+            
+            if existing_user_project:
+                # Update the existing instance
+                existing_user_project.role = role
+                existing_user_project.save()
+                existing_user_project.reset_permissions()
+            else:
+                # Update the current instance
+                user_project.user = user
+                user_project.project = project
+                user_project.role = role
+                user_project.save()
+                user_project.reset_permissions()
         else:
-            # Update the current instance
-            user_project.user = user
-            user_project.project = project
-            user_project.role = role
-            user_project.save()
-            user_project.reset_permissions()
+            # Get selected permissions from HTTP POST request
+            permissions_selected = request.POST.getlist('permission[]')
+
+            # Update permissions for the user project instance
+            if permissions_selected:
+                user_project.permissions.clear()
+                permissions_to_add = permission_model.objects.filter(id__in=permissions_selected)
+                user_project.permissions.add(*permissions_to_add)
 
         # Redirect/refresh page after form submission
         return redirect('main:myProjects_userProfile', project_id=project.project_id, user_id=user_id)
