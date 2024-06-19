@@ -9,8 +9,6 @@ from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db.models import Q, OuterRef, Subquery, Exists
 
-# Create your views here.
-
 # =============================================================
 # Homepage
 # =============================================================
@@ -30,11 +28,11 @@ def homepage(request):
 
 @login_required
 def addProject(request):
-    
 
-    return render(request = request,
-                  template_name='main/addProject.html',
-                  context = {"tutorials":Tutorial.objects.all})
+    context = {
+
+    }
+    return render(request, 'main/addProject.html', context)
 
 # =============================================================
 # My Projects
@@ -42,7 +40,7 @@ def addProject(request):
 
 @login_required
 def myProjects(request):
-    # Fetch user's projects
+    # Fetch user's projects from database
     user_projects = user_project_model.objects.filter(user=request.user)
 
     context = {
@@ -56,7 +54,7 @@ def myProjects(request):
 
 @login_required
 def myProjects_units(request, project_id):
-    # Fetch project
+    # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
     
     context = {
@@ -70,7 +68,7 @@ def myProjects_units(request, project_id):
 
 @login_required
 def myProjects_codebook(request, project_id):
-    # Fetch project
+    # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
     # Check user permissions
@@ -81,14 +79,12 @@ def myProjects_codebook(request, project_id):
 
     # Check if form was submitted
     if request.method == 'POST':
-
-        # Check if variable id is in form
+        # Check if variable ID is in form
         if 'variable-id' in request.POST:
-
-            # Get variable id
+            # Get variable ID from HTTP POST request
             id = request.POST.get('variable-id')
-            
-            # Get project id
+
+            # Get project ID from HTTP POST request
             project_id = request.POST.get('project-id')
 
             # Fetch variable from database
@@ -98,27 +94,29 @@ def myProjects_codebook(request, project_id):
             variable.delete()
 
         else:
-            # Get variable name
+            # Get variable name from HTTP POST request
             variable_name = request.POST.get('variable-name')
 
-            # Get variable description
+            # Get variable description from HTTP POST request
             variable_description = request.POST.get('variable-description')
 
-            # Get variable values
+            # Get variable value(s) from HTTP POST request
             values = request.POST.getlist('value[]')
 
-            # Get variable labels
+            # Get variable label(s) from HTTP POST request
             labels = request.POST.getlist('label[]')
 
-            # Create variable
+            # Create variable instance
             new_variable = coding_variable(
                 variable_name=variable_name,
                 variable_description=variable_description,
                 variable_project=project
             )
+
+            # Save new variable instance
             new_variable.save()
 
-            # Create values and labels
+            # Join values & labels with new variable instance
             for value, label in zip(values, labels):
                 new_value = coding_value(
                     variable=new_variable,
@@ -143,6 +141,7 @@ def myProjects_codebook(request, project_id):
 
 @login_required
 def myProjects_irr(request, project_id):
+    # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
     context = {
@@ -156,15 +155,14 @@ def myProjects_irr(request, project_id):
 
 @login_required
 def myProjects_editProject(request, project_id):
-    # Fetch project
+    # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
     # Fetch project users from database
     users = user_project_model.objects.filter(project=project).select_related('user')
 
+    # Fetch roles from database
     roles = role_model.objects.exclude(role_name="Principal Investigator")
-
-    # 
 
     # Check user permissions
     has_addedit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='addedit-project-users').exists()
@@ -172,41 +170,32 @@ def myProjects_editProject(request, project_id):
     has_download_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='codebook-all-variables-values-labels-etc').exists()
     has_delete_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='delete-the-project').exists()
 
+    # Check if form was submitted
     if request.method == 'POST':
+        # Get user ID from HTTP POST request
         user_id = request.POST.get('user-id')
-        print("user_id", user_id)
-        project_id = project.project_id
-        print("project_id", project_id)
+
+        # Get role key from HTTP POST request
         role_pk = request.POST.get('role-pk')
-        print("role_name", role_pk)
+
+        # Fetch user instance from database
+        user = get_object_or_404(User, pk=user_id)
+
+        # Fetch role instance from database
         role = get_object_or_404(role_model, pk=role_pk)
         
-        print("role:", role)
-
-        user = get_object_or_404(User, pk=user_id)
-        print("user", user)
-        project = get_object_or_404(project_model, project_id=project_id)
-        print("project", project)
-        print("TEST0")
-
+        # Fetch user project instance from database
         user_project = get_object_or_404(user_project_model, user__pk=user_id, project__project_id=project_id)
 
         # Check if an instance with the same user and project exists (excluding the current instance)
         existing_user_project = user_project_model.objects.filter(user=user, project=project).exclude(pk=user_project.pk).first()
 
-        print(user_id)
-        print(project_id)
-        print("TEST1")
-        
-        print("TEST2")
         if existing_user_project:
-            print("TEST3")
             # Update the existing instance
             existing_user_project.role = role
             existing_user_project.save()
             existing_user_project.reset_permissions()
         else:
-            print("TEST4")
             # Update the current instance
             user_project.user = user
             user_project.project = project
@@ -214,7 +203,7 @@ def myProjects_editProject(request, project_id):
             user_project.save()
             user_project.reset_permissions()
 
-        print("TEST")
+        # Redirect/refresh page after form submission
         return redirect('main:myProjects_editProject', project_id=project.project_id)
     
         
@@ -236,48 +225,31 @@ def myProjects_editProject(request, project_id):
 
 @login_required
 def myProjects_userProfile(request, project_id, user_id):
-
-    # Fetch project
+    # Fetch project from database
     project = get_object_or_404(project_model, pk=project_id)
 
-    # Fetch user
+    # Fetch user with key
     user = get_object_or_404(User, pk=user_id)
 
-    # Fetch user project instance
+    # Fetch user project instance from database
     user_project = user_project_model.objects.prefetch_related('permissions').get(user=user, project=project_id)
 
-    # annotated_permissions = []
-    # for perm in permissions:
-    #     annotated_permission = {
-    #         'permission': perm,
-    #         'assigned': perm.permission_slug in user_permissions_set
-    #     }
-    #     annotated_permissions.append(annotated_permission)
-
-    # Create a subquery to check if a permission is assigned to the user project
+    # Subquery to check if permission is assigned to user project instance
     user_project_permissions = user_project.permissions.filter(pk=OuterRef('pk'))
 
-    # Annotate the permissions queryset with a boolean indicating if they are assigned to the user
+    # Annotate the permissions queryset with boolean if permission is assigned
     permissions = permission_model.objects.filter(permission_assignable=True).order_by('permission_rank').annotate(assigned=Exists(user_project_permissions))
 
-    # Fetch roles, exclude PI
+    # Fetch roles (excluding PI)
     roles = role_model.objects.exclude(role_name="Principal Investigator")
 
+    # Check if form was submitted
     if request.method == 'POST':
-
-        # Get project ID from project instance
-        project_id = project.project_id
-
-        # Get user ID from HTTP POST request
-        user_id = request.POST.get('user-id')
-
         # Get role key from HTTP POST request
         role_pk = request.POST.get('role-pk')
 
-        # Fetch role instance from key
+        # Fetch role instance with key
         role = get_object_or_404(role_model, pk=role_pk)
-
-        user_project = get_object_or_404(user_project_model, user__pk=user_id, project__project_id=project_id)
 
         # Check if an instance with the same user and project exists (excluding the current instance)
         existing_user_project = user_project_model.objects.filter(user=user, project=project).exclude(pk=user_project.pk).first()
@@ -295,13 +267,14 @@ def myProjects_userProfile(request, project_id, user_id):
             user_project.save()
             user_project.reset_permissions()
 
+        # Redirect/refresh page after form submission
         return redirect('main:myProjects_userProfile', project_id=project.project_id, user_id=user_id)
 
     context = {
-        'roles': roles,
-        'user': user,
-        'user_project': user_project,
         'project': project,
+        'user': user,
+        'roles': roles,
+        'user_project': user_project,
         'permissions': permissions,
     }
     
@@ -313,7 +286,7 @@ def myProjects_userProfile(request, project_id, user_id):
 
 @login_required
 def myProjects_sampleResults(request, project_id):
-    # Fetch project
+    # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
     context = {
@@ -327,9 +300,11 @@ def myProjects_sampleResults(request, project_id):
 
 @login_required
 def users(request):
-    return render(request = request,
-                  template_name='main/users.html',
-                  context = {"tutorials":Tutorial.objects.all})
+
+    context = {
+
+    }
+    return render(request, 'main/users.html', context)
 
 # =============================================================
 # Datagrid

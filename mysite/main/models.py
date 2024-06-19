@@ -10,6 +10,11 @@ from django.core.validators import int_list_validator
 
 
 # Create your models here.
+
+# =============================================================
+# Tutorial
+# =============================================================
+
 class Tutorial(models.Model):
     tutorial_title = models.CharField(max_length=200)
     tutorial_content = models.TextField()
@@ -18,6 +23,10 @@ class Tutorial(models.Model):
     def __str__(self):
         return self.tutorial_title
     
+# =============================================================
+# Sample Data
+# =============================================================
+
 class sample_data(models.Model):
     id = models.IntegerField
     doc_text = models.TextField()
@@ -27,6 +36,10 @@ class sample_data(models.Model):
     def __str__(self):
         return self.doc_json
     
+# =============================================================
+# Bert Main Sample Data
+# =============================================================
+
 class bert_main_sample_data(models.Model):
     topic_id = models.IntegerField(primary_key=True)
     topic_name = models.TextField()
@@ -37,6 +50,10 @@ class bert_main_sample_data(models.Model):
    
     class Meta:
         db_table = 'main_bert_main_sample_data'
+
+# =============================================================
+# Organization Model
+# =============================================================
 
 class organization_model(models.Model):
     org_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -50,6 +67,10 @@ class organization_model(models.Model):
     class Meta:
         verbose_name = "Organization"
         verbose_name_plural = "Organizations"
+
+# =============================================================
+# Project Model
+# =============================================================
 
 class project_model(models.Model):
     project_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -66,6 +87,10 @@ class project_model(models.Model):
         verbose_name = "Project"
         verbose_name_plural = "Projects"
 
+# =============================================================
+# Role Model
+# =============================================================
+
 class role_model(models.Model):
     role_name = models.CharField(max_length=64, unique=True, null=False, blank=False)
     role_acronym = models.CharField(max_length=8, unique=True, null=False, blank=False)
@@ -78,6 +103,10 @@ class role_model(models.Model):
     class Meta:
         verbose_name = "Role"
         verbose_name_plural = "Roles"
+
+# =============================================================
+# Permission Model
+# =============================================================
 
 class permission_model(models.Model):
     permission_name = models.CharField(max_length=64, unique=False, null=False, blank=False)
@@ -117,6 +146,10 @@ class permission_model(models.Model):
         self.permission_slug = slugify(self.permission_name)
         super(permission_model, self).save(*args, **kwargs)
 
+# =============================================================
+# User Project Model
+# =============================================================
+
 class user_project_model(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
     project = models.ForeignKey(project_model, on_delete=models.CASCADE, blank=False)
@@ -142,6 +175,10 @@ class user_project_model(models.Model):
 def reset_permissions_post_save(sender, instance, **kwargs):
     instance.reset_permissions()
 
+# =============================================================
+# Coding Variable
+# =============================================================
+
 class coding_variable(models.Model):
     variable_id = models.AutoField(primary_key=True)
     variable_name = models.CharField(max_length=128, null=False, blank=False)
@@ -160,6 +197,10 @@ class coding_variable(models.Model):
         values = self.values.all()
         return ", ".join([f"{value.value}" for value in values])
     
+# =============================================================
+# Coding Value
+# =============================================================
+
 class coding_value(models.Model):
     variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE, related_name='values')
     label = models.CharField(max_length=128)
@@ -173,6 +214,10 @@ class coding_value(models.Model):
     class Meta:
         verbose_name = "Coding Value"
         verbose_name_plural = "Coding Values"
+
+# =============================================================
+# Inbox Model
+# =============================================================
 
 class inbox_model(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_invites')
