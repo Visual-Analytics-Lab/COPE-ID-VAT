@@ -6,6 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import slugify
+from django.core.validators import int_list_validator
 
 
 # Create your models here.
@@ -186,7 +187,7 @@ class coding_variable(models.Model):
 
     def __str__(self):
         return self.variable_name
-    
+
     class Meta:
         verbose_name = "Coding Variable"
         verbose_name_plural = "Coding Variables"
@@ -233,3 +234,9 @@ class inbox_model(models.Model):
         verbose_name = "Inbox"
         verbose_name_plural = "Inbox"
     
+class CodingValue(models.Model):
+    variable = models.ForeignKey(CodingVariable, on_delete=models.CASCADE)
+    value = models.CharField(max_length=150)
+
+    def __str__(self):
+        return self.value
