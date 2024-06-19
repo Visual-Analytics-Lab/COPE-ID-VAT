@@ -234,9 +234,3 @@ class inbox_model(models.Model):
         verbose_name = "Inbox"
         verbose_name_plural = "Inbox"
     
-class CodingValue(models.Model):
-    variable = models.ForeignKey(CodingVariable, on_delete=models.CASCADE)
-    value = models.CharField(max_length=150)
-
-    def __str__(self):
-        return self.value
