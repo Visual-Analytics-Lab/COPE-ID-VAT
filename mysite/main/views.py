@@ -172,36 +172,56 @@ def myProjects_editProject(request, project_id):
 
     # Check if form was submitted
     if request.method == 'POST':
-        # Get user ID from HTTP POST request
-        user_id = request.POST.get('user-id')
+        if 'email' in request.POST:
+            email = request.POST.get('email')
 
-        # Get role key from HTTP POST request
-        role_pk = request.POST.get('role-pk')
+            recipient = User.objects.filter(email=email).first()
 
-        # Fetch user instance from database
-        user = get_object_or_404(User, pk=user_id)
-
-        # Fetch role instance from database
-        role = get_object_or_404(role_model, pk=role_pk)
-        
-        # Fetch user project instance from database
-        user_project = get_object_or_404(user_project_model, user__pk=user_id, project__project_id=project_id)
-
-        # Check if an instance with the same user and project exists (excluding the current instance)
-        existing_user_project = user_project_model.objects.filter(user=user, project=project).exclude(pk=user_project.pk).first()
-
-        if existing_user_project:
-            # Update the existing instance
-            existing_user_project.role = role
-            existing_user_project.save()
-            existing_user_project.reset_permissions()
+            if recipient:
+                message = request.POST.get('message')
+                # Create inbox instance
+                new_invite = inbox_model(
+                    sender=request.user,
+                    recipient=recipient,
+                    project=project,
+                    message=message
+                )
+                # Save new inbox instance
+                new_invite.save()
+                messages.success(request, 'Message sent successfully.')
+            else:
+                messages.error(request, 'User not found.')
         else:
-            # Update the current instance
-            user_project.user = user
-            user_project.project = project
-            user_project.role = role
-            user_project.save()
-            user_project.reset_permissions()
+            # Get user ID from HTTP POST request
+            user_id = request.POST.get('user-id')
+
+            # Get role key from HTTP POST request
+            role_pk = request.POST.get('role-pk')
+
+            # Fetch user instance from database
+            user = get_object_or_404(User, pk=user_id)
+
+            # Fetch role instance from database
+            role = get_object_or_404(role_model, pk=role_pk)
+            
+            # Fetch user project instance from database
+            user_project = get_object_or_404(user_project_model, user__pk=user_id, project__project_id=project_id)
+
+            # Check if an instance with the same user and project exists (excluding the current instance)
+            existing_user_project = user_project_model.objects.filter(user=user, project=project).exclude(pk=user_project.pk).first()
+
+            if existing_user_project:
+                # Update the existing instance
+                existing_user_project.role = role
+                existing_user_project.save()
+                existing_user_project.reset_permissions()
+            else:
+                # Update the current instance
+                user_project.user = user
+                user_project.project = project
+                user_project.role = role
+                user_project.save()
+                user_project.reset_permissions()
 
         # Redirect/refresh page after form submission
         return redirect('main:myProjects_editProject', project_id=project.project_id)
@@ -306,13 +326,40 @@ def myProjects_sampleResults(request, project_id):
     return render(request, 'main/myProjectsTabs/sampleResults.html', context)
 
 # =============================================================
+# Inbox
+# =============================================================
+
+def inbox(request):
+    user = request.user
+    print("user:", user)
+    print("TEST1")
+    # Fetch user's messages from database
+    messages = inbox_model.objects.filter(recipient=user)
+    print("TEST2")
+    print("messages:", messages)
+    print("messages count:", messages.count())
+    for message in messages:
+        print("message:", message)
+        print(message.project.principal_investigator)
+
+    print("TEST3")
+
+    context = {
+        'messages': messages,
+    }
+    return render(request, 'main/inbox.html', context)
+
+# =============================================================
 # Users
 # =============================================================
 
 @login_required
 def users(request):
 
+    users = User.objects.all()
+
     context = {
+        'users': users,
 
     }
     return render(request, 'main/users.html', context)
@@ -382,18 +429,6 @@ def docInfo(request):
     }
 
     return render(request, 'main/datagrid_modal.html', {'doc_info': doc_info})
-
-# =============================================================
-# Testing and Debugging
-# =============================================================
-
-def inbox(request):
-
-
-    context = {
-
-    }
-    return render(request, 'main/inbox.html', context)
 
 # =============================================================
 # Testing and Debugging

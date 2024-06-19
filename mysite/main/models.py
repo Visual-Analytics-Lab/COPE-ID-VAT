@@ -223,7 +223,7 @@ class inbox_model(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_invites')
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_invites')
     project = models.ForeignKey(project_model, on_delete=models.CASCADE)
-    message = models.TextField(max_length=256, blank=True)
+    message = models.TextField(max_length=512, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     accepted = models.BooleanField(default=False)
 
