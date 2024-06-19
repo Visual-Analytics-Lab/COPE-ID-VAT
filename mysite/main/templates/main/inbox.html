@@ -1,0 +1,30 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+
+<div class="container-fluid" style="height: 94vh;">
+
+  <!-- Row 1 -->
+  <div class="row" style="height: 94vh;">
+
+    <!-- Row 1 Column 1 -->
+    <div class="sidebar col-12 col-sm-auto d-none d-sm-block" style="max-width: max-content;">
+      {% include 'main/includes/sidebar.html' %}
+    </div>
+
+    <!-- Row 1 Column 2 -->
+    <div class="col content w-auto">
+
+      <!-- Row 1 Column 2 Row 1 -->
+      <div class="row text-center" style="height: 6vh;">
+
+        <h2 class="border-bottom">Inbox</h2>
+
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+{% endblock %}
