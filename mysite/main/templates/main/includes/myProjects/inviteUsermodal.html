@@ -17,16 +17,20 @@
 
       <!-- Warning Message -->
       <div class="modal-body text-center justify-content-center">
-
+        <form method="post">
+          {% csrf_token %}
         <div class="input-group mb-3">
           <span class="input-group-text" id="emailLabel">Email</span>
-          <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="emailLabel">
+          <input type="email" class="form-control" placeholder="Email" aria-label="Email" aria-describedby="emailLabel" name="email" id="email">
+        </div>
+        <div class="input-group">
+          <span class="input-group-text">Message</span>
+          <textarea class="form-control" aria-label="Email message" placeholder="Message" maxlength="512" name="message" id="message"></textarea>
         </div>
 
       </div>
 
       <!-- Confirmation Form -->
-      <form>
         <!-- Cancel and Add Buttons -->
         <div class="modal-footer justify-content-between">
           <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
