@@ -2,6 +2,9 @@
 <html>
 
     <head>
+        {% load static %}
+        <script src="{% static 'js/color-modes.js' %}"></script>
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <title>COPE-ID</title>
@@ -46,6 +49,9 @@
                 </div>
             </div>
         </div>
+
+        {% include 'main/includes/themeMenu.html' %}
+
         <!-- Bootstrap JavaScript Bundle with Popper -->
         {% load static %}
         <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>

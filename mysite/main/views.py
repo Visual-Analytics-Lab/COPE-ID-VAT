@@ -382,7 +382,19 @@ def docInfo(request):
     }
 
     return render(request, 'main/datagrid_modal.html', {'doc_info': doc_info})
-    
+
+# =============================================================
+# Testing and Debugging
+# =============================================================
+
+def inbox(request):
+
+
+    context = {
+
+    }
+    return render(request, 'main/inbox.html', context)
+
 # =============================================================
 # Testing and Debugging
 # =============================================================

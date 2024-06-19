@@ -14,6 +14,11 @@
 </div>
 
 <div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+  <!-- Inbox -->
+  <a class="btn btn-secondary w-100 mb-2" id="inbox-btn" href="/inbox">Inbox</a>
+</div>
+
+<div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
   <!-- Users -->
   <a class="btn btn-secondary w-100 mb-2" href="/users" id="users-btn">Users</a>
 </div>
@@ -63,6 +68,10 @@
     {
       sidebarButton = document.getElementById('users-btn');
       // console.log('You are on the Users tab');
+    } else if (tab === 'inbox')
+    {
+      sidebarButton = document.getElementById('inbox-btn');
+      // console.log('You are on the Inbox tab');
     } else
     {
       sidebarButton = document.getElementById('explore-btn');
