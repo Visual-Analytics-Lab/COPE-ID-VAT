@@ -40,8 +40,10 @@
               <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden disabled">{{ user.role }}</button></td>
             {% endif %}
             <td><a href="mailto:{{ users.user.email }}">{{ user.user.email }}</a></td>
-            {% if has_addedit_permission %}
+            {% if has_addedit_permission and user.user != project.principal_investigator %}
               <td>{% include 'main/includes/myProjects/deleteUserModal.html' %}</td>
+            {% else %}
+              <td></td>
             {% endif %}
           </tr>
         {% endfor %}
