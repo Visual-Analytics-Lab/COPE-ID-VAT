@@ -34,15 +34,17 @@ def addProject(request):
         print("method=post")
         project_name = request.POST.get('project_name')
         overlap_percentage = request.POST.get('overlap_percentage')
-
+        org = organization_model.objects.first()
         project = project_model(project_name = project_name,
-                                project_org = request.user.organization,
+                                project_org = org,
                                 principal_investigator = request.user,
                                 N = int(overlap_percentage))
         project.save()
-        return redirect('main/myProjects.html')
-    
-    return render(request, 'main/addproject.html')
+        print(project)
+        return redirect("/my_projects")
+    else:
+        print("no post")
+        return render(request, 'main/addproject_josh.html')
 
 # =============================================================
 # My Projects

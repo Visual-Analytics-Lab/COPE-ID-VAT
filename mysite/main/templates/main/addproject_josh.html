@@ -1,0 +1,31 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card">
+        <div class="card-header">Create Project</div>
+        <div class="card-body">
+          <form action="{% url 'main:addProject' %}" method="post">
+            {% csrf_token %}
+            <div class="mb-3">
+              <label for="project_name" class="form-label">Project Name:</label>
+              <input type="text" name="project_name" id="project_name" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="overlap_percentage" class="form-label">Overlap Percentage:</label>
+              <input type="number" name="overlap_percentage" id="overlap_percentage" class="form-control" required>
+            </div>
+            <div class="d-grid gap-2">
+              <button type="submit" class="btn btn-primary">Create</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% endblock %}
