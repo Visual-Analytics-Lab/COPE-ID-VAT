@@ -21,120 +21,121 @@
         <h2 class="border-bottom">Create Project</h2>
 
       </div>
-      <form action="{% url 'main:addProject' %}" method="POST">
-        {% csrf_token %}
-        <!-- Row 1 Column 2 Row 2 -->
-        <div class="row justify-content-center p-1" style="height: 3rem;">
 
-          <!-- Row 1 Column 2 Row 2 Column 1-->
-          <div class="col-auto">
+      <!-- Row 1 Column 2 Row 2 -->
+      <div class="row justify-content-center p-1" style="height: 3rem;">
 
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="project_name">Enter unique project name:</span>
-              <input type="text" name="project_name" class="form-control" placeholder="Project Name" aria-label="Project Name" required>
-            </div>
-
+        <!-- Row 1 Column 2 Row 2 Column 1-->
+        <div class="col-auto">
+          <form method="post">
+            {% csrf_token %}
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="project_name">Enter unique project name:</span>
+            <input type="text" class="form-control" placeholder="Project Name" aria-label="Project Name" name="project-name">
           </div>
 
         </div>
 
-        <!-- Row 1 Column 2 Row 3 -->
-        <div class="row justify-content-center p-1" style="height: 3rem;">
+      </div>
 
-          <!-- Row 1 Column 2 Row 3 Column 1-->
-          <div class="col-auto">
+      <!-- Row 1 Column 2 Row 3 -->
+      <div class="row justify-content-center p-1" style="height: 3rem;">
 
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="project_name">Upload or attach an existing dataset:</span>
-              <select name="dataset" id="selectDataset" class="form-select">
-                <option selected>Datasets</option>
-                <option>Dataset 1</option>
-                <option>Dataset 2</option>
-                <option>Dataset 3</option>
-              </select>
-            </div>
+        <!-- Row 1 Column 2 Row 3 Column 1-->
+        <div class="col-auto">
 
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="project_name">Upload or attach an existing dataset:</span>
+            <select id="selectDataset" class="form-select">
+              <option selected>Datasets</option>
+              <option>Dataset 1</option>
+              <option>Dataset 2</option>
+              <option>Dataset 3</option>
+            </select>
           </div>
 
         </div>
 
-        <!-- Row 1 Column 2 Row 4 -->
-        <div class="row p-1 px-2" style="height: 3rem;">
+      </div>
 
-          <div class="d-flex justify-content-start align-items-center">
-            {% include 'main/includes/addProject/addVariableModal.html' %}
+      <!-- Row 1 Column 2 Row 4 -->
+      <div class="row p-1 px-2" style="height: 3rem;">
+
+        <div class="d-flex justify-content-start align-items-center">
+          {% include 'main/includes/addProject/addVariableModal.html' %}
+        </div>
+
+      </div>
+
+      <!-- Row 1 Column 2 Row 5 -->
+      <div class="row" style="height: 26vh;">
+        {% include 'main/includes/addProject/variableTable.html' %}
+      </div>
+
+      <!-- Row 1 Column 2 Row 6 -->
+      <div class="row p-1 px-2" style="height: 3rem;">
+
+        <div class="d-flex justify-content-start align-items-center">
+          {% include 'main/includes/addProject/inviteUsersModal.html' %}
+        </div>
+
+      </div>
+
+      <!-- Row 1 Column 2 Row 7 -->
+      <div class="row" style="height: 26vh;">
+        {% include 'main/includes/addProject/usersTable.html' %}
+      </div>
+
+      <!-- Row 1 Column 2 Row 8 -->
+      <div class="row p-2 justify-content-center" style="height: 3rem;">
+
+        <!-- Row 1 Column 2 Row 8 Column 1-->
+        <div class="col-4">
+
+          <div class="input-group mb-3">
+            <span class="input-group-text" id="overlap_percent">Overlap Percentage:</span>
+            <input type="number" class="form-control" placeholder="Overlap Percentage" aria-label="Overlap Percentage" name="overlap-percentage">
+            <span class="input-group-text">%</span>
           </div>
 
         </div>
 
-        <!-- Row 1 Column 2 Row 5 -->
-        <div class="row" style="height: 26vh;">
-          {% include 'main/includes/addProject/variableTable.html' %}
+      </div>
+
+      <!-- Row 1 Column 2 Row 9 -->
+      <div class="row px-1" style="height: 6vh;">
+
+        <!-- Row 1 Column 2 Row 9 Column 1-->
+        <div class="col-2">
+          <div class="d-none">placeholder</div>
         </div>
 
-        <!-- Row 1 Column 2 Row 6 -->
-        <div class="row p-1 px-2" style="height: 3rem;">
+        <!-- Row 1 Column 2 Row 9 Column 2-->
+        <div class="col-4">
 
-          <div class="d-flex justify-content-start align-items-center">
-            {% include 'main/includes/addProject/inviteUsersModal.html' %}
-          </div>
-
-        </div>
-
-        <!-- Row 1 Column 2 Row 7 -->
-        <div class="row" style="height: 26vh;">
-          {% include 'main/includes/addProject/usersTable.html' %}
-        </div>
-
-        <!-- Row 1 Column 2 Row 8 -->
-        <div class="row p-2 justify-content-center" style="height: 3rem;">
-
-          <!-- Row 1 Column 2 Row 8 Column 1-->
-          <div class="col-4">
-
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="overlap_percent">Overlap Percentage:</span>
-              <input type="number" name="overlape_percentage" class="form-control" placeholder="Overlap Percentage" aria-label="Overlap Percentage">
-              <span class="input-group-text">%</span>
-            </div>
-
+          <div class="d-flex justify-content-start align-items-center" style="height: 6vh;">
+            <button type="button" class="btn btn-danger">Clear</button>
           </div>
 
         </div>
 
-        <!-- Row 1 Column 2 Row 9 -->
-        <div class="row px-1" style="height: 6vh;">
+        <!-- Row 1 Column 2 Row 9 Column 3-->
+        <div class="col-4">
 
-          <!-- Row 1 Column 2 Row 9 Column 1-->
-          <div class="col-2">
-            <div class="d-none">placeholder</div>
-          </div>
-
-          <!-- Row 1 Column 2 Row 9 Column 2-->
-          <div class="col-4">
-
-            <div class="d-flex justify-content-start align-items-center" style="height: 6vh;">
-              <button type="reset" class="btn btn-danger">Clear</button>
-            </div>
-
-          </div>
-
-          <!-- Row 1 Column 2 Row 9 Column 3-->
-          <div class="col-4">
-
-            <div class="d-flex justify-content-end align-items-center" style="height: 6vh;">
-              <button type="submit" class="btn btn-success">Create</button>
-            </div>
-
-          </div>
-
-          <!-- Row 1 Column 2 Row 9 Column 4-->
-          <div class="col-2">
-            <div class="d-none">placeholder</div>
+          <div class="d-flex justify-content-end align-items-center" style="height: 6vh;">
+            <button type="submit" class="btn btn-success">Create</button>
+          </form>
           </div>
 
         </div>
-      </form>
+
+        <!-- Row 1 Column 2 Row 9 Column 4-->
+        <div class="col-2">
+          <div class="d-none">placeholder</div>
+        </div>
+
+      </div>
+
     </div>
 
   </div>
