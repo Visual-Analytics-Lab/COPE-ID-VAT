@@ -37,7 +37,7 @@
             {% if has_edit_user_privileges and user.user != project.principal_investigator %}
               <td>{% include 'main/includes/myProjects/editUserModal.html' %}</td>
             {% else %}
-              <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden disabled">{{ user.role }}</button></td>
+              <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>
             {% endif %}
             <td><a href="mailto:{{ users.user.email }}">{{ user.user.email }}</a></td>
             {% if has_addedit_permission and user.user != project.principal_investigator %}

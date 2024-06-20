@@ -32,8 +32,8 @@ def addProject(request):
     print('in add project')
     if request.method == 'POST':
         print("method=post")
-        project_name = request.POST.get('project_name')
-        overlap_percentage = request.POST.get('overlap_percentage')
+        project_name = request.POST.get('project-name')
+        overlap_percentage = request.POST.get('overlap-percentage')
         org = organization_model.objects.first()
         project = project_model(project_name = project_name,
                                 project_org = org,
@@ -51,7 +51,7 @@ def addProject(request):
         return redirect("/my_projects")
     else:
         print("no post")
-        return render(request, 'main/addproject_josh.html')
+        return render(request, 'main/addproject.html')
 
 # =============================================================
 # My Projects
@@ -192,24 +192,43 @@ def myProjects_editProject(request, project_id):
     # Check if form was submitted
     if request.method == 'POST':
         if 'email' in request.POST:
+            # Get email from HTTP POST request
             email = request.POST.get('email')
 
+            # Get user instance from database
             recipient = User.objects.filter(email=email).first()
 
-            if recipient:
+            # Get role key from HTTP POST request
+            role_pk = request.POST.get('role-pk')
+
+            # Fetch role instance with key
+            role = get_object_or_404(role_model, pk=role_pk)
+
+            # Check if recipient is in the project
+            in_project = users.filter(user=recipient).exists()
+
+            # Check if recipient has already been invited
+            invited = inbox_model.objects.filter(recipient=recipient, project=project).exists()
+
+            if recipient and not invited and not in_project:
                 message = request.POST.get('message')
                 # Create inbox instance
                 new_invite = inbox_model(
                     sender=request.user,
                     recipient=recipient,
                     project=project,
-                    message=message
+                    message=message,
+                    role=role,
                 )
                 # Save new inbox instance
                 new_invite.save()
-                messages.success(request, 'Message sent successfully.')
+                messages.success(request, f'Message to {email} sent successfully.')
+            elif invited:
+                messages.error(request, f'{email} has already been invited.')
+            elif in_project:
+                messages.error(request, f'{email} is already on the project.')
             else:
-                messages.error(request, 'User not found.')
+                messages.error(request, f'{email} was not found.')
         else:
             # Get user ID from HTTP POST request
             user_id = request.POST.get('user-id')
@@ -349,22 +368,52 @@ def myProjects_sampleResults(request, project_id):
 # =============================================================
 
 def inbox(request):
-    user = request.user
-    print("user:", user)
-    print("TEST1")
     # Fetch user's messages from database
-    messages = inbox_model.objects.filter(recipient=user)
-    print("TEST2")
-    print("messages:", messages)
-    print("messages count:", messages.count())
-    for message in messages:
-        print("message:", message)
-        print(message.project.principal_investigator)
+    inbox = inbox_model.objects.filter(recipient=request.user).exclude(declined=True)
 
-    print("TEST3")
+    # Check if form was submitted
+    if request.method == 'POST':
+        # Get message id from HTTP POST request
+        msg_id = request.POST.get('msg-id')
+
+        # Fetch message instance from database
+        msg = get_object_or_404(inbox_model, id=msg_id)
+
+        # Get action from HTTP POST requeest
+        action = request.POST.get('action')
+
+        # If invitation is accepted
+        if action == 'accept':
+             # Create project user instance
+            new_user_project = user_project_model(
+                user = request.user,
+                project = msg.project,
+                role = msg.role,
+            )
+            new_user_project.save()
+
+            # Set user's permissions
+            new_user_project.reset_permissions()
+
+            # Delete message
+            msg.delete()
+
+            messages.success(request, f'Sucessfully joined {msg.project}.')
+
+        # If invitation is declined
+        elif action == 'decline':
+            
+            # Set message as declined
+            msg.declined = True
+            msg.save()
+
+            messages.error(request, f'Declined to join {msg.project}.')
+
+        return redirect('main:inbox')
+
 
     context = {
-        'messages': messages,
+        'inbox': inbox,
     }
     return render(request, 'main/inbox.html', context)
 
