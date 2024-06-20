@@ -1,24 +1,29 @@
-<div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
   <!-- Explore -->
   <a class="btn btn-secondary w-100 mb-2" href="/" id="explore-btn">Explore</a>
 </div>
 
-<div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
   <!-- Add Project -->
   <a class="btn btn-secondary w-100 mb-2" href="/add_project" id="add_project-btn">Add Project</a>
 </div>
 
-<div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
   <!-- My Projects -->
   <a class="btn btn-secondary w-100 mb-2" href="/my_projects" id="my_projects-btn">My Projects</a>
 </div>
 
-<div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
+  <!-- Inbox -->
+  <a class="btn btn-secondary w-100 mb-2" id="inbox-btn" href="/inbox">Inbox</a>
+</div>
+
+<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
   <!-- Users -->
   <a class="btn btn-secondary w-100 mb-2" href="/users" id="users-btn">Users</a>
 </div>
 
-<div class="row p-1 px-2 justify-content-center" style="height: 6vh;">
+<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
   <!-- Data Grid -->
   <a class="btn btn-secondary w-100 mb-2" href="/datagrid">Data Grid</a>
 </div>
@@ -63,6 +68,10 @@
     {
       sidebarButton = document.getElementById('users-btn');
       // console.log('You are on the Users tab');
+    } else if (tab === 'inbox')
+    {
+      sidebarButton = document.getElementById('inbox-btn');
+      // console.log('You are on the Inbox tab');
     } else
     {
       sidebarButton = document.getElementById('explore-btn');

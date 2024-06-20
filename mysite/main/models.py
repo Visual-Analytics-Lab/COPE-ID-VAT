@@ -10,6 +10,11 @@ from django.core.validators import int_list_validator
 
 
 # Create your models here.
+
+# =============================================================
+# Tutorial
+# =============================================================
+
 class Tutorial(models.Model):
     tutorial_title = models.CharField(max_length=200)
     tutorial_content = models.TextField()
@@ -18,6 +23,10 @@ class Tutorial(models.Model):
     def __str__(self):
         return self.tutorial_title
     
+# =============================================================
+# Sample Data
+# =============================================================
+
 class sample_data(models.Model):
     id = models.IntegerField
     doc_text = models.TextField()
@@ -26,17 +35,25 @@ class sample_data(models.Model):
 
     def __str__(self):
         return self.doc_json
-      
+    
+# =============================================================
+# Bert Main Sample Data
+# =============================================================
+
 class bert_main_sample_data(models.Model):
     topic_id = models.AutoField(primary_key=True)
     topic_name = models.TextField()
     documents = models.CharField()
-
+ 
     def __str__(self):
         return self.doc_json
-    
+   
     class Meta:
         db_table = 'main_bert_main_sample_data'
+
+# =============================================================
+# Organization Model
+# =============================================================
 
 class organization_model(models.Model):
     org_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -50,6 +67,10 @@ class organization_model(models.Model):
     class Meta:
         verbose_name = "Organization"
         verbose_name_plural = "Organizations"
+
+# =============================================================
+# Project Model
+# =============================================================
 
 class project_model(models.Model):
     project_id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -66,6 +87,10 @@ class project_model(models.Model):
         verbose_name = "Project"
         verbose_name_plural = "Projects"
 
+# =============================================================
+# Role Model
+# =============================================================
+
 class role_model(models.Model):
     role_name = models.CharField(max_length=64, unique=True, null=False, blank=False)
     role_acronym = models.CharField(max_length=8, unique=True, null=False, blank=False)
@@ -79,10 +104,16 @@ class role_model(models.Model):
         verbose_name = "Role"
         verbose_name_plural = "Roles"
 
+# =============================================================
+# Permission Model
+# =============================================================
+
 class permission_model(models.Model):
     permission_name = models.CharField(max_length=64, unique=False, null=False, blank=False)
     permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=True)
     permission_description = models.TextField(max_length=128, default='', null=True, blank=True)
+    permission_rank = models.DecimalField(max_digits=4, decimal_places=2, default=0.0, null=True, blank=True)
+    permission_assignable = models.BooleanField(default=False)
 
     PERM_CATEGORY = (
     ('select', 'Select a Category'),
@@ -115,11 +146,15 @@ class permission_model(models.Model):
         self.permission_slug = slugify(self.permission_name)
         super(permission_model, self).save(*args, **kwargs)
 
+# =============================================================
+# User Project Model
+# =============================================================
+
 class user_project_model(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, blank=False)
     project = models.ForeignKey(project_model, on_delete=models.CASCADE, blank=False)
     role = models.ForeignKey(role_model, on_delete=models.CASCADE, blank=False)
-    permissions = models.ManyToManyField(permission_model, blank=True)
+    permissions = models.ManyToManyField(permission_model, blank=True, related_name='permissions')
     n = models.PositiveIntegerField(default=0) # Total number of units assigned
 
     class Meta:
@@ -140,6 +175,10 @@ class user_project_model(models.Model):
 def reset_permissions_post_save(sender, instance, **kwargs):
     instance.reset_permissions()
 
+# =============================================================
+# Coding Variable
+# =============================================================
+
 class coding_variable(models.Model):
     variable_id = models.AutoField(primary_key=True)
     variable_name = models.CharField(max_length=128, null=False, blank=False)
@@ -158,6 +197,10 @@ class coding_variable(models.Model):
         values = self.values.all()
         return ", ".join([f"{value.value}" for value in values])
     
+# =============================================================
+# Coding Value
+# =============================================================
+
 class coding_value(models.Model):
     variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE, related_name='values')
     label = models.CharField(max_length=128)
@@ -172,11 +215,15 @@ class coding_value(models.Model):
         verbose_name = "Coding Value"
         verbose_name_plural = "Coding Values"
 
+# =============================================================
+# Inbox Model
+# =============================================================
+
 class inbox_model(models.Model):
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_invites')
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_invites')
     project = models.ForeignKey(project_model, on_delete=models.CASCADE)
-    message = models.TextField(max_length=256, blank=True)
+    message = models.TextField(max_length=512, blank=True)
     timestamp = models.DateTimeField(auto_now_add=True)
     accepted = models.BooleanField(default=False)
 
