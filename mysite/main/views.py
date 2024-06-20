@@ -40,6 +40,13 @@ def addProject(request):
                                 principal_investigator = request.user,
                                 N = int(overlap_percentage))
         project.save()
+        role = role_model.objects.first()
+        print(role)
+        user_project = user_project_model(user = request.user,
+                                          project = project,
+                                          role = role,
+                                          n = 0)
+        user_project.save()
         print(project)
         return redirect("/my_projects")
     else:

@@ -21,7 +21,7 @@
         <h2 class="border-bottom">Create Project</h2>
 
       </div>
-      <form action="{% url 'main:addProject' %}" method="post">
+      <form action="{% url 'main:addProject' %}" method="POST">
         {% csrf_token %}
         <!-- Row 1 Column 2 Row 2 -->
         <div class="row justify-content-center p-1" style="height: 3rem;">
