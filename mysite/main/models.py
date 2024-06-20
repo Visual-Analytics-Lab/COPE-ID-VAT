@@ -42,6 +42,7 @@ class sample_data(models.Model):
 
 class bert_main_sample_data(models.Model):
     topic_id = models.AutoField(primary_key=True)
+    # topic_id = models.IntegerField(primary_key=True)
     topic_name = models.TextField()
     documents = models.CharField()
  
@@ -220,12 +221,15 @@ class coding_value(models.Model):
 # =============================================================
 
 class inbox_model(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     sender = models.ForeignKey(User, on_delete=models.CASCADE, related_name='sent_invites')
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='received_invites')
     project = models.ForeignKey(project_model, on_delete=models.CASCADE)
     message = models.TextField(max_length=512, blank=True)
+    role = models.ForeignKey(role_model, on_delete=models.CASCADE, blank=False)
     timestamp = models.DateTimeField(auto_now_add=True)
     accepted = models.BooleanField(default=False)
+    declined = models.BooleanField(default=False)
 
     def __str__(self):
         return f"From {self.sender} to {self.recipient} for {self.project.project_name}"
