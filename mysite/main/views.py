@@ -8,6 +8,7 @@ from django.contrib import messages
 from django.http import JsonResponse
 from django.core.paginator import Paginator
 from django.db.models import Q, OuterRef, Subquery, Exists
+from django.http import HttpResponseNotFound
 
 # =============================================================
 # Homepage
@@ -28,11 +29,20 @@ def homepage(request):
 
 @login_required
 def addProject(request):
+    print('in add project')
+    if request.method == 'POST':
+        print("method=post")
+        project_name = request.POST.get('project_name')
+        overlap_percentage = request.POST.get('overlap_percentage')
 
-    context = {
-
-    }
-    return render(request, 'main/addProject.html', context)
+        project = project_model(project_name = project_name,
+                                project_org = request.user.organization,
+                                principal_investigator = request.user,
+                                N = int(overlap_percentage))
+        project.save()
+        return redirect('main/myProjects.html')
+    
+    return render(request, 'main/addproject.html')
 
 # =============================================================
 # My Projects
