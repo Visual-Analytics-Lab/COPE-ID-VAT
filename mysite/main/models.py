@@ -28,7 +28,7 @@ class sample_data(models.Model):
         return self.doc_json
       
 class bert_main_sample_data(models.Model):
-    topic_id = models.IntegerField()
+    topic_id = models.AutoField(primary_key=True)
     topic_name = models.TextField()
     documents = models.CharField()
 
@@ -187,9 +187,3 @@ class inbox_model(models.Model):
         verbose_name = "Inbox"
         verbose_name_plural = "Inbox"
     
-class CodingValue(models.Model):
-    variable = models.ForeignKey(CodingVariable, on_delete=models.CASCADE)
-    value = models.CharField(max_length=150)
-
-    def __str__(self):
-        return self.value
