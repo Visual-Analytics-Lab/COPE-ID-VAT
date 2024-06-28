@@ -151,6 +151,9 @@ def myProjects_addVariable(request, project_id):
         # Get variable name from HTTP POST request
         variable_name = request.POST.get('variable-name')
 
+        # Get action from HTTP POST request
+        action = request.POST.get("edit-action")
+
         # Get variable description from HTTP POST request
         variable_description = request.POST.get('variable-description')
 
@@ -160,27 +163,39 @@ def myProjects_addVariable(request, project_id):
         # Get variable label(s) from HTTP POST request
         labels = request.POST.getlist('label[]')
 
+        # Get variable examples(s) from HTTP POST request
+        examples = request.POST.getlist('eg[]')
+
+        # Get variable measurement from HTTP POST request
+        measurement = request.POST.get('variable-measure')
+
         # Create variable instance
         new_variable = coding_variable(
             variable_name=variable_name,
             variable_description=variable_description,
-            variable_project=project
+            variable_project=project,
+            variable_measurement=measurement
         )
 
         # Save new variable instance
         new_variable.save()
 
         # Join values & labels with new variable instance
-        for value, label in zip(values, labels):
+        for value, label, example in zip(values, labels, examples):
             new_value = coding_value(
                 variable=new_variable,
                 value=value,
-                label=label
+                label=label,
+                example=example
             )
             new_value.save()
-
-        # Redirect/refresh page after form submission
-        return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=new_variable.variable_id)
+        
+        if action == "continue":
+            # Redirect/refresh page after form submission
+            return redirect('main:myProjects_addVariable', project_id=project.project_id)
+        else:
+            # Redirect/refresh page after form submission
+            return redirect('main:myProjects_codebook', project_id=project.project_id)
 
     context = {
         'project': project,
@@ -206,8 +221,11 @@ def myProjects_editVariable(request, project_id, variable_id):
 
     # Check if form was submitted
     if request.method == 'POST':
+        # Get action from HTTP POST request
+        action = request.POST.get("edit-action")
+
         # Check if variable ID is in form
-        if 'variable-id' in request.POST:
+        if action == "delete":
             # Get variable ID from HTTP POST request
             id = request.POST.get('variable-id')
 
@@ -221,14 +239,23 @@ def myProjects_editVariable(request, project_id, variable_id):
             variable.delete()
 
             # Redirect/refresh page after form submission
-            return redirect('main:myProjects_codebook')
+            return redirect('main:myProjects_codebook', project_id=project.project_id)
 
         else:
+            # Get variable ID from HTTP POST request
+            id = request.POST.get('variable-id')
+
+            # Get project ID from HTTP POST request
+            project_id = request.POST.get('project-id')
+
+            # Fetch variable from database
+            variable = get_object_or_404(coding_variable, pk=id, variable_project=project_id)
+
             # Get variable name from HTTP POST request
-            variable_name = request.POST.get('variable-name')
+            variable.variable_name = request.POST.get('variable-name')
 
             # Get variable description from HTTP POST request
-            variable_description = request.POST.get('variable-description')
+            variable.variable_description = request.POST.get('variable-description')
 
             # Get variable value(s) from HTTP POST request
             values = request.POST.getlist('value[]')
@@ -236,24 +263,24 @@ def myProjects_editVariable(request, project_id, variable_id):
             # Get variable label(s) from HTTP POST request
             labels = request.POST.getlist('label[]')
 
-            # Create variable instance
-            new_variable = coding_variable(
-                variable_name=variable_name,
-                variable_description=variable_description,
-                variable_project=project
-            )
+            # Get variable examples(s) from HTTP POST request
+            examples = request.POST.getlist('eg[]')
 
-            # Save new variable instance
-            new_variable.save()
+            # Clear existing values
+            variable.values.all().delete()
 
             # Join values & labels with new variable instance
-            for value, label in zip(values, labels):
+            for value, label, example in zip(values, labels, examples):
                 new_value = coding_value(
-                    variable=new_variable,
+                    variable=variable,
                     value=value,
-                    label=label
+                    label=label,
+                    example=example
                 )
                 new_value.save()
+
+            # Save new variable instance
+            variable.save()
 
         # Redirect/refresh page after form submission
         return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=variable_id)
