@@ -19,8 +19,15 @@
       <!-- User Table Column Headers -->
       <thead class="sticky-top">
         <tr>
-          <th scope="col">Username</th>
-          <th scope="col">User Role</th>
+          <th scope="col">Name</th>
+          <th scope="col">Role</th>
+          {% if has_addedit_permission %}
+            <th scope="col">View Unit Source</th>
+          {% endif %}
+          <th scope="col">Units Assigned <em>(n)</em></th>
+          <th scope="col">Completed Assignments</th>
+          <th scope="col">In-Progress Assignments</th>
+          <th scope="col">Last Activity</th>
           <th scope="col">Email</th>
           {% if has_addedit_permission %}
             <th scope="col">Action</th>
@@ -33,18 +40,131 @@
         <!-- Loop through users -->
         {% for user in users %}
           <tr>
-            <th scope="row"><a href="{% url 'main:myProjects_userProfile' project.project_id user.user.id %}">{{ user.user.username }}</a></th>
-            {% if has_edit_user_privileges and user.user != project.principal_investigator %}
-              <td>{% include 'main/includes/myProjects/editUserModal.html' %}</td>
+
+            <!-- If active user has edit privileges -->
+            {% if has_edit_user_privileges %}
+
+            <!-- If user in table row is not project investigator -->
+            <!-- Enable edit options -->
+            {% if user.user != project.principal_investigator %}
+            <!-- First & Last Name -->
+            <th scope="row"><a class="icon-link" href="{% url 'main:myProjects_userProfile' project.project_id user.user.id %}"><i class="bi bi-pencil-square"></i>{{ user.user.first_name }} {{ user.user.last_name }}</a></th>
+
+            <!-- Role -->
+            <td>{% include 'main/includes/myProjects/editUserModal.html' %}</td>
+
+            <!-- View Unit Source -->
+            <td>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" name="view-src-{{ user.user.id }}" id="view-src-{{ user.user.id }}">
+              </div>
+            </td>
+
+            <!-- Units Assigned -->
+            <td>{{ user.n }}</td>
+
+            <!-- Completed Assignments -->
+            <td>0%</td>
+
+            <!-- In-Progress Assignments -->
+            <td>0%</td>
+
+            <!-- Last Activity -->
+            <td>{{ user.user.last_login }}</td>
+
+            <!-- Email -->
+            <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi bi-envelope"></i></i>{{ user.user.email }}</a></td>
+
+            <!-- Action -->
+            <td>{% include 'main/includes/myProjects/deleteUserModal.html' %}</td>
+
+            <!-- If user in table row is principal investigator -->
+            <!-- Disable edit options -->
             {% else %}
-              <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>
+            <!-- First & Last Name -->
+            <th scope="row">{{ user.user.first_name }} {{ user.user.last_name }}</th>
+
+            <!-- Role -->
+            <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>      
+
+            <!-- View Unit Source -->
+            <td>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" value="" checked disabled>
+              </div>
+            </td>
+
+            <!-- Units Assigned -->
+            <td>{{ user.n }}</td>
+
+            <!-- Completed Assignments -->
+            <td>0%</td>
+
+            <!-- In-Progress Assignments -->
+            <td>0%</td>
+
+            <!-- Last Activity -->
+            <td>{{ user.user.last_login }}</td>
+
+            <!-- Email -->
+            <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi bi-envelope"></i></i>{{ user.user.email }}</a></td>
+
+            <!-- Action -->
+            <td></td>
             {% endif %}
-            <td><a href="mailto:{{ users.user.email }}">{{ user.user.email }}</a></td>
-            {% if has_addedit_permission and user.user != project.principal_investigator %}
-              <td>{% include 'main/includes/myProjects/deleteUserModal.html' %}</td>
+
+            <!-- If user in table row is active user -->
+            <!-- Display user information -->
+            {% elif user.user == active_user %}
+
+            <!-- First & Last Name -->
+            <th scope="row">{{ user.user.first_name }} {{ user.user.last_name }}</th>
+
+            <!-- Role -->
+            <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>
+
+            <!-- Units Assigned -->
+            <td>0</td>
+
+            <!-- Completed Assignments -->
+            <td>0%</td>
+
+            <!-- In-Progress Assignments -->
+            <td>0%</td>
+
+            <!-- Last Activity -->
+            <td>{{ user.user.last_login }}</td>
+
+            <!-- Email -->
+            <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi bi-envelope"></i></i>{{ user.user.email }}</a></td>
+
+            <!-- If user in table row is not active user -->
+            <!-- Hide user information -->
             {% else %}
-              <td></td>
+
+            <!-- First & Last Name -->
+            <th scope="row">{{ user.user.first_name }} {{ user.user.last_name }}</th>
+
+            <!-- Role -->
+            <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>
+
+            <!-- Units Assigned -->
+            <td><i class="bi bi-eye-slash"></i></td>
+
+            <!-- Completed Assignments -->
+            <td><i class="bi bi-eye-slash"></i></td>
+
+            <!-- In-Progress Assignments -->
+            <td><i class="bi bi-eye-slash"></i></td>
+
+            <!-- Last Activity -->
+            <td><i class="bi bi-eye-slash"></i></td>
+
+            <!-- Email -->
+            <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi bi-envelope"></i></i>{{ user.user.email }}</a></td>
+
             {% endif %}
+
           </tr>
         {% endfor %}
       </tbody>

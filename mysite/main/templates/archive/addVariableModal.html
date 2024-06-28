@@ -22,20 +22,20 @@
 </style>
 
 <!-- Button Trigger Modal -->
-<button type="button" class="btn btn-success w-100 my-1 pb-2 text-truncate overflow-hidden" data-bs-toggle="modal" data-bs-target="#addVarModal">
+<button type="button" class="btn btn-success w-100 my-1 pb-2 text-truncate overflow-hidden" data-bs-toggle="modal" data-bs-target="#add-var-modal">
 
   <!-- Add Coding Variable Button -->
   <i class="bi bi-plus-circle"></i> Add Coding Variable
 </button>
 
 <!-- Modal -->
-<div class="modal fade" data-bs-backdrop="static" id="addVarModal" tabindex="-1" aria-labelledby="addVarModalLabel"aria-hidden="true">
+<div class="modal fade" data-bs-backdrop="static" id="add-var-modal" tabindex="-1" aria-labelledby="add-var-modal-label"aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
       <div class="modal-header">
 
         <!-- Add/Edit Coding Variable Title -->
-        <h1 class="modal-title fs-5" id="addVarModalLabel">{{ project.project_name }} - Add/Edit Code Variable</h1>
+        <h1 class="modal-title fs-5" id="add-var-modal-label">{{ project.project_name }} - Add Code Variable</h1>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" id="close-btn"></button>
       </div>
 
@@ -70,12 +70,14 @@
                 <ul class="list-group list-group-horizontal">
                   <li class="list-group-item">Value</li>
                   <li class="list-group-item">Label</li>
+                  <li class="list-group-item">Example</li>
                   <li class="list-group-item">Action</li>
                 </ul>
                 <div id="value-rows">
                   <ul class="list-group list-group-horizontal">
                     <li class="list-group-item"><input type="text" name="value[]" placeholder="Value"></li>
                     <li class="list-group-item"><input type="text" name="label[]" placeholder="Label"></li>
+                    <li class="list-group-item"><input type="text" name="eg" id="eg" placeholder="Example"></li>
                     <li class="list-group-item"><button type="button" class="btn btn-danger p-1 delete-btn">Delete</button></li>
                   </ul>
                 </div>
@@ -116,10 +118,14 @@
   </div>
 </div>
 
+
+
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
 <script>
   $(document).ready(function () {
+    let currentInput = null;
+
     // Listen for add button click
     $('#add-btn').on('click', function () {
       // Populate html for new row
@@ -127,6 +133,7 @@
         `<ul class="list-group list-group-horizontal">
           <li class="list-group-item"><input type="text" name="value[]" placeholder="Value"></li>
           <li class="list-group-item"><input type="text" name="label[]" placeholder="Label"></li>
+          <li class="list-group-item"><input type="text" name="example" placeholder="Example"></li>
           <li class="list-group-item"><button type="button" class="btn btn-danger p-1 delete-btn">Delete</button></li>
         </ul>`;
       // Add new row to bottom of rows

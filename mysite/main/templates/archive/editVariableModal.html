@@ -1,17 +1,17 @@
 <!-- Included in myProjectsTabs/editProject.html -->
 
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-danger p-1" data-bs-toggle="modal" data-bs-target="#deleteVariableModal-{{ variable.variable_id }}" style="width: 4rem;">
-  Delete
+<button type="button" class="btn btn-primary p-1" data-bs-toggle="modal" data-bs-target="#editVariableModal-{{ variable.variable_id }}" style="width: 4rem;">
+  Edit
 </button>
   
 <!-- Modal -->
-<div class="modal fade" data-bs-backdrop="static" id="deleteVariableModal-{{ variable.variable_id }}" tabindex="-1" aria-labelledby="deleteVariableModalLabel-{{ variable.variable_id }}" aria-hidden="true">
+<div class="modal fade" data-bs-backdrop="static" id="editVariableModal-{{ variable.variable_id }}" tabindex="-1" aria-labelledby="editVariableModalLabel-{{ variable.variable_id }}" aria-hidden="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
             <div class="modal-header">
-                <!-- Delete Variable Confirmation Title -->
-                <h1 class="modal-title fs-5" id="deleteVariableModalLabel-{{ variable.variable_id }}"><i class="bi bi-exclamation-circle-fill"></i> Alert! Confirmation Needed.</h1>
+                <!-- Edit Variable Confirmation Title -->
+                <h1 class="modal-title fs-5" id="editVariableModalLabel-{{ variable.variable_id }}">{{ project.project_name }} - Edit '{{ variable.variable_name }}' (I don't like this title scheme)</h1>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
@@ -28,10 +28,10 @@
                 {% csrf_token %}
                 <!-- Cancel and Confirm Buttons -->
                 <div class="modal-footer justify-content-between">
-                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No, Cancel.</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
                     <input type="text" class="form-control d-none" name="variable-id" value="{{ variable.variable_id }}">
                     <input type="text" class="form-control d-none" name="project-id" value="{{ project.project_id }}">
-                    <button type="submit" class="btn btn-warning">Yes, Delete!</button>
+                    <button type="submit" class="btn btn-success">Update</button>
                 </div>
             </form>
         </div>
