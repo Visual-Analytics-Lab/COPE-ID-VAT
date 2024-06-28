@@ -1,31 +1,38 @@
-<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
-  <!-- Explore -->
-  <a class="btn btn-secondary w-100 mb-2" href="/" id="explore-btn">Explore</a>
-</div>
+<div class="flex-shrink-0">
+  <ul class="list-unstyled ps-0">
+    <li class="mb-1">
+      <!-- Explore -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/" id="explore-btn" style="width: 7rem;">Explore</a>
+    </li>
+    <li class="mb-1">
+      <!-- My Projects -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn" style="width: 7rem;">My Projects</a>
+      <button class="btn btn-secondary d-inline-flex align-items-center rounded border-0 collapsed d-none" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true">
+        Dashboard
+      </button>
+      <div class="collapse show" id="dashboard-collapse">
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 1</a></li>
+          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 2</a></li>
+          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 3</a></li>
+          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 4</a></li>
+        </ul>
+      </div>
+    </li>
+    <li class="mb-1" style="height: 3rem;">
+      <!-- Inbox -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" id="inbox-btn" href="/inbox" style="width: 7rem;">Inbox</a>
+    </li>
+    <li class="mb-1" style="height: 3rem;">
+      <!-- Users -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/users" id="users-btn" style="width: 7rem;">Users</a>
+    </li>
+    <li class="mb-1" style="height: 3rem;">
+      <!-- Data Grid -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/datagrid" style="width: 7rem;">Data Grid</a>
+    </li>
 
-<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
-  <!-- Add Project -->
-  <a class="btn btn-secondary w-100 mb-2" href="/add_project" id="add_project-btn">Add Project</a>
-</div>
-
-<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
-  <!-- My Projects -->
-  <a class="btn btn-secondary w-100 mb-2" href="/my_projects" id="my_projects-btn">My Projects</a>
-</div>
-
-<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
-  <!-- Inbox -->
-  <a class="btn btn-secondary w-100 mb-2" id="inbox-btn" href="/inbox">Inbox</a>
-</div>
-
-<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
-  <!-- Users -->
-  <a class="btn btn-secondary w-100 mb-2" href="/users" id="users-btn">Users</a>
-</div>
-
-<div class="row p-1 px-2 justify-content-center" style="height: 3rem;">
-  <!-- Data Grid -->
-  <a class="btn btn-secondary w-100 mb-2" href="/datagrid">Data Grid</a>
+  </ul>
 </div>
 
 
