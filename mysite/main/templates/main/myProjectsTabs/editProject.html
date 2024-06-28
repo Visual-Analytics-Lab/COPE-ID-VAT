@@ -18,6 +18,7 @@
       <!-- Row 1 Column 2 Row 1 -->
       <div class="row text-center" style="height: 6vh;">
 
+        <!-- Page Title -->
         <h2 class="border-bottom">Edit {{ project.project_name }}</h2>
 
       </div>
@@ -52,23 +53,15 @@
       </div>
 
       <!-- Row 1 Column 2 Row 3 -->
-      <div class="row p-1" style="height: 6vh;">
+      <div class="row p-1" style="max-height: 12vh;">
 
         <!-- Row 1 Column 2 Row 3 Column 1-->
-        <div class="col-8">
-          <div class="d-none">placeholder</div>
-        </div>
+        <div class="col-12">
 
-        <!-- Row 1 Column 2 Row 3 Column 2-->
-        <div class="col-4">
-          <form>
-
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="filter-label">Filter</span>
-              <input type="text" class="form-control" placeholder="Filter..." aria-label="Filter" aria-describedby="filter-label">
-            </div>
-
-          </form>
+          <!-- Display Project Description -->
+          <blockquote class="blockquote">
+            <p>{{ project.project_description }} <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editDescription"><i class="bi bi-pencil text-secondary" fill="currentColor"></i></button></p>
+          </blockquote>
         </div>
 
       </div>
@@ -76,6 +69,8 @@
       <!-- Row 1 Column 2 Row 4 -->
       <div class="row pb-1 px-1" style="height: 6vh;">
         <div class="col-2">
+
+          <!-- Invite Users Modal -->
           {% if has_addedit_permission %}
             {% include 'main/includes/myProjects/inviteUserModal.html' %}
           {% endif %}
@@ -86,12 +81,16 @@
         </div>
 
         <div class="col-2">
+
+          <!-- Download Project Data Modal -->
           {% if has_download_permission %}
             <a class="btn btn-info w-100 my-1 pb-2 text-truncate overflow-hidden" role="button" aria-label="Download Project Data"><i class="bi bi-download"></i> Download Project Data</a>
           {% endif %}
         </div>
 
         <div class="col-2">
+
+          <!-- Delete Project Modal -->
           {% if has_delete_permission %}
             {% include 'main/includes/myProjects/deleteProjectModal.html' %}
           {% endif %}
@@ -103,6 +102,7 @@
 
         <div class="col px-3">
 
+          <!-- Table of Users -->
           {% include 'main/includes/myProjects/usersTable.html' %}
 
         </div>
@@ -113,5 +113,31 @@
 
   </div>
 </div>
+
+<!-- Edit Project Description Modal -->
+<div class="modal fade" id="editDescription" tabindex="-1" aria-labelledby="editDescriptionLabel" aria-hidden="true">
+  <form method="post">
+    {% csrf_token %}
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- Title -->
+          <h1 class="modal-title fs-5" id="editDescriptionLabel">Edit Project Description</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body" id="project-description">
+          <!-- Input -->
+          <textarea class="form-control" name="project-description" id="project-description" rows="3">{{ project.project_description }}</textarea>
+        </div>
+        <div class="modal-footer">
+          <!-- Cancel & Save Buttons -->
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Save</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
 
 {% endblock %}
