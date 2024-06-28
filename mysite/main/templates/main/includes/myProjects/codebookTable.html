@@ -26,7 +26,7 @@
             <td style="width: 20%;">{{ variable.get_values_comma }}</td>
             <td style="width: 50%;">{{ variable.variable_description }}</td>
             {% if has_edit_permission %}
-              <td style="width: 5%;">{% include 'main/includes/myProjects/editVariableModal.html' %}</td>
+              <td style="width: 5%;"><a type="button" class="btn btn-primary p-1" style="width: 4rem;" href="{% url 'main:myProjects_editVariable' project.project_id variable.variable_id %}">Edit</a></td>
               <td style="width: 5%;">{% include 'main/includes/myProjects/deleteVariableModal.html' %}</td>
             {% endif %}
           </tr>
