@@ -25,6 +25,11 @@ This will be updated in the future with more specifics, but at a minimum you wil
 ### Running as Internal Team member:
 You should all be added to the correct departmental VPN. If unable to connect, reach out to IT. You will need to have PuTTY installed on your local machine and make the following changes to your connection within PuTTY: Go to Connection -> SSH and set the source port 8000. Set the destination to 127.0.0.1:8000. Click Add. You should see those values in the above box. Be sure to save your changes/connection so you will not have to do this every time. This change allows you to browse to the server hosted on the VM that you are connecting to via PuTTY.
 
+![image](https://github.com/Visual-Analytics-Lab/COPE-ID-VAT/assets/46544893/24af8ad6-8f83-4c1e-ab4e-3d3b0290a4ac)
+
+![image](https://github.com/Visual-Analytics-Lab/COPE-ID-VAT/assets/46544893/4137f5af-e5ad-48e1-8262-8605f609cfa6)
+
+
 In the VM terminal, navigate to:
 - /home/shared/repos/COPE-ID-VAT/mysite/
 - activate the python virtual environment with ```. /home/shared/venv/bin/activate``` (you should see (venv) next to your name on the command line in the terminal)
