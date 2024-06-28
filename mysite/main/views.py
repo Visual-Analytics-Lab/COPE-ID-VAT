@@ -113,6 +113,117 @@ def myProjects_codebook(request, project_id):
             variable.delete()
 
         else:
+            # Get codebook protocol from HTTP POST request
+            new_protocol = request.POST.get('codebook-protocol')
+
+            # Set new codebook protocol
+            project.codebook_protocol = new_protocol
+
+            # Save new codebook protocol
+            project.save()
+
+        # Redirect/refresh page after form submission
+        return redirect(request.path_info)
+
+    context = {
+        'project': project,
+        'coding_variables': coding_variables,
+        'has_edit_permission': has_edit_permission,
+    }
+    return render(request, 'main/myProjectsTabs/codebook.html', context)
+
+
+
+# =============================================================
+# My Projects - Add Codebook Variable
+# =============================================================
+
+@login_required
+def myProjects_addVariable(request, project_id):
+    # Fetch project from database
+    project = get_object_or_404(project_model, pk=project_id)
+
+    # Fetch measurement types from database
+    measurements = coding_variable.get_measurements_list()
+
+    # Check if form was submitted
+    if request.method == 'POST':
+        # Get variable name from HTTP POST request
+        variable_name = request.POST.get('variable-name')
+
+        # Get variable description from HTTP POST request
+        variable_description = request.POST.get('variable-description')
+
+        # Get variable value(s) from HTTP POST request
+        values = request.POST.getlist('value[]')
+
+        # Get variable label(s) from HTTP POST request
+        labels = request.POST.getlist('label[]')
+
+        # Create variable instance
+        new_variable = coding_variable(
+            variable_name=variable_name,
+            variable_description=variable_description,
+            variable_project=project
+        )
+
+        # Save new variable instance
+        new_variable.save()
+
+        # Join values & labels with new variable instance
+        for value, label in zip(values, labels):
+            new_value = coding_value(
+                variable=new_variable,
+                value=value,
+                label=label
+            )
+            new_value.save()
+
+        # Redirect/refresh page after form submission
+        return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=new_variable.variable_id)
+
+    context = {
+        'project': project,
+        'measurements': measurements,
+    }
+    return render(request, 'main/myProjectsTabs/addVariable.html', context)
+
+
+# =============================================================
+# My Projects - Edit Codebook Variable
+# =============================================================
+
+@login_required
+def myProjects_editVariable(request, project_id, variable_id):
+    # Fetch project from database
+    project = get_object_or_404(project_model, pk=project_id)
+
+    # Fetch variable from database
+    variable = get_object_or_404(coding_variable, variable_id=variable_id)
+    
+    # Fetch measurement types from database
+    measurements = coding_variable.get_measurements_list()
+
+    # Check if form was submitted
+    if request.method == 'POST':
+        # Check if variable ID is in form
+        if 'variable-id' in request.POST:
+            # Get variable ID from HTTP POST request
+            id = request.POST.get('variable-id')
+
+            # Get project ID from HTTP POST request
+            project_id = request.POST.get('project-id')
+
+            # Fetch variable from database
+            variable = get_object_or_404(coding_variable, pk=id, variable_project=project_id)
+
+            # Delete the variable
+            variable.delete()
+
+            # Redirect/refresh page after form submission
+            return redirect('main:myProjects_codebook')
+
+        else:
             # Get variable name from HTTP POST request
             variable_name = request.POST.get('variable-name')
 
@@ -145,14 +256,16 @@ def myProjects_codebook(request, project_id):
                 new_value.save()
 
         # Redirect/refresh page after form submission
-        return redirect(request.path_info)
+        return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=variable_id)
 
     context = {
         'project': project,
-        'coding_variables': coding_variables,
-        'has_edit_permission': has_edit_permission,
+        'variable': variable,
+        'measurements': measurements,
     }
-    return render(request, 'main/myProjectsTabs/codebook.html', context)
+    return render(request, 'main/myProjectsTabs/editVariable.html', context)
+
+
 
 # =============================================================
 # My Projects - Iter-Rater Reliability
@@ -174,6 +287,9 @@ def myProjects_irr(request, project_id):
 
 @login_required
 def myProjects_editProject(request, project_id):
+    # Get active user from request
+    active_user = request.user
+
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
@@ -229,7 +345,7 @@ def myProjects_editProject(request, project_id):
                 messages.error(request, f'{email} is already on the project.')
             else:
                 messages.error(request, f'{email} was not found.')
-        else:
+        elif 'user-id' in request.POST:
             # Get user ID from HTTP POST request
             user_id = request.POST.get('user-id')
 
@@ -261,12 +377,21 @@ def myProjects_editProject(request, project_id):
                 user_project.save()
                 user_project.reset_permissions()
 
+        else:
+            # Get project description from HTTP POST request
+            new_description = request.POST.get('project-description')
+
+            # Set new project description
+            project.project_description = new_description
+
+            # Save new project description
+            project.save()
+
         # Redirect/refresh page after form submission
         return redirect('main:myProjects_editProject', project_id=project.project_id)
     
-        
-
     context = {
+        'active_user': active_user,
         'project': project,
         'users': users,
         'roles': roles,
