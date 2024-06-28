@@ -2,71 +2,59 @@
 
 {% block content %}
 
-<style>
-  .list-group li {
-    position: relative;
-    width: 10vw;
-  }
+<div class="container-fluid" style="height: 50rem;">
 
-  .list-group li input {
-    position: absolute;
-    display: block;
-    top: 0;
-    left: 0;
-    margin: 0;
-    height: 100%;
-    width: 100%;
-    border: none;
-    padding: 10px;
-    box-sizing: border-box;
-  }
-</style>
+  <!-- Row 1 -->
+  <div class="row" style="height: 50rem; background-color: blue;">
 
-<div class="container-fluid" style="height: 94vh;">
+    <!-- Row 1 Column 1 -->
 
-  <ul class="list-group list-group-horizontal">
-    <li class="list-group-item">Value</li>
-    <li class="list-group-item">Label</li>
-    <li class="list-group-item">Action</li>
-  </ul>
-  <div id="value-rows">
-    <ul class="list-group list-group-horizontal">
-      <li class="list-group-item"><input type="text" placeholder="Value"></li>
-      <li class="list-group-item"><input type="text" placeholder="Label"></li>
-      <li class="list-group-item"><button type="button" class="btn btn-danger p-1 delete-btn">Delete</button></li>
-    </ul>
+
+      <div class="flex-shrink-0 p-3" style="width: 10rem; background-color: red;">
+        <ul class="list-unstyled ps-0">
+          <li class="mb-1">
+            <!-- Explore -->
+            <a class="btn btn-secondary d-inline-flex justify-content-center" href="/" id="explore-btn" style="width: 7rem;">Explore</a>
+          </li>
+          <li class="mb-1">
+            <!-- My Projects -->
+            <a class="btn btn-secondary d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn" style="width: 7rem;">My Projects</a>
+            <button class="btn btn-secondary d-inline-flex align-items-center rounded border-0 collapsed d-none" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true">
+              Dashboard
+            </button>
+            <div class="collapse show" id="dashboard-collapse">
+              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
+                <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</a></li>
+                <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Weekly</a></li>
+                <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Monthly</a></li>
+                <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Annually</a></li>
+              </ul>
+            </div>
+          </li>
+          <li class="mb-1" style="height: 3rem;">
+            <!-- Inbox -->
+            <a class="btn btn-secondary d-inline-flex justify-content-center" id="inbox-btn" href="/inbox" style="width: 7rem;">Inbox</a>
+          </li>
+          <li class="mb-1" style="height: 3rem;">
+            <!-- Users -->
+            <a class="btn btn-secondary d-inline-flex justify-content-center" href="/users" id="users-btn" style="width: 7rem;">Users</a>
+          </li>
+          <li class="mb-1" style="height: 3rem;">
+            <!-- Data Grid -->
+            <a class="btn btn-secondary d-inline-flex justify-content-center" href="/datagrid" style="width: 7rem;">Data Grid</a>
+          </li>
+
+        </ul>
+      </div>
+
+
+    <!-- Row 1 Column 2 -->
+    <div class="col content w-auto">
+
+
+    </div>
+
   </div>
-
-  <!-- Add Coding Variable -->
-  <ul class="list-group list-group-horizontal">
-    <button type="button" class="btn btn-success p-1" id="add-btn">Add Code Value/Label</button>
-  </ul>
-
 </div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-<script>
-  $(document).ready(function () {
-    // Listen for add button click
-    $('#add-btn').on('click', function () {
-      // Populate html for new row
-      const newValue =
-        `<ul class="list-group list-group-horizontal">
-          <li class="list-group-item"><input type="text" placeholder="Value"></li>
-          <li class="list-group-item"><input type="text" placeholder="Label"></li>
-          <li class="list-group-item"><button type="button" class="btn btn-danger p-1">Delete</button></li>
-        </ul>`;
-      // Add new row to bottom of rows
-      $('#value-rows').append(newValue);
-    });
-
-    // Listen for delete button click
-    $('#value-rows').on('click', '.delete-btn', function () {
-      // Fetch nearest row and delete
-      $(this).closest('ul').remove();
-    });
-  });
-</script>
 
 {% endblock %}
