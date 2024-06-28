@@ -1,0 +1,209 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+
+<!-- CSS for List of Variable Codes -->
+<style>
+  .table tbody tr td {
+    position: relative;
+    width: 10vw;
+    outline: none;
+  }
+
+  .table tbody tr td input {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: transparent;
+  }
+
+  .table tbody tr td input:focus {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    border: none;
+    outline: none;
+    padding: 10px;
+    box-sizing: border-box;
+    background-color: transparent;
+  }
+
+  .form-control:focus {
+    box-shadow: none;
+  }
+</style>
+
+<div class="container" style="height: 94vh;">
+
+  <!-- Row 1 -->
+  <div class="row" style="height: 94vh;">
+
+    <!-- Row 1 Column 1 -->
+    <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
+      {% include 'main/includes/sidebar.html' %}
+    </div>
+
+    <!-- Row 1 Column 2 -->
+    <div class="col content">
+
+      <div class="mb-1" style="height: 3rem;">
+        <a class="btn btn-secondary d-inline-flex justify-content-center" id="return-btn" href="{% url 'main:myProjects_codebook' project.project_id %}" style="width: 7rem;"><i class="bi bi-arrow-left"></i>Codebook</a>
+      </div>
+
+      <!-- Row 1 Column 2 Row 1 -->
+      <div class="row text-center" style="height: 3rem;">
+        <h2 class="border-bottom">Add Variable to {{ project.project_name }}</h2>
+      </div>
+
+      <!-- Row 1 Column 2 Row 2 -->
+      <div class="row" style="height: 76vh;">
+
+        <div class="container text-center">
+
+          <div class="row g-0 row-cols-4 justify-content-center" style="height: 6vh;">
+            <div class="col-4">
+              <div class="input-group flex-nowrap">
+                <span class="input-group-text bg-secondary text-white" id="variable-wrapping">Variable Name</span>
+                <input type="text" class="form-control" placeholder="Name" aria-label="Variable Name" aria-describedby="variable-wrapping" value="{{ variable.variable_name }}">
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-0 row-cols-4 justify-content-center mb-4" style="min-height: 6vh; max-height: 12vh;">
+            <div class="col-4">
+              <div class="input-group">
+                <span class="input-group-text bg-secondary text-white">Variable Description</span>
+                <textarea class="form-control" placeholder="Description" aria-label="Variable Description" aria-describedby="variable-wrapping" style="max-height: 12vh;"></textarea>
+              </div>
+            </div>
+          </div>
+
+          <div class="row g-0 row-cols-4">
+            <div class="col-3 bg-secondary text-white">
+              <h5>Value</h5>
+            </div>
+            <div class="col-3 bg-secondary text-white">
+              <h5>Label</h5>
+            </div>
+            <div class="col-6 bg-secondary text-white">
+              <h5>Example</h5>
+            </div>
+          </div>
+
+          <div class="overflow-scroll" id="value-rows" style="max-height: 54vh;">
+
+            <div class="row g-0 row-cols-4">
+              <div class="col-3"><input class="form-control rounded-0" type="number" placeholder="Value" aria-label="Variable value input" value="0"></div>
+              <div class="col-3"><input class="form-control rounded-0" type="text" placeholder="Label" aria-label="Variable label input" value="Absent"></div>
+              <div class="col-6"><input class="form-control rounded-0" type="text" placeholder="Example" aria-label="Variable example input" value="None"></div>
+            </div>
+
+            <div class="row g-0 row-cols-4">
+              <div class="col-3"><input class="form-control rounded-0" type="number" placeholder="Value" aria-label="Variable value input" value="1"></div>
+              <div class="col-3"><input class="form-control rounded-0" type="text" placeholder="Label" aria-label="Variable label input" value="Present"></div>
+              <div class="col-6"><input class="form-control rounded-0" type="text" placeholder="Example" aria-label="Variable example input" value="None"></div>
+            </div>
+
+            <div class="row g-0 row-cols-4">
+              <div class="col-3"><input class="form-control rounded-0" type="number" placeholder="Value" aria-label="Variable value input" value="99"></div>
+              <div class="col-3"><input class="form-control rounded-0" type="text" placeholder="Label" aria-label="Variable label input" value="N/A"></div>
+              <div class="col-6"><input class="form-control rounded-0" type="text" placeholder="Example" aria-label="Variable example input" value="None"></div>
+            </div>
+
+          </div>
+
+
+          <div class="row g-0 justify-content-end mt-2">
+            <div class="col-1 align-items-start">
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-success p-1" id="add-btn" style="width: 6rem;">Add Value</button>
+              </div>
+            </div>
+            <div class="col-1"><span class="d-none">placeholder</span></div>
+          </div>
+
+          <div class="row g-0 row-cols-4 justify-content-center" style="height: 6vh;">
+            <div class="col-4">
+              <div class="input-group mb-3">
+                <label class="input-group-text bg-secondary text-white" for="variable-measure">Level of Measurement</label>
+                <select class="form-select" id="variable-measure">
+                  {% for measure in measurements %}
+                    <option value="{{ measure }}">{{ measure }}</option>
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    let currentInput = null;
+    // let currentVal = 1; // Increment row count each time
+
+    // Listen for add button click
+    $('#add-btn').on('click', function () {
+      console.log("clicked")
+      // Populate html for new row
+      const newValue =
+        `<div class="row g-0 row-cols-4">
+            <div class="col-3"><input class="form-control rounded-0" type="number" placeholder="Value" aria-label="Variable value input"></div>
+            <div class="col-3"><input class="form-control rounded-0" type="text" placeholder="Label" aria-label="Variable label input"></div>
+            <div class="col-6"><input class="form-control rounded-0" type="text" placeholder="Example" aria-label="Variable example input"></div>
+          </div>`;
+      // Add new row to bottom of rows
+      $('#value-rows').append(newValue);
+    });
+
+    // Listen for delete button click
+    $('#value-rows').on('click', '#delete-btn', function () {
+      // Fetch nearest row and delete
+      console.log("delete clicked")
+      $(this).closest('.row').remove();
+    });
+
+    // Listen for cancel button click
+    $('#cancel-btn').on('click', function () {
+      // Clear all inputs fields in the first row
+      $('#value-rows ul:first-child input').val('');
+
+      // Remove all rows except the first one
+      $('#value-rows ul:not(:first-child)').remove();
+    });
+
+    // Listen for close button click
+    $('#close-btn').on('click', function () {
+      // Clear all inputs fields in the first row
+      $('#value-rows ul:first-child input').val('');
+
+      // Remove all rows except the first one
+      $('#value-rows ul:not(:first-child)').remove();
+    });
+  });
+</script>
+
+{% endblock %}
