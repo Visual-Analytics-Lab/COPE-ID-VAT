@@ -80,6 +80,8 @@ class project_model(models.Model):
     principal_investigator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     timestamp = models.DateTimeField(default=timezone.now)
     N = models.PositiveIntegerField(default=0) # Total number of unique units
+    project_description = models.TextField(null=True, blank=True)
+    codebook_protocol = models.TextField(null=True, blank=True)
 
     def __str__(self):
         return self.project_name
@@ -177,7 +179,7 @@ def reset_permissions_post_save(sender, instance, **kwargs):
     instance.reset_permissions()
 
 # =============================================================
-# Coding Variable
+# Coding Variable - (Note: Save codebook for reuse)
 # =============================================================
 
 class coding_variable(models.Model):
@@ -186,18 +188,43 @@ class coding_variable(models.Model):
     variable_description = models.TextField(max_length=128, default='')
     variable_project = models.ForeignKey(project_model, on_delete=models.CASCADE)
 
+    MEASUREMENTS = (
+    ('nom', 'Nominal'),
+    ('ord', 'Ordinal'),
+    ('int', 'Interval'),
+    ('rate', 'Ratio'),
+    ('none', 'None'),
+    )
+
+    variable_measurement = models.CharField(
+        max_length=8,
+        choices=MEASUREMENTS,
+        blank=False,
+        default='nom',
+        help_text='Level of Measurement',
+    )
+
     def __str__(self):
         return self.variable_name
 
     class Meta:
         verbose_name = "Coding Variable"
         verbose_name_plural = "Coding Variables"
-
+    
     # Get a list of variable values
     def get_values(self):
+        return self.values.all()
+    
+    # Get a list of comma-separated variable values
+    def get_values_comma(self):
         values = self.values.all()
         return ", ".join([f"{value.value}" for value in values])
     
+    # Get list of measurement types
+    @classmethod
+    def get_measurements_list(cls):
+        return [name for _, name in cls.MEASUREMENTS]
+
 # =============================================================
 # Coding Value
 # =============================================================
@@ -206,8 +233,8 @@ class coding_value(models.Model):
     variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE, related_name='values')
     label = models.CharField(max_length=128)
     value = models.CharField(max_length=8, null=False, blank=False)
-    other = models.CharField(max_length=128, null=True, blank=True)
-    other_bool = models.BooleanField(default=False)
+    example = models.TextField(null=True, blank=True)
+    example_bool = models.BooleanField(default=False)
 
     def __str__(self):
         return self.value
