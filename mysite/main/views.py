@@ -17,11 +17,21 @@ from django.http import HttpResponseNotFound
 def homepage(request):
     distinct_platforms = sample_data.objects.values_list('doc_source', flat=True).distinct()
     distinct_topics = bert_main_sample_data.objects.values_list('topic_name', flat=True).distinct()
+    search_query = request.GET.get('search_query')
+    documents = {}
+    if search_query:
+        documents = sample_data.objects.filter(doc_text__icontains=search_query).order_by('id')
+    else:
+        documents = sample_data.objects.all().order_by('id')
+    paginator = Paginator(documents, 5)  # Show 5 docs per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
     return render(request = request,
                   template_name='main/home.html',
                   context = {"tutorials":Tutorial.objects.all,
                              "distinct_platforms": distinct_platforms,
-                             "distinct_topics": distinct_topics})
+                             "distinct_topics": distinct_topics,
+                             "sample_data": page_obj})
 
 # =============================================================
 # Add Project
