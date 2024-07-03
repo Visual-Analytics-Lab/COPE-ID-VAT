@@ -35,10 +35,6 @@ urlpatterns = [
     path("my_projects/profile/<uuid:project_id>/<int:user_id>/", views.myProjects_userProfile, name="myProjects_userProfile"),
     path("my_projects/project_roles/<uuid:project_id>/", views.myProjects_sampleResults, name="myProjects_SampleResults"),
 
-    # Users (Admin only) (Move later)
-    # =============================================================
-    path("users/", views.users, name="users"),
-
     # Inbox
     # =============================================================
     path('inbox/', views.inbox, name='inbox'),

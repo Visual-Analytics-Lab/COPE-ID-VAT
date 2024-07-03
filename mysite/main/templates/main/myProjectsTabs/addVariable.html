@@ -57,7 +57,7 @@
 
     <!-- Row 1 Column 2 -->
     <div class="col content">
-      <form method="post">
+      <form method="post" class="needs-validation" novalidate>
         {% csrf_token %}
 
       <div class="mb-1" style="height: 3rem;">
@@ -77,7 +77,7 @@
               <div class="col-4">
                 <div class="input-group flex-nowrap">
                   <span class="input-group-text bg-secondary text-white" id="variable-wrapping">Variable Name</span>
-                  <input type="text" class="form-control" name="variable-name" id="variable-name" placeholder="Name" aria-label="Variable Name" aria-describedby="variable-wrapping" value="{{ variable.variable_name }}">
+                  <input type="text" class="form-control validate-field" name="variable-name" id="variable-name" placeholder="Name" aria-label="Variable Name" aria-describedby="variable-wrapping" value="{{ variable.variable_name }}">
                 </div>
               </div>
             </div>
@@ -95,32 +95,38 @@
               <div class="col-3 bg-secondary text-white">
                 <span class="h5">Value<button type="button" class="btn py-0 ps-1 pe-0 m-0" data-bs-toggle="modal" data-bs-target="#variableInfoModal"><i class="bi bi-info-circle text-info"></i></button></span>
               </div>
-              <div class="col-3 bg-secondary text-white">
-                <h5>Label</h5>
-              </div>
-              <div class="col-6 bg-secondary text-white">
-                <h5>Example</h5>
-              </div>
+              <div class="col-3 bg-secondary text-white"><h5>Label</h5></div>
+              <div class="col-5 bg-secondary text-white"><h5>Example</h5></div>
+              <div class="col-1 d-none"><h5>Action</h5></div>
             </div>
 
             <div class="overflow-scroll" id="value-rows" style="max-height: 48vh;">
 
               <div class="row g-0 row-cols-4">
-                <div class="col-3"><input class="form-control rounded-0" name="value[]" type="number" placeholder="Value" aria-label="Variable value input" value="0"></div>
+                <div class="col-3"><input class="form-control rounded-0 validate-field" name="value[]" type="number" placeholder="Value" aria-label="Variable value input" value="0"></div>
                 <div class="col-3"><input class="form-control rounded-0" name="label[]" type="text" placeholder="Label" aria-label="Variable label input" value="Absent"></div>
-                <div class="col-6"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input" value="None"></div>
+                <div class="col-5"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input" value="None"></div>
+                <div class="col-1">
+                  <button type="button" class="btn btn-danger p-1" name="deleteValue-{{ value.id }}" id="delete-btn" style="width: 3rem;"><i class="bi bi-trash"></i></button>
+                </div>
               </div>
 
               <div class="row g-0 row-cols-4">
-                <div class="col-3"><input class="form-control rounded-0" name="value[]" type="number" placeholder="Value" aria-label="Variable value input" value="1"></div>
+                <div class="col-3"><input class="form-control rounded-0 validate-field" name="value[]" type="number" placeholder="Value" aria-label="Variable value input" value="1"></div>
                 <div class="col-3"><input class="form-control rounded-0" name="label[]" type="text" placeholder="Label" aria-label="Variable label input" value="Present"></div>
-                <div class="col-6"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input" value="None"></div>
+                <div class="col-5"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input" value="None"></div>
+                <div class="col-1">
+                  <button type="button" class="btn btn-danger p-1" name="deleteValue-{{ value.id }}" id="delete-btn" style="width: 3rem;"><i class="bi bi-trash"></i></button>
+                </div>
               </div>
 
               <div class="row g-0 row-cols-4">
-                <div class="col-3"><input class="form-control rounded-0" name="value[]" type="number" placeholder="Value" aria-label="Variable value input" value="99"></div>
+                <div class="col-3"><input class="form-control rounded-0 validate-field" name="value[]" type="number" placeholder="Value" aria-label="Variable value input" value="99"></div>
                 <div class="col-3"><input class="form-control rounded-0" name="label[]" type="text" placeholder="Label" aria-label="Variable label input" value="N/A"></div>
-                <div class="col-6"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input" value="None"></div>
+                <div class="col-5"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input" value="None"></div>
+                <div class="col-1">
+                  <button type="button" class="btn btn-danger p-1" name="deleteValue-{{ value.id }}" id="delete-btn" style="width: 3rem;"><i class="bi bi-trash"></i></button>
+                </div>
               </div>
 
             </div>
@@ -153,7 +159,6 @@
       </div>
 
       <div class="row g-0 mt-2 justify-content-center" style="height: 6vh;">
-        <div class="col-1"><span class="d-none">placeholder</span></div>
 
         <div class="col-2 align-items-start">
           <div class="d-flex justify-content-start">
@@ -161,13 +166,13 @@
           </div>
         </div>
 
-        <div class="col-6"><span class="d-none">placeholder</span></div>
+        <div class="col-7"><span class="d-none">placeholder</span></div>
 
         <div class="col-2 align-items-start">
           <div class="d-flex justify-content-end">
             <input type="text" class="form-control d-none" name="edit-action" id="edit-action" value="">
-            <button type="sbumit" class="btn btn-success p-1 me-1" id="edit-done" style="width: 9rem;">Save Variable</button>
-            <button type="sbumit" class="btn btn-success p-1" id="edit-continue" style="width: 9rem;">Add Another</button>
+            <button type="sbumit" class="btn btn-success p-1" id="edit-done" style="width: 9rem;">Save Variable</button>
+            <button type="sbumit" class="btn btn-success p-1 ms-1" id="edit-continue" style="width: 9rem;">Add Another</button>
           </div>
         </div>
 
@@ -209,10 +214,12 @@
 
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function () {
+  $(document).ready(function() {
+    const pattern = /^[a-zA-Z@][a-zA-Z0-9@#\$,._]*[a-zA-Z0-9@#\$,._]?$/;
+    const reservedKeywords = new Set(["ALL", "AND", "BY", "EQ", "GE", "GT", "LE", "LT", "NE", "NOT", "OR", "TO", "WITH",
+                                     "S1", "E1", "C1", "NET", "SUB", "TN", "CALC"]);
     let currentInput = null;
     // let currentVal = 1; // Increment row count each time
 
@@ -222,10 +229,13 @@
       // Populate html for new row
       const newValue =
         `<div class="row g-0 row-cols-4">
-            <div class="col-3"><input class="form-control rounded-0" type="number" placeholder="Value" aria-label="Variable value input"></div>
-            <div class="col-3"><input class="form-control rounded-0" type="text" placeholder="Label" aria-label="Variable label input"></div>
-            <div class="col-6"><input class="form-control rounded-0" type="text" placeholder="Example" aria-label="Variable example input"></div>
-          </div>`;
+          <div class="col-3"><input class="form-control rounded-0 validate-field" name="value[]" type="number" placeholder="Value" aria-label="Variable value input"></div>
+          <div class="col-3"><input class="form-control rounded-0" name="label[]" type="text" placeholder="Label" aria-label="Variable label input"></div>
+          <div class="col-5"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input"></div>
+          <div class="col-1">
+            <button type="button" class="btn btn-danger p-1" name="deleteValue-{{ value.id }}" id="delete-btn" style="width: 3rem;"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>`;
       // Add new row to bottom of rows
       $('#value-rows').append(newValue);
     });
@@ -247,21 +257,87 @@
     });
 
     // Listen for return button click
-    $('#edit-return').on('click', function () {
+    $('#return-btn').on('click', function () {
       console.log("return");
-      $('#edit-action').val('done');
+      $('#edit-action').val('return');
     });
 
     // Listen for save button click
-    $('#edit-done').on('click', function () {
-      console.log("done");
-      $('#edit-action').val('done');
+    $('#save-variable').on('click', function () {
+      console.log("save");
+      $('#edit-action').val('save');
     });
 
-    // Listen for add button click
-    $('#edit-continue').on('click', function () {
-      console.log("continue");
-      $('#edit-action').val('continue');
+    // Listen for cancel button click
+    $('#cancel-variable').on('click', function () {
+      console.log("cancel");
+      location.reload();
+    });
+
+    // Listen for delete button click
+    $('#delete-variable').on('click', function () {
+      console.log("delete");
+      $('#edit-action').val('delete');
+    });
+
+    // Listen for previous button click
+    $('#prev-btn').on('click', function () {
+      console.log("previous");
+      $('#edit-action').val('previous');
+    });
+
+    // Listen for next button click
+    $('#next-btn').on('click', function () {
+      console.log("next");
+      $('#edit-action').val('next');
+    });
+
+    function validateInput(input) {
+      if (input.type === 'text') {
+        const value = input.value.toUpperCase();
+        if (!pattern.test(value) || reservedKeywords.has(value)) {
+          input.setCustomValidity("Invalid input or reserved keyword.");
+          input.classList.add('is-invalid');
+          // input.classList.remove('is-valid');
+        } else {
+          input.setCustomValidity("");
+          // input.classList.add('is-valid');
+          input.classList.remove('is-invalid');
+        }
+      } else if (input.type === 'number') {
+        if (isNaN(input.value) || input.value.trim() === '') {
+          input.setCustomValidity("Please enter a valid number.");
+          // input.classList.add('is-invalid');
+          input.classList.remove('is-valid');
+        } else {
+          input.setCustomValidity("");
+          // input.classList.add('is-valid');
+          input.classList.remove('is-invalid');
+        }
+      }
+    }
+
+    $('.needs-validation').on('submit', function(event) {
+      const form = this;
+      let isValid = true;
+
+      $('.validate-field').each(function() {
+        validateInput(this);
+        if (!this.checkValidity()) {
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      $(this).addClass('was-validated');
+    });
+
+    $('.validate-field').on('input', function() {
+      validateInput(this);
     });
   });
 </script>

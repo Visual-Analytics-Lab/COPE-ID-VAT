@@ -70,7 +70,7 @@
               {% for user_project in user_projects %}
                 <tr>
                   <th scope="row">{{ user_project.project.project_org }}</th>
-                  <td><a href="{% url 'main:myProjects_units' user_project.project.project_id %}">{{ user_project.project.project_name }}</a></td>
+                  <td><a class="icon-link" href="{% url 'main:myProjects_units' user_project.project.project_id %}"><i class="bi bi-box-arrow-up-right"></i>{{ user_project.project.project_name }}</a></td>
                   <td scope="row">{{ user_project.project.principal_investigator }}</td>
                   <td>10%</td>
                   <td>25%</td>
