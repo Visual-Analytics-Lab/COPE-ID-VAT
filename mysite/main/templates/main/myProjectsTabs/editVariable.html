@@ -57,105 +57,133 @@
 
     <!-- Row 1 Column 2 -->
     <div class="col content">
-      <form method="post">
+      <form method="post" class="needs-validation" novalidate>
         {% csrf_token %}
 
-      <div class="mb-1" style="height: 3rem;">
-        <a class="btn btn-secondary d-inline-flex justify-content-center" id="return-btn" href="{% url 'main:myProjects_codebook' project.project_id %}" style="width: 7rem;"><i class="bi bi-arrow-left"></i>Codebook</a>
-      </div>
+        <div class="row g-0 mb-1 justify-content-center" style="height: 3rem;">
 
-      <!-- Row 1 Column 2 Row 1 -->
-      <div class="row text-center" style="height: 3rem;">
-        <h2 class="border-bottom">Edit {{ variable.variable_name }} on {{ project.project_name }}</h2>
-      </div>
-
-      <!-- Row 1 Column 2 Row 2 -->
-      <div class="row" style="height: 76vh;">
-
-        <div class="container text-center">
-
-          <form method="post">
-            {% csrf_token %}
-            <div class="row g-0 row-cols-4 justify-content-center" style="height: 6vh;">
-              <div class="col-4">
-                <div class="input-group flex-nowrap">
-                  <span class="input-group-text bg-secondary text-white" id="variable-wrapping">Variable Name</span>
-                  <input type="text" class="form-control" name="variable-name" id="variable-name" placeholder="Name" aria-label="Variable Name" aria-describedby="variable-wrapping" value="{{ variable.variable_name }}">
-                </div>
-              </div>
-            </div>
-
-            <div class="row g-0 row-cols-4 justify-content-center mb-4" style="min-height: 6vh; max-height: 12vh;">
-              <div class="col-4">
-                <div class="input-group">
-                  <span class="input-group-text bg-secondary text-white">Variable Description</span>
-                  <textarea class="form-control" name="variable-description" id="variable-description" placeholder="Description" aria-label="Variable Description" aria-describedby="variable-wrapping" style="max-height: 12vh;">{{ variable.variable_description }}</textarea>
-                </div>
-              </div>
-            </div>
-
-            <div class="row g-0 row-cols-4">
-              <div class="col-3 bg-secondary text-white">
-                <h5>Value</h5>
-              </div>
-              <div class="col-3 bg-secondary text-white">
-                <h5>Label</h5>
-              </div>
-              <div class="col-6 bg-secondary text-white">
-                <h5>Example</h5>
-              </div>
-            </div>
-
-            <div class="overflow-scroll" id="value-rows" style="max-height: 48vh;">
-              {% for value in variable.get_values %}
-                <div class="row g-0 row-cols-4">
-                  <div class="col-3"><input class="form-control rounded-0" name="value[]" type="number" placeholder="Value" aria-label="Variable value input" value="{{ value.value }}"></div>
-                  <div class="col-3"><input class="form-control rounded-0" name="label[]" type="text" placeholder="Label" aria-label="Variable label input" value="{{ value.label }}"></div>
-                  <div class="col-6"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input" value="{{ value.example }}"></div>
-                </div>
-              {% endfor %}
-            </div>
-
-
-            <div class="row g-0 justify-content-end mt-2">
-              <div class="col-1 align-items-start">
-                <div class="d-flex justify-content-end">
-                  <button type="button" class="btn btn-success p-1" id="add-btn" style="width: 6rem;">Add Value</button>
-                </div>
-              </div>
-              <div class="col-1"><span class="d-none">placeholder</span></div>
-            </div>
-
-            <div class="row g-0 row-cols-4 justify-content-center" style="height: 6vh;">
-              <div class="col-4">
-                <div class="input-group mb-3">
-                  <label class="input-group-text bg-secondary text-white" for="variable-measure">Level of Measurement</label>
-                  <select class="form-select" name="variable-measure" id="variable-measure">
-                    {% for measure in measurements %}
-                      <option value="{{ measure }}">{{ measure }}</option>
-                    {% endfor %}
-                  </select>
-                </div>
-              </div>
-            </div>
-
-        </div>
-
-      </div>
-
-      <div class="row g-0 justify-content-end mt-2" style="height: 6vh;">
-        <div class="col-2 align-items-start">
-          <div class="d-flex justify-content-end">
-              <input type="text" class="form-control d-none" name="variable-id" id="variable-id" value="{{ variable.variable_id }}">
-              <input type="text" class="form-control d-none" name="project-id" id="project-id" value="{{ project.project_id }}">
-              <input type="text" class="form-control d-none" name="edit-action" id="edit-action" value="">
-              <button type="sbumit" class="btn btn-success p-1 me-1" id="save-variable" style="width: 9rem;">Save Variable</button>
-              <button type="submit" class="btn btn-danger p-1" id="delete-variable" style="width: 9rem;">Delete Variable</button>
-            </form>
+          <div class="col-2 align-items-start">
+            <a class="btn btn-secondary d-inline-flex justify-content-center" id="return-btn" href="{% url 'main:myProjects_codebook' project.project_id %}" style="width: 7rem;"><i class="bi bi-arrow-left"></i>Codebook</a>
           </div>
+  
+          <div class="col-7"><span class="d-none">placeholder</span></div>
+  
+          <div class="col-3 align-items-start">
+            <div class="d-flex justify-content-end">
+              <button type="sbumit" class="btn btn-success d-inline-flex justify-content-center me-1" id="save-variable" style="width: 7rem;">Save</button>
+              <button type="button" class="btn btn-warning d-inline-flex justify-content-center me-1" id="cancel-variable" style="width: 7rem;">Cancel</button>
+              <button type="button" class="btn btn-danger d-inline-flex justify-content-center" id="delete-variable-modal" data-bs-toggle="modal" data-bs-target="#deleteVariableModal" style="width: 7rem;">Delete</button>
+            </div>
+          </div>
+  
         </div>
-        <div class="col-1"><span class="d-none">placeholder</span></div>
-      </div>
+
+        <!-- Row 1 Column 2 Row 1 -->
+        <div class="row text-center" style="height: 3rem;">
+          <h2 class="border-bottom">Edit {{ variable.variable_name }} on {{ project.project_name }}</h2>
+        </div>
+
+        <!-- Row 1 Column 2 Row 2 -->
+        <div class="row" style="height: 76vh;">
+
+          <div class="container text-center">
+
+            <form method="post">
+              {% csrf_token %}
+              <div class="row g-0 row-cols-4 justify-content-center" style="height: 6vh;">
+                <div class="col-4">
+                  <div class="input-group flex-nowrap">
+                    <span class="input-group-text bg-secondary text-white" id="variable-wrapping">Variable Name</span>
+                    <input type="text" class="form-control validate-field" name="variable-name" id="variable-name" placeholder="Name" aria-label="Variable Name" aria-describedby="variable-wrapping" value="{{ variable.variable_name }}">
+                  </div>
+                </div>
+              </div>
+
+              <div class="row g-0 row-cols-4 justify-content-center mb-4" style="min-height: 6vh; max-height: 12vh;">
+                <div class="col-4">
+                  <div class="input-group">
+                    <span class="input-group-text bg-secondary text-white">Variable Description</span>
+                    <textarea class="form-control" name="variable-description" id="variable-description" placeholder="Description" aria-label="Variable Description" aria-describedby="variable-wrapping" style="max-height: 12vh;">{{ variable.variable_description }}</textarea>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row g-0 row-cols-4">
+                <div class="col-3 bg-secondary text-white">
+                  <span class="h5">Value<button type="button" class="btn py-0 ps-1 pe-0 m-0" data-bs-toggle="modal" data-bs-target="#variableInfoModal"><i class="bi bi-info-circle text-info"></i></button></span>
+                </div>
+                <div class="col-3 bg-secondary text-white"><h5>Label</h5></div>
+                <div class="col-5 bg-secondary text-white"><h5>Example</h5></div>
+                <div class="col-1 d-none"><h5>Action</h5></div>
+              </div>
+
+              <div class="overflow-scroll" id="value-rows" style="max-height: 48vh;">
+                {% for value in variable.get_values %}
+                  <div class="row g-0 row-cols-4">
+                    <div class="col-3"><input class="form-control rounded-0 validate-field" name="value[]" type="number" placeholder="Value" aria-label="Variable value input" value="{{ value.value }}"></div>
+                    <div class="col-3"><input class="form-control rounded-0" name="label[]" type="text" placeholder="Label" aria-label="Variable label input" value="{{ value.label }}"></div>
+                    <div class="col-5"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input" value="{{ value.example }}"></div>
+                    <div class="col-1">
+                      <button type="button" class="btn btn-danger p-1" name="deleteValue-{{ value.id }}" id="delete-btn" style="width: 3rem;"><i class="bi bi-trash"></i></button>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+
+              <div class="row g-0 justify-content-end mt-2">
+                <div class="col-1 align-items-start">
+                  <div class="d-flex justify-content-end">
+                    <button type="button" class="btn btn-success p-1" id="add-btn" style="width: 6rem;">Add Value</button>
+                  </div>
+                </div>
+                <div class="col-1"><span class="d-none">placeholder</span></div>
+              </div>
+
+              <div class="row g-0 row-cols-4 justify-content-center" style="height: 6vh;">
+                <div class="col-4">
+                  <div class="input-group mb-3">
+                    <label class="input-group-text bg-secondary text-white" for="variable-measure">Level of Measurement</label>
+                    <select class="form-select" name="variable-measure" id="variable-measure">
+                      {% for measure in measurements %}
+                        <option value="{{ measure }}">{{ measure }}</option>
+                      {% endfor %}
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+          </div>
+
+        </div>
+
+        <div class="row g-0 mt-2 justify-content-center" style="height: 6vh;">
+  
+          <div class="col-2 align-items-start">
+            <div class="d-flex justify-content-start">
+              {% if previous_var_id %}
+                <button type="submit" class="btn btn-secondary p-1 me-1" id="prev-btn" style="width: 9rem;">Previous</button>
+              {% else %}
+                <button class="btn btn-secondary p-1 me-1 disabled" style="width: 9rem;">Previous</button>
+              {% endif %}
+            </div>
+          </div>
+  
+          <div class="col-7"><span class="d-none">placeholder</span></div>
+  
+          <div class="col-2 align-items-start">
+            <div class="d-flex justify-content-end">
+              {% if next_var_id %}
+                <button type="submit" class="btn btn-secondary p-1" id="next-btn" style="width: 9rem;">Next</button>
+              {% else %}
+                <button class="btn btn-secondary p-1 me-1 disabled" style="width: 9rem;">Next</button>
+              {% endif %}
+            </div>
+          </div>
+  
+          <div class="col-1"><span class="d-none">placeholder</span></div>
+        </div>
+
+        <input type="text" class="form-control d-none" name="edit-action" id="edit-action" value="">
       </form>
     </div>
 
@@ -164,10 +192,75 @@
 </div>
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 
+<!-- Delete Variable Modal -->
+<div class="modal fade" data-bs-backdrop="static" id="deleteVariableModal" tabindex="-1" aria-labelledby="deleteVariableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Delete Variable Confirmation Title -->
+                <h1 class="modal-title fs-5" id="deleteVariableModalLabe"><i class="bi bi-exclamation-circle-fill"></i> Alert! Confirmation Needed.</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Warning Message -->
+            <div class="modal-body text-center">
+                <p>You are about to delete the coding variable:<br>
+                <strong>{{ variable.variable_name }}</strong><br>
+                Note: Once deleted, a variable <u><em>cannot be restored</em></u>!<br>
+                Do you wish to proceed?</p>
+            </div>
+
+            <!-- Confirmation Form --> 
+            <form method="post">
+                {% csrf_token %}
+                <!-- Cancel and Confirm Buttons -->
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No, Cancel.</button>
+                    <input type="text" class="form-control d-none" name="variable-id" value="{{ variable.variable_id }}">
+                    <input type="text" class="form-control d-none" name="project-id" value="{{ project.project_id }}">
+                    <button type="submit" class="btn btn-warning" id="delete-variable">Yes, Delete!</button>
+                </div>
+                <input type="text" class="form-control d-none" name="delete-action" id="delete-action" value="">
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- Info Modal -->
+<div class="modal fade" id="variableInfoModal" tabindex="-1" aria-labelledby="variableInfoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="variableInfoModalLabel">Values, Labels, & Examples</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <figure>
+          <blockquote class="blockquote">
+            <p>Value labels are useful primarily for categorical (i.e., nominal or ordinal) variables, especially if they have been recorded as codes (e.g., 1, 2, 3). It is <strong>strongly</strong> suggested that you give each value a label so that you (and anyone looking at your data or results) understands what each value represent.</p>
+            <p class="text-break">Example: In the sample dataset, the variable Rank represents the student's class rank. The values 1, 2, 3, 4 represent the categories Freshman, Sophomore, Junior, and Senior, respectively.</p>
+          </blockquote>
+          <figcaption class="blockquote-footer">
+            Clippy
+          </figcaption>
+        </figure>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  $(document).ready(function () {
+  $(document).ready(function() {
+    const pattern = /^[a-zA-Z@][a-zA-Z0-9@#\$,._]*[a-zA-Z0-9@#\$,._]?$/;
+    const reservedKeywords = new Set(["ALL", "AND", "BY", "EQ", "GE", "GT", "LE", "LT", "NE", "NOT", "OR", "TO", "WITH",
+                                     "S1", "E1", "C1", "NET", "SUB", "TN", "CALC"]);
     let currentInput = null;
     // let currentVal = 1; // Increment row count each time
 
@@ -177,10 +270,13 @@
       // Populate html for new row
       const newValue =
         `<div class="row g-0 row-cols-4">
-            <div class="col-3"><input class="form-control rounded-0" name="value[]" type="number" placeholder="Value" aria-label="Variable value input"></div>
-            <div class="col-3"><input class="form-control rounded-0" name="label[]" type="text" placeholder="Label" aria-label="Variable label input"></div>
-            <div class="col-6"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input"></div>
-          </div>`;
+          <div class="col-3"><input class="form-control rounded-0 validate-field" name="value[]" type="number" placeholder="Value" aria-label="Variable value input"></div>
+          <div class="col-3"><input class="form-control rounded-0" name="label[]" type="text" placeholder="Label" aria-label="Variable label input"></div>
+          <div class="col-5"><input class="form-control rounded-0" name="eg[]" type="text" placeholder="Example" aria-label="Variable example input"></div>
+          <div class="col-1">
+            <button type="button" class="btn btn-danger p-1" name="deleteValue-{{ value.id }}" id="delete-btn" style="width: 3rem;"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>`;
       // Add new row to bottom of rows
       $('#value-rows').append(newValue);
     });
@@ -201,16 +297,88 @@
       $('#value-rows ul:not(:first-child)').remove();
     });
 
+    // Listen for return button click
+    $('#return-btn').on('click', function () {
+      console.log("return");
+      $('#edit-action').val('return');
+    });
+
     // Listen for save button click
     $('#save-variable').on('click', function () {
       console.log("save");
       $('#edit-action').val('save');
     });
 
+    // Listen for cancel button click
+    $('#cancel-variable').on('click', function () {
+      console.log("cancel");
+      location.reload();
+    });
+
     // Listen for delete button click
     $('#delete-variable').on('click', function () {
       console.log("delete");
-      $('#edit-action').val('delete');
+      $('#delete-action').val('delete');
+    });
+
+    // Listen for previous button click
+    $('#prev-btn').on('click', function () {
+      console.log("previous");
+      $('#edit-action').val('previous');
+    });
+
+    // Listen for next button click
+    $('#next-btn').on('click', function () {
+      console.log("next");
+      $('#edit-action').val('next');
+    });
+
+    function validateInput(input) {
+      if (input.type === 'text') {
+        const value = input.value.toUpperCase();
+        if (!pattern.test(value) || reservedKeywords.has(value)) {
+          input.setCustomValidity("Invalid input or reserved keyword.");
+          input.classList.add('is-invalid');
+          // input.classList.remove('is-valid');
+        } else {
+          input.setCustomValidity("");
+          // input.classList.add('is-valid');
+          input.classList.remove('is-invalid');
+        }
+      } else if (input.type === 'number') {
+        if (isNaN(input.value) || input.value.trim() === '') {
+          input.setCustomValidity("Please enter a valid number.");
+          input.classList.add('is-invalid');
+          // input.classList.remove('is-valid');
+        } else {
+          input.setCustomValidity("");
+          // input.classList.add('is-valid');
+          input.classList.remove('is-invalid');
+        }
+      }
+    }
+
+    $('.needs-validation').on('submit', function(event) {
+      const form = this;
+      let isValid = true;
+
+      $('.validate-field').each(function() {
+        validateInput(this);
+        if (!this.checkValidity()) {
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      $(this).addClass('was-validated');
+    });
+
+    $('.validate-field').on('input', function() {
+      validateInput(this);
     });
   });
 </script>
