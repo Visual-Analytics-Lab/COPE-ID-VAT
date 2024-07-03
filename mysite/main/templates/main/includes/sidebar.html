@@ -28,10 +28,12 @@
       <!-- Inbox -->
       <a class="btn btn-secondary d-inline-flex justify-content-center" id="inbox-btn" href="/inbox" style="width: 7rem;">Inbox</a>
     </li>
+    {% if sys_admin %}
     <li class="mb-1" style="height: 3rem;">
       <!-- Users -->
       <a class="btn btn-secondary d-inline-flex justify-content-center" href="/users" id="users-btn" style="width: 7rem;">Users</a>
     </li>
+    {% endif %}
     <li class="mb-1" style="height: 3rem;">
       <!-- Data Grid -->
       <a class="btn btn-secondary d-inline-flex justify-content-center" href="/datagrid" style="width: 7rem;">Data Grid</a>
