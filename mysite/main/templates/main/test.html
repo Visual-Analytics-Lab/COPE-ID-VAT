@@ -3,58 +3,102 @@
 {% block content %}
 
 <div class="container-fluid" style="height: 50rem;">
-
   <!-- Row 1 -->
-  <div class="row" style="height: 50rem; background-color: blue;">
-
-    <!-- Row 1 Column 1 -->
-
-
-      <div class="flex-shrink-0 p-3" style="width: 10rem; background-color: red;">
-        <ul class="list-unstyled ps-0">
-          <li class="mb-1">
-            <!-- Explore -->
-            <a class="btn btn-secondary d-inline-flex justify-content-center" href="/" id="explore-btn" style="width: 7rem;">Explore</a>
-          </li>
-          <li class="mb-1">
-            <!-- My Projects -->
-            <a class="btn btn-secondary d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn" style="width: 7rem;">My Projects</a>
-            <button class="btn btn-secondary d-inline-flex align-items-center rounded border-0 collapsed d-none" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true">
-              Dashboard
-            </button>
-            <div class="collapse show" id="dashboard-collapse">
-              <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-                <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Overview</a></li>
-                <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Weekly</a></li>
-                <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Monthly</a></li>
-                <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Annually</a></li>
-              </ul>
-            </div>
-          </li>
-          <li class="mb-1" style="height: 3rem;">
-            <!-- Inbox -->
-            <a class="btn btn-secondary d-inline-flex justify-content-center" id="inbox-btn" href="/inbox" style="width: 7rem;">Inbox</a>
-          </li>
-          <li class="mb-1" style="height: 3rem;">
-            <!-- Users -->
-            <a class="btn btn-secondary d-inline-flex justify-content-center" href="/users" id="users-btn" style="width: 7rem;">Users</a>
-          </li>
-          <li class="mb-1" style="height: 3rem;">
-            <!-- Data Grid -->
-            <a class="btn btn-secondary d-inline-flex justify-content-center" href="/datagrid" style="width: 7rem;">Data Grid</a>
-          </li>
-
-        </ul>
+  <div class="row" style="height: 50rem;">
+    <form method="post" class="row align-items-center needs-validation" novalidate>
+      {% csrf_token %}
+      <div class="col-12">
+        <label for="input-type-1" class="form-label">Input 1</label>
+        <input type="text" name="variable-name-input" class="form-control validate-field" id="input-type-1" required>
+        <div class="valid-tooltip">
+          Looks good!
+        </div>
+        <div class="invalid-tooltip">
+          Invalid input or reserved keyword.
+        </div>
       </div>
-
-
-    <!-- Row 1 Column 2 -->
-    <div class="col content w-auto">
-
-
-    </div>
-
+      <div class="col-12">
+        <label for="input-type-2" class="form-label">Input 2</label>
+        <input type="text" name="variable-name-input" class="form-control validate-field" id="input-type-2" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <div class="invalid-feedback">
+          Invalid input or reserved keyword.
+        </div>
+      </div>
+      <div class="col-12">
+        <label for="variable-name-input3" class="form-label">Variable Name</label>
+        <input type="number" name="variable-name-input" class="form-control validate-field" id="variable-number-input" required>
+        <div class="valid-feedback">
+          Looks good!
+        </div>
+        <div class="invalid-feedback">
+          Invalid input or reserved keyword.
+        </div>
+      </div>
+      <div class="col-12">
+        <button class="btn btn-primary" type="submit">Submit form</button>
+      </div>
+    </form>
   </div>
 </div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  $(document).ready(function() {
+    const pattern = /^[a-zA-Z@][a-zA-Z0-9@#\$,._]*[a-zA-Z0-9@#\$,._]?$/;
+    const reservedKeywords = new Set(["ALL", "AND", "BY", "EQ", "GE", "GT", "LE", "LT", "NE", "NOT", "OR", "TO", "WITH",
+                                     "S1", "E1", "C1", "NET", "SUB", "TN", "CALC"]);
+
+    function validateInput(input) {
+      if (input.type === 'text') {
+        const value = input.value.toUpperCase();
+        if (!pattern.test(value) || reservedKeywords.has(value)) {
+          input.setCustomValidity("Invalid input or reserved keyword.");
+          input.classList.add('is-invalid');
+          input.classList.remove('is-valid');
+        } else {
+          input.setCustomValidity("");
+          input.classList.add('is-valid');
+          input.classList.remove('is-invalid');
+        }
+      } else if (input.type === 'number') {
+        if (isNaN(input.value) || input.value.trim() === '') {
+          input.setCustomValidity("Please enter a valid number.");
+          input.classList.add('is-invalid');
+          input.classList.remove('is-valid');
+        } else {
+          input.setCustomValidity("");
+          input.classList.add('is-valid');
+          input.classList.remove('is-invalid');
+        }
+      }
+    }
+
+    $('.needs-validation').on('submit', function(event) {
+      const form = this;
+      let isValid = true;
+
+      $('.validate-field').each(function() {
+        validateInput(this);
+        if (!this.checkValidity()) {
+          isValid = false;
+        }
+      });
+
+      if (!isValid) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      $(this).addClass('was-validated');
+    });
+
+    $('.validate-field').on('input', function() {
+      validateInput(this);
+    });
+  });
+</script>
 
 {% endblock %}
