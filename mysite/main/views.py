@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Tutorial, sample_data, bert_main_sample_data, User, organization_model, project_model, role_model, \
-    permission_model, user_project_model, coding_variable, coding_value, inbox_model
+    permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
@@ -62,8 +62,17 @@ def myProjects(request):
     # Fetch user's projects from database
     user_projects = user_project_model.objects.filter(user=request.user)
 
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
+    
+    if favorite_list:
+        print("TRUE")
+    else:
+        print("FALSE")
+
     context = {
         'user_projects': user_projects,
+        'favorite_list': favorite_list,
     }
     return render(request, 'main/myProjects.html', context)
 
@@ -75,9 +84,13 @@ def myProjects(request):
 def myProjects_units(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
+
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
     
     context = {
         'project': project,
+        'favorite_list': favorite_list,
     }
     return render(request, 'main/myProjectsTabs/units.html', context)
 
@@ -90,11 +103,14 @@ def myProjects_codebook(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
+
     # Check user permissions
     has_edit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='edit-codebook').exists()
 
     # Fetch project variables from database
-    coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values')
+    coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_id')
 
     # Check if form was submitted
     if request.method == 'POST':
@@ -127,6 +143,7 @@ def myProjects_codebook(request, project_id):
 
     context = {
         'project': project,
+        'favorite_list': favorite_list,
         'coding_variables': coding_variables,
         'has_edit_permission': has_edit_permission,
     }
@@ -142,6 +159,9 @@ def myProjects_codebook(request, project_id):
 def myProjects_addVariable(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, pk=project_id)
+
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
 
     # Fetch measurement types from database
     measurements = coding_variable.get_measurements_list()
@@ -199,6 +219,7 @@ def myProjects_addVariable(request, project_id):
 
     context = {
         'project': project,
+        'favorite_list': favorite_list,
         'measurements': measurements,
     }
     return render(request, 'main/myProjectsTabs/addVariable.html', context)
@@ -213,27 +234,50 @@ def myProjects_editVariable(request, project_id, variable_id):
     # Fetch project from database
     project = get_object_or_404(project_model, pk=project_id)
 
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
+
     # Fetch variable from database
     variable = get_object_or_404(coding_variable, variable_id=variable_id)
     
     # Fetch measurement types from database
     measurements = coding_variable.get_measurements_list()
 
+    variables = list(coding_variable.objects.all().order_by('variable_id'))
+
+    # Get index of document being viewed
+    current_index = next((index for (index, v) in enumerate(variables) if v.variable_id == variable_id), None)
+
+    # Return if index is not found
+    if current_index is None:
+        return redirect('main:myProjects_codebook', project_id=project.project_id)
+    
+    # Check that previous index exists
+    if current_index > 0:
+        previous_var_id = variables[current_index - 1].variable_id
+    else:
+        previous_var_id = None
+
+    # Check that next index exists
+    if current_index < len(variables) - 1:
+        next_var_id = variables[current_index + 1].variable_id
+    else:
+        next_var_id = None
+
     # Check if form was submitted
     if request.method == 'POST':
         # Get action from HTTP POST request
         action = request.POST.get("edit-action")
 
-        # Check if variable ID is in form
+        # Check if an action exists
+        if not action:
+            # Check if action is delete
+            action = request.POST.get("delete-action")
+
+        # Check if action is delete
         if action == "delete":
-            # Get variable ID from HTTP POST request
-            id = request.POST.get('variable-id')
-
-            # Get project ID from HTTP POST request
-            project_id = request.POST.get('project-id')
-
             # Fetch variable from database
-            variable = get_object_or_404(coding_variable, pk=id, variable_project=project_id)
+            variable = get_object_or_404(coding_variable, pk=variable_id, variable_project=project.project_id)
 
             # Delete the variable
             variable.delete()
@@ -241,15 +285,10 @@ def myProjects_editVariable(request, project_id, variable_id):
             # Redirect/refresh page after form submission
             return redirect('main:myProjects_codebook', project_id=project.project_id)
 
+        # Action is save
         else:
-            # Get variable ID from HTTP POST request
-            id = request.POST.get('variable-id')
-
-            # Get project ID from HTTP POST request
-            project_id = request.POST.get('project-id')
-
             # Fetch variable from database
-            variable = get_object_or_404(coding_variable, pk=id, variable_project=project_id)
+            variable = get_object_or_404(coding_variable, pk=variable_id, variable_project=project_id)
 
             # Get variable name from HTTP POST request
             variable.variable_name = request.POST.get('variable-name')
@@ -282,12 +321,23 @@ def myProjects_editVariable(request, project_id, variable_id):
             # Save new variable instance
             variable.save()
 
+            # If save, return to codebook
+            if action == "save":
+                return redirect('main:myProjects_codebook', project_id=project.project_id)
+            elif action == "previous":
+                return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=previous_var_id)
+            elif action == "next":
+                return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=next_var_id)
+            
         # Redirect/refresh page after form submission
         return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=variable_id)
 
     context = {
         'project': project,
+        'favorite_list': favorite_list,
         'variable': variable,
+        'previous_var_id': previous_var_id,
+        'next_var_id': next_var_id,
         'measurements': measurements,
     }
     return render(request, 'main/myProjectsTabs/editVariable.html', context)
@@ -303,8 +353,12 @@ def myProjects_irr(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
+
     context = {
         'project': project,
+        'favorite_list': favorite_list,
     }
     return render(request, 'main/myProjectsTabs/irr.html', context)
 
@@ -319,6 +373,9 @@ def myProjects_editProject(request, project_id):
 
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
+
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
 
     # Fetch project users from database
     users = user_project_model.objects.filter(project=project).select_related('user')
@@ -420,6 +477,7 @@ def myProjects_editProject(request, project_id):
     context = {
         'active_user': active_user,
         'project': project,
+        'favorite_list': favorite_list,
         'users': users,
         'roles': roles,
         'has_addedit_permission': has_addedit_permission,
@@ -440,6 +498,9 @@ def myProjects_userProfile(request, project_id, user_id):
 
     # Fetch user with key
     user = get_object_or_404(User, pk=user_id)
+
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
 
     # Fetch user project instance from database
     user_project = user_project_model.objects.prefetch_related('permissions').get(user=user, project=project_id)
@@ -493,6 +554,7 @@ def myProjects_userProfile(request, project_id, user_id):
 
     context = {
         'project': project,
+        'favorite_list': favorite_list,
         'user': user,
         'roles': roles,
         'user_project': user_project,
@@ -510,8 +572,12 @@ def myProjects_sampleResults(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
+
     context = {
         'project': project,
+        'favorite_list': favorite_list,
     }
     return render(request, 'main/myProjectsTabs/sampleResults.html', context)
 
@@ -522,6 +588,9 @@ def myProjects_sampleResults(request, project_id):
 def inbox(request):
     # Fetch user's messages from database
     inbox = inbox_model.objects.filter(recipient=request.user).exclude(declined=True)
+
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
 
     # Check if form was submitted
     if request.method == 'POST':
@@ -566,6 +635,7 @@ def inbox(request):
 
     context = {
         'inbox': inbox,
+        'favorite_list': favorite_list,
     }
     return render(request, 'main/inbox.html', context)
 
@@ -578,9 +648,12 @@ def users(request):
 
     users = User.objects.all()
 
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
+
     context = {
         'users': users,
-
+        'favorite_list': favorite_list,
     }
     return render(request, 'main/users.html', context)
 
@@ -633,7 +706,7 @@ def docInfo(request):
     if current_index < len(docs) - 1:
         next_doc_id = docs[current_index + 1].id
     else:
-        previous_doc_id = None
+        next_doc_id = None
 
     doc = docs[current_index]
 
@@ -655,6 +728,15 @@ def docInfo(request):
 # =============================================================
 
 def test(request):
-        test = None
+    test = None
 
-        return render(request, 'main/test.html', {'test': test})
+    # Fetch user's favorite projects from database
+    favorite_list = request.user.favorite_projects.all()
+
+    context = {
+        'test': test,
+        'favorite_list': favorite_list,
+    }
+        
+    return render(request, 'main/test.html', context)
+

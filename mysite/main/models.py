@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 import uuid
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import slugify
@@ -41,8 +41,8 @@ class sample_data(models.Model):
 # =============================================================
 
 class bert_main_sample_data(models.Model):
-    topic_id = models.AutoField(primary_key=True)
-    # topic_id = models.IntegerField(primary_key=True)
+    # topic_id = models.AutoField(primary_key=True) # Josh
+    topic_id = models.IntegerField(primary_key=True) # Jacob
     topic_name = models.TextField()
     documents = models.CharField()
  
@@ -89,6 +89,29 @@ class project_model(models.Model):
     class Meta:
         verbose_name = "Project"
         verbose_name_plural = "Projects"
+
+
+
+class project_list_model(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(project_model, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'project')
+        verbose_name = "Favorite Project"
+        verbose_name_plural = "Favorite Projects"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.project.project_name}"
+
+User.add_to_class('favorite_projects', models.ManyToManyField(project_model, through=project_list_model, related_name='favorited_by'))
+
+@receiver(m2m_changed, sender=User.favorite_projects.through)
+def limit_favorite_projects(sender, instance, action, **kwargs):
+    if action == 'pre_add':
+        if instance.favorite_projects.count() >= 3:
+            raise ValueError("A user can have at most 3 favorite projects.")
 
 # =============================================================
 # Role Model
@@ -184,7 +207,7 @@ def reset_permissions_post_save(sender, instance, **kwargs):
 
 class coding_variable(models.Model):
     variable_id = models.AutoField(primary_key=True)
-    variable_name = models.CharField(max_length=128, null=False, blank=False)
+    variable_name = models.CharField(max_length=64, null=False, blank=False)
     variable_description = models.TextField(max_length=128, default='')
     variable_project = models.ForeignKey(project_model, on_delete=models.CASCADE)
 
