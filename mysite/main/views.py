@@ -8,6 +8,7 @@ from django.core.paginator import Paginator
 from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch
 from .models import Tutorial, sample_data, bert_main_sample_data, User, organization_model, project_model, role_model, \
     permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model
+from .utils import favorite_projects_list
 from user_management.utils import sys_admin_test
 
 # =============================================================
@@ -18,16 +19,14 @@ def homepage(request):
     distinct_platforms = sample_data.objects.values_list('doc_source', flat=True).distinct()
     distinct_topics = bert_main_sample_data.objects.values_list('topic_name', flat=True).distinct()
 
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
-
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         "tutorials":Tutorial.objects.all,
         "distinct_platforms": distinct_platforms,
         "distinct_topics": distinct_topics,
         "favorite_list": favorite_list,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     
     return render(request, 'main/home.html', context)
@@ -38,8 +37,6 @@ def homepage(request):
 
 @login_required
 def addProject(request):
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
 
     print('in add project')
     if request.method == 'POST':
@@ -64,10 +61,11 @@ def addProject(request):
     
     print("no post")
 
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         "favorite_list": favorite_list,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     
     return render(request, 'main/addproject.html', context)
@@ -80,15 +78,13 @@ def addProject(request):
 def myProjects(request):
     # Fetch user's projects from database
     user_projects = user_project_model.objects.filter(user=request.user)
-
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
     
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'user_projects': user_projects,
         'favorite_list': favorite_list,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjects.html', context)
 
@@ -101,14 +97,12 @@ def myProjects_units(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
-    
+    favorite_list = favorite_projects_list(request.user)    
     sys_admin = sys_admin_test(request.user)
     context = {
         'project': project,
         'favorite_list': favorite_list,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjectsTabs/units.html', context)
 
@@ -118,14 +112,17 @@ def myProjects_units(request, project_id):
 
 @login_required
 def myProjects_codebook(request, project_id):
+    pi = False 
+
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
-
     # Check user permissions
     has_edit_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='edit-codebook').exists()
+
+    # Check if active user is the PI
+    if request.user == project.principal_investigator:
+        pi = True
 
     # Fetch project variables from database
     coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_id')
@@ -159,13 +156,15 @@ def myProjects_codebook(request, project_id):
         # Redirect/refresh page after form submission
         return redirect(request.path_info)
 
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'project': project,
         'favorite_list': favorite_list,
         'coding_variables': coding_variables,
         'has_edit_permission': has_edit_permission,
-        "sys_admin": sys_admin,
+        'pi': pi,
+        'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjectsTabs/codebook.html', context)
 
@@ -179,9 +178,6 @@ def myProjects_codebook(request, project_id):
 def myProjects_addVariable(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, pk=project_id)
-
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
 
     # Fetch measurement types from database
     measurements = coding_variable.get_measurements_list()
@@ -237,12 +233,13 @@ def myProjects_addVariable(request, project_id):
             # Redirect/refresh page after form submission
             return redirect('main:myProjects_codebook', project_id=project.project_id)
 
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'project': project,
         'favorite_list': favorite_list,
         'measurements': measurements,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjectsTabs/addVariable.html', context)
 
@@ -255,9 +252,6 @@ def myProjects_addVariable(request, project_id):
 def myProjects_editVariable(request, project_id, variable_id):
     # Fetch project from database
     project = get_object_or_404(project_model, pk=project_id)
-
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
 
     # Fetch variable from database
     variable = get_object_or_404(coding_variable, variable_id=variable_id)
@@ -354,6 +348,7 @@ def myProjects_editVariable(request, project_id, variable_id):
         # Redirect/refresh page after form submission
         return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=variable_id)
 
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'project': project,
@@ -362,7 +357,7 @@ def myProjects_editVariable(request, project_id, variable_id):
         'previous_var_id': previous_var_id,
         'next_var_id': next_var_id,
         'measurements': measurements,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjectsTabs/editVariable.html', context)
 
@@ -377,14 +372,12 @@ def myProjects_irr(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
-
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'project': project,
         'favorite_list': favorite_list,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjectsTabs/irr.html', context)
 
@@ -394,14 +387,13 @@ def myProjects_irr(request, project_id):
 
 @login_required
 def myProjects_editProject(request, project_id):
+    pi = False
+
     # Get active user from request
     active_user = request.user
 
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
-
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
 
     # Fetch project users from database
     users = user_project_model.objects.filter(project=project).select_related('user')
@@ -414,6 +406,10 @@ def myProjects_editProject(request, project_id):
     has_edit_user_privileges = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='edit-project-users-privileges').exists()
     has_download_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='codebook-all-variables-values-labels-etc').exists()
     has_delete_permission = user_project_model.objects.filter(user=request.user, project=project, permissions__permission_slug='delete-the-project').exists()
+
+    # Check if active user is the PI
+    if request.user == project.principal_investigator:
+        pi = True
 
     # Check if form was submitted
     if request.method == 'POST':
@@ -486,7 +482,15 @@ def myProjects_editProject(request, project_id):
                 user_project.role = role
                 user_project.save()
                 user_project.reset_permissions()
+        elif 'project-name' in request.POST:
+            # Get project name from HTTP POST request
+            new_name = request.POST.get('project-name')
 
+            # Set new project name
+            project.project_name = new_name
+
+            # Save new project name
+            project.save()
         else:
             # Get project description from HTTP POST request
             new_description = request.POST.get('project-description')
@@ -500,6 +504,7 @@ def myProjects_editProject(request, project_id):
         # Redirect/refresh page after form submission
         return redirect('main:myProjects_editProject', project_id=project.project_id)
     
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'active_user': active_user,
@@ -511,7 +516,8 @@ def myProjects_editProject(request, project_id):
         'has_edit_user_privileges': has_edit_user_privileges,
         'has_download_permission': has_download_permission,
         'has_delete_permission': has_delete_permission,
-        "sys_admin": sys_admin,
+        'pi': pi,
+        'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjectsTabs/editProject.html', context)
 
@@ -526,9 +532,6 @@ def myProjects_userProfile(request, project_id, user_id):
 
     # Fetch user with key
     user = get_object_or_404(User, pk=user_id)
-
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
 
     # Fetch user project instance from database
     user_project = user_project_model.objects.prefetch_related('permissions').get(user=user, project=project_id)
@@ -580,6 +583,7 @@ def myProjects_userProfile(request, project_id, user_id):
         # Redirect/refresh page after form submission
         return redirect('main:myProjects_userProfile', project_id=project.project_id, user_id=user_id)
 
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'project': project,
@@ -588,7 +592,7 @@ def myProjects_userProfile(request, project_id, user_id):
         'roles': roles,
         'user_project': user_project,
         'permissions': permissions,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     
     return render(request, 'main/myProjectsTabs/userProfile.html', context)
@@ -602,14 +606,12 @@ def myProjects_sampleResults(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
-
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'project': project,
         'favorite_list': favorite_list,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjectsTabs/sampleResults.html', context)
 
@@ -620,9 +622,6 @@ def myProjects_sampleResults(request, project_id):
 def inbox(request):
     # Fetch user's messages from database
     inbox = inbox_model.objects.filter(recipient=request.user).exclude(declined=True)
-
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
 
     # Check if form was submitted
     if request.method == 'POST':
@@ -664,11 +663,12 @@ def inbox(request):
 
         return redirect('main:inbox')
 
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'inbox': inbox,
         'favorite_list': favorite_list,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     return render(request, 'main/inbox.html', context)
 
@@ -751,14 +751,12 @@ def docInfo(request):
 def test(request):
     test = None
 
-    # Fetch user's favorite projects from database
-    favorite_list = request.user.favorite_projects.all()
-
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'test': test,
         'favorite_list': favorite_list,
-        "sys_admin": sys_admin,
+        'sys_admin': sys_admin,
     }
     
     return render(request, 'main/test.html', context)

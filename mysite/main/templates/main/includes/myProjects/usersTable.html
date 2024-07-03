@@ -48,7 +48,7 @@
             <!-- Enable edit options -->
             {% if user.user != project.principal_investigator %}
             <!-- First & Last Name -->
-            <th scope="row"><a class="icon-link" href="{% url 'main:myProjects_userProfile' project.project_id user.user.id %}"><i class="bi bi-pencil-square"></i>{{ user.user.first_name }} {{ user.user.last_name }}</a></th>
+            <th scope="row"><a class="link-secondary icon-link link-underline-opacity-25 link-underline-opacity-100-hover" href="{% url 'main:myProjects_userProfile' project.project_id user.user.id %}"><i class="bi-pencil-square"></i>{{ user.user.first_name }} {{ user.user.last_name }}</a></th>
 
             <!-- Role -->
             <td>{% include 'main/includes/myProjects/editUserModal.html' %}</td>
@@ -73,7 +73,7 @@
             <td>{{ user.user.last_login }}</td>
 
             <!-- Email -->
-            <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi bi-envelope"></i></i>{{ user.user.email }}</a></td>
+            <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi-envelope"></i></i>{{ user.user.email }}</a></td>
 
             <!-- Action -->
             <td>{% include 'main/includes/myProjects/deleteUserModal.html' %}</td>

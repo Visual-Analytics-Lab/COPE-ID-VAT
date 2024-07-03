@@ -19,7 +19,14 @@
       <div class="row text-center" style="height: 6vh;">
 
         <!-- Page Title -->
-        <h2 class="border-bottom">Edit {{ project.project_name }}</h2>
+        <h2 class="border-bottom">
+          Edit {{ project.project_name }} 
+          {% if pi %}
+            <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProjectName">
+              <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
+            </button>
+          {% endif %}
+        </h2>
 
       </div>
 
@@ -60,7 +67,13 @@
 
           <!-- Display Project Description -->
           <blockquote class="blockquote">
-            <p>{{ project.project_description }} <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editDescription"><i class="bi bi-pencil text-secondary" fill="currentColor"></i></button></p>
+            <p>{{ project.project_description }} 
+              {% if pi %}
+                <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editDescription">
+                  <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
+                </button>
+              {% endif %}
+            </p>
           </blockquote>
         </div>
 
@@ -114,20 +127,24 @@
   </div>
 </div>
 
-<!-- Edit Project Description Modal -->
-<div class="modal fade" id="editDescription" tabindex="-1" aria-labelledby="editDescriptionLabel" aria-hidden="true">
+
+
+
+{% if pi %}
+<!-- Edit Project Title Modal -->
+<div class="modal fade" id="editProjectName" tabindex="-1" aria-labelledby="editProjectNameLabel" aria-hidden="true">
   <form method="post">
     {% csrf_token %}
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <!-- Title -->
-          <h1 class="modal-title fs-5" id="editDescriptionLabel">Edit Project Description</h1>
+          <h1 class="modal-title fs-5" id="editProjectNameLabel">Edit Project Name</h1>
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body" id="project-description">
+        <div class="modal-body">
           <!-- Input -->
-          <textarea class="form-control" name="project-description" id="project-description" rows="3">{{ project.project_description }}</textarea>
+          <input type="text" class="form-control border-0" name="project-name" id="project-name" placeholder="Project Name" aria-label="Project Name" value="{{ project.project_name }}">
         </div>
         <div class="modal-footer">
           <!-- Cancel & Save Buttons -->
@@ -139,5 +156,35 @@
   </form>
 </div>
 
+
+
+
+
+<!-- Edit Project Description Modal -->
+<div class="modal fade" id="editDescription" tabindex="-1" aria-labelledby="editDescriptionLabel" aria-hidden="true">
+  <form method="post">
+    {% csrf_token %}
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <!-- Title -->
+          <h1 class="modal-title fs-5" id="editDescriptionLabel">Edit Project Description</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <!-- Input -->
+          <textarea class="form-control border-0" name="project-description" id="project-description" rows="3">{{ project.project_description }}</textarea>
+          <small class="text-body-secondary">Project descriptions are public and shared with users when invited.</small>
+        </div>
+        <div class="modal-footer">
+          <!-- Cancel & Save Buttons -->
+          <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-success">Save</button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+{% endif %}
 
 {% endblock %}
