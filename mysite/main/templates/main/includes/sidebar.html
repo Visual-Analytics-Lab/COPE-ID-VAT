@@ -11,11 +11,16 @@
         Dashboard
       </button>
       <div class="collapse show" id="dashboard-collapse">
-        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 1</a></li>
-          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 2</a></li>
-          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 3</a></li>
-          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 4</a></li>
+        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small text-center">
+          {% if project %}
+            <li class="text-truncate" style="width: 7rem;"><a href="{% url 'main:myProjects_units' project.project_id %}" class="link-body-emphasis link-underline-secondary d-inline-flex rounded px-0 mx-0">{{ project.project_name }}</a></li>
+          {% endif %}
+
+          {% if favorite_list %}
+            {% for favorite in favorite_list %}
+              <li><a href="{% url 'main:myProjects_units' favorite.project_id %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded px-0 mx-0">{{ favorite.project_name }}</a></li>
+            {% endfor %}
+          {% endif %}
         </ul>
       </div>
     </li>
