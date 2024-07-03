@@ -90,7 +90,9 @@ class project_model(models.Model):
         verbose_name = "Project"
         verbose_name_plural = "Projects"
 
-
+# =============================================================
+# Project List Model
+# =============================================================
 
 class project_list_model(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
