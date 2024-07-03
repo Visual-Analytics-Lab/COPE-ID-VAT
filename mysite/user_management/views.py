@@ -1,13 +1,25 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
 from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import logout, authenticate, login
-from django.contrib import messages
-from .forms import NewUserForm, CreateGroupForm, AccountUpdateForm, PasswordChangeForm
-from django.contrib.auth.models import User, Group, Permission
-from django.contrib.contenttypes.models import ContentType
+from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import update_session_auth_hash
+from django.contrib import messages
+from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.contenttypes.models import ContentType
 from django import forms
+from django.views.generic import ListView, View
+from django.db.models import OuterRef, Exists, Prefetch
+from django.contrib.postgres.aggregates import StringAgg
+from .models import UserProfile
+from .forms import NewUserForm, CreateGroupForm, AccountUpdateForm, PasswordChangeForm
+from .utils import sys_admin_test
+from main.models import User, organization_model, project_list_model, user_project_model
+
+# =============================================================
+# Register
+# =============================================================
 
 def register(request):
     if request.method == "POST":
@@ -32,11 +44,18 @@ def register(request):
                   template_name = "main/register.html",
                   context={"form":form})
 
+# =============================================================
+# Logout
+# =============================================================
+
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully")
     return redirect("main:homepage")
 
+# =============================================================
+# Login
+# =============================================================
 
 def login_request(request):
     if request.method == 'POST':
@@ -58,9 +77,17 @@ def login_request(request):
                     template_name = "main/login.html",
                     context={"form":form})
 
+# =============================================================
+# Account
+# =============================================================
+
 @login_required
 def account(request):
     return render(request, 'user_management/account.html')
+
+# =============================================================
+# Account - Update
+# =============================================================
 
 @login_required
 def account_update(request):
@@ -80,6 +107,10 @@ def account_update(request):
         account_form = AccountUpdateForm(instance=request.user)
         password_form = PasswordChangeForm(request.user)
     return render(request, 'user_management/account_update.html', {'account_form': account_form, 'password_form': password_form})
+
+# =============================================================
+# Password Update
+# =============================================================
 
 @login_required
 class PasswordUpdateForm(PasswordChangeForm):
@@ -104,6 +135,10 @@ class PasswordUpdateForm(PasswordChangeForm):
         for fieldname in ['old_password', 'new_password1', 'new_password2']:
             self.fields[fieldname].help_text = None
 
+# =============================================================
+# Manage Users
+# =============================================================
+
 def manage_users(request):
     if not request.user.is_staff:
         return redirect('home')  # Redirect unauthorized users
@@ -126,6 +161,10 @@ def manage_users(request):
     }
     return render(request, 'user_management/manage_users.html', context)
 
+# =============================================================
+# Create Group
+# =============================================================
+
 def create_group(request):
     if request.method == 'POST':
         print('POST request')
@@ -147,3 +186,90 @@ def create_group(request):
         print("not a post request..")
         form = CreateGroupForm()
     return render(request, 'user_management/create_group.html', {'create_group_form': form})
+
+# =============================================================
+# Users
+# =============================================================
+
+class UsersListView(LoginRequiredMixin, UserPassesTestMixin, ListView):
+    model = User
+    template_name = 'user_management/users.html'
+    context_object_name = 'users'
+
+    # Query sets for table
+    def get_queryset(self):
+        authorized_group = Group.objects.get(name='Authorized Tool User')
+        admin_group = Group.objects.get(name='System Admin')
+
+        users = User.objects.prefetch_related(
+            Prefetch('groups', queryset=Group.objects.all())
+        ).annotate(
+            is_authorized=Exists(authorized_group.user_set.filter(id=OuterRef('id'))),
+            is_admin=Exists(admin_group.user_set.filter(id=OuterRef('id'))),
+            organizations=StringAgg('organization_users__org_name', delimiter=', ')
+        )
+        
+        return users
+
+    # Fetch context data from the database
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['favorite_list'] = self.request.user.favorite_projects.all()
+        context['sys_admin'] = sys_admin_test(self.request.user)
+        return context
+
+    # Check if user is system admin
+    def test_func(self):
+        return self.request.user.groups.filter(name='System Admin').exists()
+    
+    # Redirect to 403 page
+    def handle_no_permission(self):
+        return render(self.request, 'main/403.html', status=403)
+    
+# =============================================================
+# Users - Update & Delete
+# =============================================================
+
+class UserGroupUpdateView(LoginRequiredMixin, UserPassesTestMixin, View):
+
+    # Check if user is system admin
+    def test_func(self):
+        return self.request.user.groups.filter(name='System Admin').exists()
+
+    # Redirect to 403 page
+    def handle_no_permission(self):
+        return render(self.request, 'main/403.html', status=403)
+
+    # Handle POST request
+    def post(self, request, user_id):
+        user = get_object_or_404(User, pk=user_id)
+        authorized_group = Group.objects.get(name='Authorized Tool User')
+        admin_group = Group.objects.get(name='System Admin')
+
+        # Delete User check
+        if 'delete-user' in request.POST:
+            # Delete user
+            user.delete()
+
+        # Update User check
+        elif 'update-user' in request.POST:
+            
+            # Authorized User group check
+            if 'authorized' in request.POST:
+                # Add Authorized Tool User group
+                if request.POST['authorized'] == 'on':
+                    user.groups.add(authorized_group)
+            else:
+                # Remove Authorized Tool User group
+                user.groups.remove(authorized_group)
+
+            # System Admin group check
+            if 'admin' in request.POST:
+                # Add System Admin group
+                if request.POST['admin'] == 'on':
+                    user.groups.add(admin_group)
+            else:
+                # Remove System Admin group
+                user.groups.remove(admin_group)
+
+        return HttpResponseRedirect(reverse('user_management:users'))  # Redirect back to the user list

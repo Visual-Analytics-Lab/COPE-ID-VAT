@@ -35,8 +35,8 @@
           <form>
 
             <div class="input-group mb-3">
-              <span class="input-group-text" id="filter-label">Filter</span>
-              <input type="text" class="form-control" placeholder="Filter..." aria-label="Filter" aria-describedby="filter-label">
+              <span class="input-group-text" id="search-label">Search</span>
+              <input type="text" class="form-control" placeholder="Search..." aria-label="Search" aria-describedby="search-label">
             </div>
 
           </form>
@@ -45,25 +45,11 @@
       </div>
 
       <!-- Row 1 Column 2 Row 3 -->
-      <div class="row pb-1 px-1" style="height: 6vh;">
-
-        <div class="col-2">
-          <!-- <a class="btn btn-success w-100 my-1 text-truncate overflow-hidden" role="button" aria-label="Add Project User"><i class="bi bi-plus-circle"></i> Add Project User</a> -->
-          {% include 'main/includes/users/addUserModal.html' %}
-        </div>
-
-        <div class="col-10">
-          <div class="d-none">placeholder</div>
-        </div>
-
-      </div>
-
-      <!-- Row 1 Column 2 Row 4 -->
-      <div class="row" style="height: 76vh;">
+      <div class="row" style="height: 82vh;">
 
         <div class="col px-3">
 
-          {% include 'main/includes/users/usersTable.html' %}
+          {% include 'user_management/includes/usersTable.html' %}
 
         </div>
 
