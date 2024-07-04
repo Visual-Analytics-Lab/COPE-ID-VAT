@@ -1,66 +1,66 @@
 <!DOCTYPE html>
 <html>
 
-    <head>
-        {% load static %}
-        <script src="{% static 'js/color-modes.js' %}"></script>
+<head>
+  {% load static %}
+  <script src="{% static 'js/color-modes.js' %}"></script>
 
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>COPE-ID</title>
-        {% load static %}
-        <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>COPE-ID</title>
+  {% load static %}
+  <link rel="icon" type="image/ico" href="{% static 'images/favicon.ico' %}" />
 
-        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-wordcloud"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-chart-wordcloud"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
 
-        <!-- Bootstrap CSS -->
-        {% load static %}
-        <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
-        <!-- Bootstrap Icons CSS -->
-        {% load static %}
-        <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
-        <!-- Bootstrap Sidebar CSS -->
-        {% load static %}
-        <link href="{% static 'css/sidebars.css' %}" rel="stylesheet">
-        <!-- COPE-ID CSS -->
-        {% load static %}
-        <link href="{% static 'css/cope-id.css' %}" rel="stylesheet">
-    </head>
+  <!-- Bootstrap CSS -->
+  {% load static %}
+  <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+  <!-- Bootstrap Icons CSS -->
+  {% load static %}
+  <link href="{% static 'css/bootstrap-icons.css' %}" rel="stylesheet">
+  <!-- Bootstrap Sidebar CSS -->
+  {% load static %}
+  <link href="{% static 'css/sidebars.css' %}" rel="stylesheet">
+  <!-- COPE-ID CSS -->
+  {% load static %}
+  <link href="{% static 'css/cope-id.css' %}" rel="stylesheet">
+</head>
 
-    <body>
-        <div class="container-fluid px-0">
-            <div class="row mx-0 mb-2" style="height:6vh;">
-                <div class="col-12 p-0">
-                    <!-- content for first row goes here -->
-                    {% include 'main/includes/messaging.html' %}
-                    {% include 'main/includes/header.html' %}
-                </div>
-            </div>
-            <div class="row mx-0" style="height:94vh; overflow-y:auto;">
-                {% block content %}
+<body>
+  <div class="container-fluid px-0">
+    <div class="row mx-0 mb-2" style="height:6vh;">
+      <div class="col-12 p-0">
+        <!-- content for first row goes here -->
+        {% include 'main/includes/messaging.html' %}
+        {% include 'main/includes/header.html' %}
+      </div>
+    </div>
+    <div class="row mx-0" style="height:94vh; overflow-y:auto;">
+      {% block content %}
 
-                {% endblock %}
-            </div>
-            <div class="row mx-0" style="min-height:5vh;">
-                <div class="col-12 p-0" style="background-color: #5D1725;">
-                    <!-- content for third row goes here -->
+      {% endblock %}
+    </div>
+    <div class="row mx-0" style="min-height:5vh;">
+      <div class="col-12 p-0" style="background-color: #5D1725;">
+        <!-- content for third row goes here -->
 
-                </div>
-            </div>
-        </div>
+      </div>
+    </div>
+  </div>
 
-        {% include 'main/includes/themeMenu.html' %}
+  {% include 'main/includes/themeMenu.html' %}
 
-        <!-- Bootstrap JavaScript Bundle with Popper -->
-        {% load static %}
-        <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
+  <!-- Bootstrap JavaScript Bundle with Popper -->
+  {% load static %}
+  <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
 
-        <!-- Bootstrap JavaScript Bundle with Popper -->
-        {% load static %}
-        <script src="{% static 'js/sidebars.js' %}"></script>
+  <!-- Bootstrap JavaScript Bundle with Popper -->
+  {% load static %}
+  <script src="{% static 'js/sidebars.js' %}"></script>
 
-    </body>
+</body>
 
 </html>
