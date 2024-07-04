@@ -79,6 +79,50 @@ def myProjects(request):
     # Fetch user's projects from database
     user_projects = user_project_model.objects.filter(user=request.user)
     
+    # Check if form was submitted
+    if request.method == 'POST':
+        if 'deselect-favorite' in request.POST \
+            or ('select-favorite' in request.POST and project_list_model.objects.filter(user=request.user).count() < 3):
+                
+            # Get project ID from HTTP POST request
+            project_id = request.POST.get('project-id')
+
+            # Fetch project from database
+            project = get_object_or_404(project_model, project_id=project_id)
+
+            # Fetch user project instance from database
+            user_project = get_object_or_404(user_project_model, user=request.user, project=project)
+
+            if 'select-favorite' in request.POST:
+                # Create new favorite project instance
+                favorite = project_list_model(user=request.user, project=project)
+
+                # Save new favorite project instance
+                favorite.save()
+
+                # Set favorite project to True
+                user_project.favorite = True
+
+            else:
+                # Fetch favorite project from database
+                old_favorite = get_object_or_404(project_list_model, user=request.user, project=project)
+
+                # Delete favorite project instance
+                old_favorite.delete()
+
+                # Set favorite project to False
+                user_project.favorite = False
+
+            # Save favorite field
+            user_project.save()
+
+        else:
+            # Error if user already has 3 favorite projects
+            messages.error(request, f'You may only have three favorite projects at a time.')
+
+        # Redirect/refresh page after form submission
+        return redirect(request.path_info)
+
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {

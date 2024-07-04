@@ -1,11 +1,21 @@
 :root {
+  --btn-trash-hover-color: red;    /* Hover color for trash icon */
+
+  /* Star Button Unselected */
   --btn-color-light: black;  /* Outline color for light mode */
   --btn-color-dark: white;   /* Outline color for dark mode */
   --btn-star-fill-color-light: white; /* Fill color for light mode */
   --btn-star-fill-color-dark: black; /* Fill color for dark mode */
-  --btn-trash-hover-color: red;    /* Hover color for trash icon */
   --btn-star-hover-color: #ffc107; /* Hover fill color */
   --btn-star-hover-outline-color: #ffc107; /* Hover outline color */
+
+  /* Star Button Selected */
+  --btn-color-fav: #ffc107;  /* Outline color for light mode */
+  --btn-star-fav-fill-color: #ffc107; /* Fill color for light mode */
+  --btn-star-fav-hover-color-light: white; /* Hover fill color */
+  --btn-star-fav-hover-color-dark: black;
+  --btn-star-fav-hover-outline-color-light: black; /* Hover outline color */
+  --btn-star-fav-hover-outline-color-dark: white;
 }
 
 /* Role Button */
@@ -26,7 +36,13 @@
   --bs-btn-disabled-border-color: cornflowerblue;
 }
 
-
+.role {
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  display: inline-block;
+}
 
 /* Base styles for the trash button */
 .btn-trash {
@@ -90,4 +106,28 @@
   border-radius: 0.375rem;
   padding: 0.375rem 0.75rem;
   display: inline-block;
+}
+
+
+
+/* Base styles for the favorite star button */
+.btn-star-fav {
+  padding: 0 !important;
+}
+
+.btn-star-fav svg {
+  fill: var(--btn-star-fav-fill-color); /* Use light fill color by default */
+  stroke: var(--btn-color-fav); /* Use light outline color by default */
+  stroke-width: 1px; /* Outline width */
+  transition: fill 0.3s, stroke 0.3s; /* Smooth transition */
+}
+
+[data-bs-theme="light"] .btn-star-fav:hover svg {
+  fill: var(--btn-star-fav-hover-color-light); /* Fill color in light mode on hover */
+  stroke: var(--btn-star-fav-hover-outline-color-light); /* Outline color in light mode on hover */
+}
+
+[data-bs-theme="dark"] .btn-star-fav:hover svg {
+  fill: var(--btn-star-fav-hover-color-dark); /* Fill color in dark mode on hover */
+  stroke: var(--btn-star-fav-hover-outline-color-dark); /* Outline color in dark mode on hover */
 }

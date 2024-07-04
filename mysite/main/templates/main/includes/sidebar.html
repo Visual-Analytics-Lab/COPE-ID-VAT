@@ -18,7 +18,9 @@
 
           {% if favorite_list %}
             {% for favorite in favorite_list %}
-              <li><a href="{% url 'main:myProjects_units' favorite.project_id %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded px-0 mx-0">{{ favorite.project_name }}</a></li>
+              {% if favorite != project %}
+                <li><a href="{% url 'main:myProjects_units' favorite.project_id %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded px-0 mx-0">{{ favorite.project_name }}</a></li>
+              {% endif %}
             {% endfor %}
           {% endif %}
         </ul>
