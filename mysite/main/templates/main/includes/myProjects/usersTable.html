@@ -2,120 +2,113 @@
 
 <!-- Make sure buttons have a padding of 1 -->
 
-<!-- CSS for Role Button -->
-<style>
-  .role {
-    background-color: cornflowerblue;
-    color: white;
-    border-radius: 0.375rem;
-    padding: 0.375rem 0.75rem;
-    display: inline-block;
-  }
-</style>
-  
-  <div class="overflow-y-scroll m-0 p-0" style="height: 70vh;">
-    <table class="table table-striped table-hover mb-0">
+<div class="overflow-y-scroll m-0 p-0" style="height: 70vh;">
+  <table class="table table-striped table-hover mb-0">
 
-      <!-- User Table Column Headers -->
-      <thead class="sticky-top">
+    <!-- User Table Column Headers -->
+    <thead class="sticky-top">
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Role</th>
+        {% if has_addedit_permission %}
+          <th scope="col">View Unit Source</th>
+        {% endif %}
+        <th scope="col">Units Assigned <em>(n)</em></th>
+        <th scope="col">Completed Assignments</th>
+        <th scope="col">In-Progress Assignments</th>
+        <th scope="col">Last Activity</th>
+        <th scope="col">Email</th>
+        {% if has_addedit_permission %}
+          <th scope="col">Action</th>
+        {% endif %}
+      </tr>
+    </thead>
+
+    <!-- User Table Rows -->
+    <tbody class="table-group-divider">
+      <!-- Loop through users -->
+      {% for user in users %}
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Role</th>
-          {% if has_addedit_permission %}
-            <th scope="col">View Unit Source</th>
-          {% endif %}
-          <th scope="col">Units Assigned <em>(n)</em></th>
-          <th scope="col">Completed Assignments</th>
-          <th scope="col">In-Progress Assignments</th>
-          <th scope="col">Last Activity</th>
-          <th scope="col">Email</th>
-          {% if has_addedit_permission %}
-            <th scope="col">Action</th>
-          {% endif %}
-        </tr>
-      </thead>
 
-      <!-- User Table Rows -->
-      <tbody class="table-group-divider">
-        <!-- Loop through users -->
-        {% for user in users %}
-          <tr>
-
-            <!-- If active user has edit privileges -->
-            {% if has_edit_user_privileges %}
+          <!-- If active user has edit privileges -->
+          {% if has_edit_user_privileges %}
 
             <!-- If user in table row is not project investigator -->
             <!-- Enable edit options -->
             {% if user.user != project.principal_investigator %}
-            <!-- First & Last Name -->
-            <th scope="row"><a class="link-secondary icon-link link-underline-opacity-25 link-underline-opacity-100-hover" href="{% url 'main:myProjects_userProfile' project.project_id user.user.id %}"><i class="bi-pencil-square"></i>{{ user.user.first_name }} {{ user.user.last_name }}</a></th>
+              <!-- First & Last Name -->
+              <th scope="row">
+                <a class="link-body-emphasis icon-link link-underline-opacity-25 link-underline-opacity-100-hover" href="{% url 'main:myProjects_userProfile' project.project_id user.user.id %}">
+                  <i class="bi-pencil-square"></i>{{ user.user.first_name }} {{ user.user.last_name }}
+                </a>
+              </th>
 
-            <!-- Role -->
-            <td>{% include 'main/includes/myProjects/editUserModal.html' %}</td>
+              <!-- Role -->
+              <td>{% include 'main/includes/myProjects/editUserModal.html' %}</td>
 
-            <!-- View Unit Source -->
-            <td>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" name="view-src-{{ user.user.id }}" id="view-src-{{ user.user.id }}">
-              </div>
-            </td>
+              <!-- View Unit Source -->
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" name="view-src-{{ user.user.id }}" id="view-src-{{ user.user.id }}">
+                </div>
+              </td>
 
-            <!-- Units Assigned -->
-            <td>{{ user.n }}</td>
+              <!-- Units Assigned -->
+              <td>{{ user.n }}</td>
 
-            <!-- Completed Assignments -->
-            <td>0%</td>
+              <!-- Completed Assignments -->
+              <td>0%</td>
 
-            <!-- In-Progress Assignments -->
-            <td>0%</td>
+              <!-- In-Progress Assignments -->
+              <td>0%</td>
 
-            <!-- Last Activity -->
-            <td>{{ user.user.last_login }}</td>
+              <!-- Last Activity -->
+              <td>{{ user.user.last_login }}</td>
 
-            <!-- Email -->
-            <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi-envelope"></i></i>{{ user.user.email }}</a></td>
+              <!-- Email -->
+              <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi-envelope"></i> {{ user.user.email }}</a></td>
 
-            <!-- Action -->
-            <td>{% include 'main/includes/myProjects/deleteUserModal.html' %}</td>
+              <!-- Action -->
+              <td>{% include 'main/includes/myProjects/deleteUserModal.html' %}</td>
 
             <!-- If user in table row is principal investigator -->
             <!-- Disable edit options -->
             {% else %}
-            <!-- First & Last Name -->
-            <th scope="row">{{ user.user.first_name }} {{ user.user.last_name }}</th>
+              <!-- First & Last Name -->
+              <th scope="row">{{ user.user.first_name }} {{ user.user.last_name }}</th>
 
-            <!-- Role -->
-            <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>      
+              <!-- Role -->
+              <td><button type="button" class="btn btn-role p-1 text-truncate overflow-hidden">{{ user.role }}</button></td>
 
-            <!-- View Unit Source -->
-            <td>
-              <div class="form-check">
-                <input class="form-check-input" type="checkbox" value="" checked disabled>
-              </div>
-            </td>
+              <!-- View Unit Source -->
+              <td>
+                <div class="form-check">
+                  <input class="form-check-input" type="checkbox" value="" checked disabled>
+                </div>
+              </td>
 
-            <!-- Units Assigned -->
-            <td>{{ user.n }}</td>
+              <!-- Units Assigned -->
+              <td>{{ user.n }}</td>
 
-            <!-- Completed Assignments -->
-            <td>0%</td>
+              <!-- Completed Assignments -->
+              <td>0%</td>
 
-            <!-- In-Progress Assignments -->
-            <td>0%</td>
+              <!-- In-Progress Assignments -->
+              <td>0%</td>
 
-            <!-- Last Activity -->
-            <td>{{ user.user.last_login }}</td>
+              <!-- Last Activity -->
+              <td>{{ user.user.last_login }}</td>
 
-            <!-- Email -->
-            <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi bi-envelope"></i></i>{{ user.user.email }}</a></td>
+              <!-- Email -->
+              <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi bi-envelope"></i></i>{{ user.user.email }}</a></td>
 
-            <!-- Action -->
-            <td></td>
+              <!-- Action -->
+              <td></td>
             {% endif %}
 
-            <!-- If user in table row is active user -->
-            <!-- Display user information -->
-            {% elif user.user == active_user %}
+          <!-- If user in table row is active user -->
+          <!-- Display user information -->
+          {% elif user.user == active_user %}
 
             <!-- First & Last Name -->
             <th scope="row">{{ user.user.first_name }} {{ user.user.last_name }}</th>
@@ -138,9 +131,9 @@
             <!-- Email -->
             <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi bi-envelope"></i></i>{{ user.user.email }}</a></td>
 
-            <!-- If user in table row is not active user -->
-            <!-- Hide user information -->
-            {% else %}
+          <!-- If user in table row is not active user -->
+          <!-- Hide user information -->
+          {% else %}
 
             <!-- First & Last Name -->
             <th scope="row">{{ user.user.first_name }} {{ user.user.last_name }}</th>
@@ -163,13 +156,10 @@
             <!-- Email -->
             <td><a class="icon-link" href="mailto:{{ users.user.email }}"><i class="bi bi-envelope"></i></i>{{ user.user.email }}</a></td>
 
-            {% endif %}
+          {% endif %}
 
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
-
-
-  
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
