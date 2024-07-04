@@ -109,12 +109,6 @@ class project_list_model(models.Model):
 
 User.add_to_class('favorite_projects', models.ManyToManyField(project_model, through=project_list_model, related_name='favorited_by'))
 
-@receiver(m2m_changed, sender=User.favorite_projects.through)
-def limit_favorite_projects(sender, instance, action, **kwargs):
-    if action == 'pre_add':
-        if instance.favorite_projects.count() >= 3:
-            raise ValueError("A user can have at most 3 favorite projects.")
-
 # =============================================================
 # Role Model
 # =============================================================
@@ -184,6 +178,7 @@ class user_project_model(models.Model):
     role = models.ForeignKey(role_model, on_delete=models.CASCADE, blank=False)
     permissions = models.ManyToManyField(permission_model, blank=True, related_name='permissions')
     n = models.PositiveIntegerField(default=0) # Total number of units assigned
+    favorite = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('user', 'project')
@@ -201,7 +196,14 @@ class user_project_model(models.Model):
 
 @receiver(post_save, sender=user_project_model)
 def reset_permissions_post_save(sender, instance, **kwargs):
-    instance.reset_permissions()
+    if instance._state.adding:
+        return  # Skip the signal for newly created instances
+    else:
+        previous_instance = user_project_model.objects.get(pk=instance.pk)
+        if previous_instance.role != instance.role:
+            instance.reset_permissions()
+        elif set(previous_instance.permissions.all()) != set(instance.permissions.all()):
+            instance.reset_permissions()
 
 # =============================================================
 # Coding Variable - (Note: Save codebook for reuse)
