@@ -52,7 +52,7 @@
       </div>
 
       <!-- Row 1 Column 2 Row 3 -->
-      <div class="row justify-content-center" style="height: 82vh;">
+      <div class="row justify-content-center" style="height: 80vh;">
 
         <canvas id="myChart"></canvas>
 
@@ -64,6 +64,10 @@
 </div>
 
 <script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+  // Set chart data
   var barChartData = {
     labels: [
       "Relevance",
@@ -90,6 +94,48 @@
     ]
   };
 
+  function getChartColors(theme) {
+
+    // Dark theme colors
+    if (theme === "dark") {
+      return {
+        axisColor: 'white',
+        titleColor: 'white',
+        legendColor: 'white',
+        gridColor: 'rgba(255, 255, 255, 0.1)',
+      };
+    }
+    // Light theme colors 
+    else {
+      return {
+        axisColor: 'black',
+        titleColor: 'black',
+        legendColor: 'black',
+        gridColor: 'rgba(0, 0, 0, 0.1)',
+      };
+    }
+  }
+
+  // Update chart colors based on theme
+  function updateChartColors(chart, theme) {
+    var colors = getChartColors(theme);
+
+    chart.options.plugins.legend.labels.color = colors.legendColor;
+    chart.options.plugins.title.color = colors.titleColor;
+    chart.options.scales.x.title.color = colors.axisColor;
+    chart.options.scales.x.ticks.color = colors.axisColor;
+    chart.options.scales.x.grid.color = colors.gridColor;
+    chart.options.scales.y.title.color = colors.axisColor;
+    chart.options.scales.y.ticks.color = colors.axisColor;
+    chart.options.scales.y.grid.color = colors.gridColor;
+
+    chart.update();
+  }
+
+  // Get chart HTML element
+  var ctx = document.getElementById("myChart").getContext("2d");
+
+  // Set chart properties
   var chartOptions = {
     responsive: true,
     plugins: {
@@ -97,13 +143,13 @@
         position: "bottom",
         display: true,
         labels: {
-          color: 'rgb(0, 0, 0)'
+          color: 'rgb(0, 0, 0)' // Default to black
         }
       },
       title: {
         display: true,
         text: "Inter Rater Reliability",
-        color: 'rgb(0, 0, 0)', // Set the title font color to black
+        color: 'rgb(0, 0, 0)', // Default to black
         font: {
           size: 20
         }
@@ -120,7 +166,10 @@
           }
         },
         ticks: {
-          color: 'rgb(0, 0, 0)' // Set the x-axis labels color to black
+          color: 'rgb(0, 0, 0)' // Default to black
+        },
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)' // Default to light grid lines
         }
       },
       y: {
@@ -134,20 +183,37 @@
           }
         },
         ticks: {
-          color: 'black' // Set the y-axis labels color to black
+          color: 'black' // Default to black
+        },
+        grid: {
+          color: 'rgba(0, 0, 0, 0.1)' // Default to light grid lines
         }
       }
     }
   };
 
-  window.onload = function () {
-    var ctx = document.getElementById("myChart").getContext("2d");
-    window.myBar = new Chart(ctx, {
-      type: "bar",
-      data: barChartData,
-      options: chartOptions
+  // Generate chart
+  window.myBar = new Chart(ctx, {
+    type: "bar",
+    data: barChartData,
+    options: chartOptions
+  });
+
+  // Update chart colors on theme change
+  var currentTheme = document.documentElement.getAttribute("data-bs-theme");
+  updateChartColors(window.myBar, currentTheme);
+
+  // Listen for change in data-bs-theme
+  new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.attributeName === "data-bs-theme") {
+        var newTheme = document.documentElement.getAttribute("data-bs-theme");
+        updateChartColors(window.myBar, newTheme);
+      }
     });
-  };
+  }).observe(document.documentElement, { attributes: true });
+});
+
 </script>
 
 
