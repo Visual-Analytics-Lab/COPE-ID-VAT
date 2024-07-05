@@ -76,9 +76,21 @@ def addProject(request):
 
 @login_required
 def myProjects(request):
+    # Get variable name from HTTP GET request
+    query = request.GET.get('search')
+
     # Fetch user's projects from database
-    user_projects = user_project_model.objects.filter(user=request.user)
-    
+    user_projects = user_project_model.objects.filter(user=request.user).select_related('project')
+
+    # Check if query exists
+    if query:
+        # Search database using search query
+        user_projects = user_projects.filter(
+            Q(project__project_name__icontains=query) |
+            Q(project__project_org__org_name__icontains=query) |
+            Q(project__principal_investigator__username__icontains=query)
+    )
+
     # Check if form was submitted
     if request.method == 'POST':
         if 'deselect-favorite' in request.POST \
@@ -129,6 +141,7 @@ def myProjects(request):
         'user_projects': user_projects,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
+        'query': query,
     }
     return render(request, 'main/myProjects.html', context)
 
@@ -663,6 +676,7 @@ def myProjects_sampleResults(request, project_id):
 # Inbox
 # =============================================================
 
+@login_required
 def inbox(request):
     # Fetch user's messages from database
     inbox = inbox_model.objects.filter(recipient=request.user).exclude(declined=True)
@@ -715,17 +729,12 @@ def inbox(request):
         'sys_admin': sys_admin,
     }
     return render(request, 'main/inbox.html', context)
-
-# =============================================================
-# Users
-# =============================================================
-
-
     
 # =============================================================
 # Datagrid
 # =============================================================
 
+@login_required
 def datagrid(request):
     search_query = request.GET.get('search_query')
     if search_query:
@@ -744,6 +753,7 @@ def datagrid(request):
 # Doc Info
 # =============================================================
 
+@login_required
 def docInfo(request):
     page = int(request.GET.get('page'))
     doc_id = int(request.GET.get('doc_id'))
