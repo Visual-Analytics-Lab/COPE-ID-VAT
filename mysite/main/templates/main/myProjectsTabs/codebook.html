@@ -93,7 +93,13 @@
 
         <!-- Table of Variables -->
         <div class="col">
-          {% include 'main/includes/myProjects/codebookTable.html' %}
+          {% if coding_variables %}
+            {% include 'main/includes/myProjects/codebookTable.html' %}
+          {% else %}
+            <blockquote class="blockquote text-center">
+              <p>Start by adding variables.</p>
+            </blockquote>
+          {% endif %}
         </div>
 
       </div>
