@@ -2,7 +2,7 @@ from django.db import models
 from datetime import datetime
 import uuid
 from django.contrib.auth.models import User
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import slugify
@@ -91,6 +91,25 @@ class project_model(models.Model):
         verbose_name_plural = "Projects"
 
 # =============================================================
+# Project List Model
+# =============================================================
+
+class project_list_model(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    project = models.ForeignKey(project_model, on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('user', 'project')
+        verbose_name = "Favorite Project"
+        verbose_name_plural = "Favorite Projects"
+
+    def __str__(self):
+        return f"{self.user.username} - {self.project.project_name}"
+
+User.add_to_class('favorite_projects', models.ManyToManyField(project_model, through=project_list_model, related_name='favorited_by'))
+
+# =============================================================
 # Role Model
 # =============================================================
 
@@ -159,6 +178,7 @@ class user_project_model(models.Model):
     role = models.ForeignKey(role_model, on_delete=models.CASCADE, blank=False)
     permissions = models.ManyToManyField(permission_model, blank=True, related_name='permissions')
     n = models.PositiveIntegerField(default=0) # Total number of units assigned
+    favorite = models.BooleanField(default=False)
 
     class Meta:
         unique_together = ('user', 'project')
@@ -176,7 +196,14 @@ class user_project_model(models.Model):
 
 @receiver(post_save, sender=user_project_model)
 def reset_permissions_post_save(sender, instance, **kwargs):
-    instance.reset_permissions()
+    if instance._state.adding:
+        return  # Skip the signal for newly created instances
+    else:
+        previous_instance = user_project_model.objects.get(pk=instance.pk)
+        if previous_instance.role != instance.role:
+            instance.reset_permissions()
+        elif set(previous_instance.permissions.all()) != set(instance.permissions.all()):
+            instance.reset_permissions()
 
 # =============================================================
 # Coding Variable - (Note: Save codebook for reuse)
@@ -184,7 +211,7 @@ def reset_permissions_post_save(sender, instance, **kwargs):
 
 class coding_variable(models.Model):
     variable_id = models.AutoField(primary_key=True)
-    variable_name = models.CharField(max_length=128, null=False, blank=False)
+    variable_name = models.CharField(max_length=64, null=False, blank=False)
     variable_description = models.TextField(max_length=128, default='')
     variable_project = models.ForeignKey(project_model, on_delete=models.CASCADE)
 

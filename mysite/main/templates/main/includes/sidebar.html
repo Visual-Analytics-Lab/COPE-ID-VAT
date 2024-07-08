@@ -1,33 +1,48 @@
 <div class="flex-shrink-0">
   <ul class="list-unstyled ps-0">
-    <li class="mb-1">
+    <li class="mt-1" style="height: 3rem;">
       <!-- Explore -->
       <a class="btn btn-secondary d-inline-flex justify-content-center" href="/" id="explore-btn" style="width: 7rem;">Explore</a>
     </li>
-    <li class="mb-1">
-      <!-- My Projects -->
-      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn" style="width: 7rem;">My Projects</a>
-      <button class="btn btn-secondary d-inline-flex align-items-center rounded border-0 collapsed d-none" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true">
-        Dashboard
-      </button>
-      <div class="collapse show" id="dashboard-collapse">
-        <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 1</a></li>
-          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 2</a></li>
-          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 3</a></li>
-          <li><a href="#" class="link-body-emphasis d-inline-flex text-decoration-none rounded">Project 4</a></li>
-        </ul>
-      </div>
-    </li>
-    <li class="mb-1" style="height: 3rem;">
+    {% if favorite_list %}
+      <li>
+        <!-- My Projects -->
+        <a class="btn btn-secondary d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn" style="width: 7rem;">My Projects</a>
+        <button class="btn btn-secondary d-inline-flex align-items-center rounded border-0 collapsed d-none" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true">
+          Dashboard
+        </button>
+        <div class="collapse show" id="dashboard-collapse">
+          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small text-center">
+            {% if project %}
+              <li class="text-truncate" style="width: 7rem;"><a href="{% url 'main:myProjects_units' project.project_id %}" class="link-body-emphasis link-underline-secondary d-inline-flex rounded px-0 mx-0">{{ project.project_name }}</a></li>
+            {% endif %}
+
+            {% for favorite in favorite_list %}
+              {% if favorite != project %}
+                <li><a href="{% url 'main:myProjects_units' favorite.project_id %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded px-0 mx-0">{{ favorite.project_name }}</a></li>
+              {% endif %}
+            {% endfor %}
+            
+          </ul>
+        </div>
+      </li>
+    {% else %}
+      <li style="height: 3rem;">
+        <!-- My Projects -->
+        <a class="btn btn-secondary d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn" style="width: 7rem;">My Projects</a>
+      </li>
+    {% endif %}
+    <li style="height: 3rem;">
       <!-- Inbox -->
       <a class="btn btn-secondary d-inline-flex justify-content-center" id="inbox-btn" href="/inbox" style="width: 7rem;">Inbox</a>
     </li>
-    <li class="mb-1" style="height: 3rem;">
+    {% if sys_admin %}
+    <li style="height: 3rem;">
       <!-- Users -->
       <a class="btn btn-secondary d-inline-flex justify-content-center" href="/users" id="users-btn" style="width: 7rem;">Users</a>
     </li>
-    <li class="mb-1" style="height: 3rem;">
+    {% endif %}
+    <li style="height: 3rem;">
       <!-- Data Grid -->
       <a class="btn btn-secondary d-inline-flex justify-content-center" href="/datagrid" style="width: 7rem;">Data Grid</a>
     </li>
@@ -35,64 +50,5 @@
   </ul>
 </div>
 
-
-
-<script>
-  document.addEventListener("DOMContentLoaded", function()
-  {
-    // Get URL
-    const pathname = window.location.pathname;
-
-    // Pseudo-tokenize
-    const pathParts = pathname.split('/');
-
-    // Get path after first /
-    const tab = pathParts[1];
-
-    // Testing
-    console.log('Current Tab:', tab);
-
-    // Initialize variable to hold tab
-    let sidebarButton;
-
-    // Check which tab
-    if (tab === 'add_project')
-    {
-      sidebarButton = document.getElementById('add_project-btn');
-      // console.log('You are on the Add Project tab');
-    } 
-    else if (tab === 'my_projects')
-    {
-      const tab2 = pathParts[2];
-      console.log(tab2)
-      if (!tab2)
-      {
-        sidebarButton = document.getElementById('my_projects-btn');
-      }
-      // console.log('You are on the Existing Project tab');
-    } 
-    else if (tab === 'users')
-    {
-      sidebarButton = document.getElementById('users-btn');
-      // console.log('You are on the Users tab');
-    } else if (tab === 'inbox')
-    {
-      sidebarButton = document.getElementById('inbox-btn');
-      // console.log('You are on the Inbox tab');
-    } else
-    {
-      sidebarButton = document.getElementById('explore-btn');
-      // console.log('You are on the Explore tab');
-    }
-
-    // Disable button
-    if (sidebarButton)
-    {
-      sidebarButton.classList.add('disabled');
-      sidebarButton.setAttribute('aria-disabled', 'true');
-      sidebarButton.setAttribute('tabindex', '-1');
-      sidebarButton.setAttribute('href', '#');
-    }
-
-  });
-</script>
+{% load static %}
+<script src="{% static 'js/sidebar-toggle.js' %}"></script>

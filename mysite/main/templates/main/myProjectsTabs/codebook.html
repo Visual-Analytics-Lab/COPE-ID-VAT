@@ -60,7 +60,13 @@
 
           <!-- Codebook Protocol -->
           <blockquote class="blockquote">
-            <p>{{ project.codebook_protocol }} <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProtocol"><i class="bi bi-pencil text-secondary" fill="currentColor"></i></button></p>
+            <p>{{ project.codebook_protocol }} 
+              {% if pi %}
+              <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProtocol">
+                <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
+              </button>
+              {% endif %}
+            </p>
           </blockquote>
         </div>
 
@@ -87,7 +93,13 @@
 
         <!-- Table of Variables -->
         <div class="col">
-          {% include 'main/includes/myProjects/codebookTable.html' %}
+          {% if coding_variables %}
+            {% include 'main/includes/myProjects/codebookTable.html' %}
+          {% else %}
+            <blockquote class="blockquote text-center">
+              <p>Start by adding variables.</p>
+            </blockquote>
+          {% endif %}
         </div>
 
       </div>
@@ -96,6 +108,11 @@
   </div>
 </div>
 
+
+
+
+
+{% if pi %}
 <!-- Edit Codebook Protocol Modal -->
 <div class="modal fade" id="editProtocol" tabindex="-1" aria-labelledby="editProtocolLabel" aria-hidden="true">
   <form method="post">
@@ -109,7 +126,7 @@
         </div>
         <div class="modal-body">
           <!-- Input -->
-          <textarea class="form-control" name="codebook-protocol" id="codebook-protocol" rows="3">{{ project.codebook_protocol }}</textarea>
+          <textarea class="form-control border-0" name="codebook-protocol" id="codebook-protocol" rows="3">{{ project.codebook_protocol }}</textarea>
         </div>
         <div class="modal-footer">
           <!-- Cancel & Save Buttons -->
@@ -120,5 +137,6 @@
     </div>
   </form>
 </div>
+{% endif %}
 
 {% endblock %}
