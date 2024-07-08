@@ -41,8 +41,8 @@ class sample_data(models.Model):
 # =============================================================
 
 class bert_main_sample_data(models.Model):
-    topic_id = models.AutoField(primary_key=True) # Josh
-    # topic_id = models.IntegerField(primary_key=True) # Jacob
+    # topic_id = models.AutoField(primary_key=True) # Josh
+    topic_id = models.IntegerField(primary_key=True) # Jacob
     topic_name = models.TextField()
     documents = models.CharField()
  
@@ -82,6 +82,7 @@ class project_model(models.Model):
     N = models.PositiveIntegerField(default=0) # Total number of unique units
     project_description = models.TextField(null=True, blank=True)
     codebook_protocol = models.TextField(null=True, blank=True)
+    units = models.ManyToManyField(bert_main_sample_data, related_name='projects')
 
     def __str__(self):
         return self.project_name
@@ -269,6 +270,23 @@ class coding_value(models.Model):
     class Meta:
         verbose_name = "Coding Value"
         verbose_name_plural = "Coding Values"
+
+# =============================================================
+# Post Coding
+# =============================================================
+
+class unit_coding(models.Model):
+    unit = models.ForeignKey(bert_main_sample_data, on_delete=models.CASCADE)
+    variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE)
+    value = models.ForeignKey(coding_value, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('unit', 'variable')
+
+    def __str__(self):
+        return f"{self.unit} - {self.variable} - {self.value}"
+
+bert_main_sample_data.add_to_class('coding_variables', models.ManyToManyField(coding_variable, through=unit_coding, related_name='posts'))
 
 # =============================================================
 # Inbox Model
