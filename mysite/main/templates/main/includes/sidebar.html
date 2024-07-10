@@ -1,4 +1,4 @@
-<div class="flex-shrink-0">
+<div class="d-flex flex-column flex-shrink-0">
   <ul class="list-unstyled ps-0">
     <li class="mt-1" style="height: 3rem;">
       <!-- Explore -->
@@ -14,7 +14,7 @@
         <div class="collapse show" id="dashboard-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small text-center">
             {% if project %}
-              <li class="text-truncate" style="width: 7rem;"><a href="{% url 'main:myProjects_units' project.project_id %}" class="link-body-emphasis link-underline-secondary d-inline-flex rounded px-0 mx-0">{{ project.project_name }}</a></li>
+              <li><a href="{% url 'main:myProjects_units' project.project_id %}" class="link-body-emphasis link-underline-secondary d-inline-flex rounded px-0 mx-0">{{ project.project_name }}</a></li>
             {% endif %}
 
             {% for favorite in favorite_list %}

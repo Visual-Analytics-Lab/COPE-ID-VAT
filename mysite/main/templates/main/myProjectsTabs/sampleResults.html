@@ -2,88 +2,100 @@
 
 {% block content %}
 
-<div class="container" style="height: 94vh;">
+<!-- Page Content -->
+<div class="container-fluid" style="height: 50rem;">
 
   <!-- Row 1 -->
-  <div class="row" style="height: 94vh;">
+  <div class="row">
 
     <!-- Row 1 Column 1 -->
-    <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
+    <div class="col col-auto d-none d-sm-block text-center px-0" style="width: 8rem;">
+      <!-- Sidebar -->
       {% include 'main/includes/sidebar.html' %}
     </div>
 
     <!-- Row 1 Column 2 -->
-    <div class="col content">
+    <div class="col">
+      <!-- Main Content -->
 
       <!-- Row 1 Column 2 Row 1 -->
-      <div class="row text-center" style="height: 6vh;">
-
+      <div class="row text-center" style="height: 4rem;">
+        <!-- Page Title -->
         <h2 class="border-bottom">{{ project.project_name }} Samples & Results</h2>
-
       </div>
 
       <!-- Row 1 Column 2 Row 2 -->
-      <div class="row px-1" style="height: 6vh;">
+      <div class="row px-1" style="height: 4rem;">
+        <!-- Navigation Buttons -->
 
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
-        </div>
-
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
-        </div>
-
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
-        </div>
-
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Sample & Results</a>
-        </div>
-
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
-        </div>
-
-        <div class="col-2">
-          <div class="d-none">placeholder</div>
+        <div class="d-flex flex-row justify-content-start">
+          <!-- Units of Analysis -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
+          </div>
+  
+          <!-- Codebook -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
+          </div>
+  
+          <!-- Inter-Rater Reliability -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
+          </div>
+  
+          <!-- Sample & Results -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Sample & Results</a>
+          </div>
+  
+          <!-- Edit Project -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
+          </div>
+  
         </div>
 
       </div>
 
       <!-- Row 1 Column 2 Row 3 -->
-      <div class="row p-1" style="height: 6vh;">
+      <div class="row px-1">
+        <!-- Search -->
 
-        <!-- Row 1 Column 2 Row 3 Column 1-->
-        <div class="col-8">
-          <div class="d-none">placeholder</div>
+        <div class="d-flex flex-row justify-content-end">
+
+          <!-- Search -->
+          <div class="p-2 w-100" style="max-width:25rem; min-width: auto;">
+            <!-- Search -->
+            <form method="get">
+              <div class="input-group">
+                {% if query %}
+                  <!-- Populate Search Input if Search -->
+                  <input type="text" class="form-control" name="search" id="searchBar" placeholder="Search..." value="{{ query }}">
+                {% else %}
+                  <!-- Empty Search Input -->
+                  <input type="text" class="form-control" name="search" id="searchBar" placeholder="Search...">
+                {% endif %}
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-secondary">Search</button>
+              </div>
+            </form>
+          </div>
+
         </div>
-
-        <!-- Row 1 Column 2 Row 3 Column 2-->
-        <div class="col-4">
-          <form>
-
-            <div class="input-group mb-3">
-              <span class="input-group-text" id="filter-label">Filter</span>
-              <input type="text" class="form-control" placeholder="Filter..." aria-label="Filter" aria-describedby="filter-label">
-            </div>
-
-          </form>
-        </div>
-
       </div>
 
       <!-- Row 1 Column 2 Row 4 -->
-      <div class="row pb-1 px-1" style="height: 6vh;">
-        
-        <div class="col-10">
-          <div class="d-none">placeholder</div>
+      <div class="row px-1">
+        <!-- Add Variable -->
+      
+        <div class="d-flex flex-row justify-content-end">
+      
+          <div class="px-2" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-info mb-2" role="button" aria-label="Download Project Data"><i class="bi bi-download"></i> Download Project Data</a>
+          </div>
+      
         </div>
-
-        <div class="col-2">
-          <a class="btn btn-info w-100 my-1 pb-2 text-truncate overflow-hidden" role="button" aria-label="Download Project Data"><i class="bi bi-download"></i> Download Project Data</a>
-        </div>
-
       </div>
 
       <!-- Row 1 Column 2 Row 5 -->

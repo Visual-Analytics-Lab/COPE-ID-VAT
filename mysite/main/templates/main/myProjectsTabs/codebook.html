@@ -2,61 +2,67 @@
 
 {% block content %}
 
-<div class="container-fluid" style="height: 94vh;">
+<!-- Page Content -->
+<div class="container-fluid" style="height: 50rem;">
 
   <!-- Row 1 -->
-  <div class="row" style="height: 94vh;">
+  <div class="row">
 
     <!-- Row 1 Column 1 -->
-    <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
+    <div class="col col-auto d-none d-sm-block text-center px-0" style="width: 8rem;">
+      <!-- Sidebar -->
       {% include 'main/includes/sidebar.html' %}
     </div>
 
     <!-- Row 1 Column 2 -->
-    <div class="col content w-auto">
+    <div class="col">
+      <!-- Main Content -->
 
       <!-- Row 1 Column 2 Row 1 -->
-      <div class="row text-center" style="height: 6vh;">
-
+      <div class="row text-center" style="height: 4rem;">
         <!-- Page Title -->
-        <h2 class="border-bottom">{{ project.project_name }} Codebook</h2>
-
+        <h2 class="border-bottom">{{ project.project_name }} Units</h2>
       </div>
 
       <!-- Row 1 Column 2 Row 2 -->
-      <div class="row px-1" style="height: 6vh;">
+      <div class="row px-1" style="height: 4rem;">
+        <!-- Navigation Buttons -->
 
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
-        </div>
-
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Codebook</a>
-        </div>
-
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
-        </div>
-
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
-        </div>
-
-        <div class="col-2">
-          <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
-        </div>
-
-        <div class="col-2">
-          <div class="d-none">placeholder</div>
+        <div class="d-flex flex-row justify-content-start">
+          <!-- Units of Analysis -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
+          </div>
+  
+          <!-- Codebook -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Codebook</a>
+          </div>
+  
+          <!-- Inter-Rater Reliability -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
+          </div>
+  
+          <!-- Sample & Results -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
+          </div>
+  
+          <!-- Edit Project -->
+          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
+          </div>
+  
         </div>
 
       </div>
 
       <!-- Row 1 Column 2 Row 3 -->
-      <div class="row p-1" style="max-height: 12vh;">
+      <div class="row mb-2 px-2">
 
         <!-- Row 1 Column 2 Row 3 Column 1-->
-        <div class="col-12">
+        <div class="col-12 px-3">
 
           <!-- Codebook Protocol -->
           <blockquote class="blockquote">
@@ -73,39 +79,40 @@
       </div>
 
       <!-- Row 1 Column 2 Row 4 -->
-      <div class="row pb-1 px-1" style="height: 6vh;">
-
-        <!-- Add Coding Variable -->
-        <div class="col-2">
+      <div class="row px-1">
+        <!-- Add Variable -->
+      
+        <div class="d-flex flex-row justify-content-start">
+      
+          <!-- Check if User can Add Variables -->
           {% if has_edit_permission %}
+          <div class="px-2" style="max-width: 18rem; min-width: 5rem;">
             <a class="btn btn-success mb-2" id="add-btn" href="{% url 'main:myProjects_addVariable' project.project_id %}"><i class="bi bi-plus-circle"></i> Add Coding Variable</a>
+          </div>
           {% endif %}
+      
         </div>
-
-        <div class="col-10">
-          <div class="d-none">placeholder</div>
-        </div>
-
       </div>
 
       <!-- Row 1 Column 2 Row 5 -->
-      <div class="row" style="height: 64vh;">
+      <div class="row">
 
-        <!-- Table of Variables -->
-        <div class="col">
+          <!-- Check if Project has Variables -->
           {% if coding_variables %}
             {% include 'main/includes/myProjects/codebookTable.html' %}
+          <!-- If no Variables -->
           {% else %}
             <blockquote class="blockquote text-center">
-              <p>Start by adding variables.</p>
+              <p>Start by adding coding variables.</p>
             </blockquote>
           {% endif %}
-        </div>
 
       </div>
 
     </div>
+
   </div>
+  
 </div>
 
 
