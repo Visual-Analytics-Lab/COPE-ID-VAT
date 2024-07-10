@@ -41,8 +41,8 @@ class sample_data(models.Model):
 # =============================================================
 
 class bert_main_sample_data(models.Model):
-    # topic_id = models.AutoField(primary_key=True) # Josh
-    topic_id = models.IntegerField(primary_key=True) # Jacob
+    topic_id = models.AutoField(primary_key=True) # Josh
+    # topic_id = models.IntegerField(primary_key=True) # Jacob
     topic_name = models.TextField()
     documents = models.CharField()
  
