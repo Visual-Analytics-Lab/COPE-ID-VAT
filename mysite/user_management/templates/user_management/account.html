@@ -2,38 +2,95 @@
 
 {% block content %}
 
-    <!-- Login -->
-    <div class="container px-1 py-3">
-        <div class="d-flex justify-content-center">
-            <section id="account">
-                <h2>Profile Information</h2>
-                <!-- Profile update form -->
-                <form id="profile_form" method="post" action="{% url 'user_management:account_update' %}">
-                    {% csrf_token %}
-                    <!-- Add form fields for profile update (e.g., name, email, etc.) -->
-                    <label for="first_name">First Name:</label>
-                    <input type="text" id="first_name" name="first_name" value="{{ user.first_name }}">
-                    <label for="last_name">Last Name:</label>
-                    <input type="text" id="last_name" name="last_name" value="{{ user.last_name }}">
-                    <label for="username">Username:</label>
-                    <input type="text" id="username" name="username" value="{{ user.username }}">
-                    <label for="email">Email:</label>
-                    <input type="email" id="email" name="email" value="{{ user.email }}">
-                    <button type="submit">Update Profile</button>
-                </form>
-                <form id="password_form" method="post" action="{% url 'user_management:account_update' %}">
-                    {% csrf_token %}
-                    <!-- Add form fields for profile update (e.g., name, email, etc.) -->
-                    <label for="old_password">Old Password:</label><br>
-                    <input type="password" id="old_password" name="old_password"><br><br>
-                    <label for="new_password1">New Password:</label><br>
-                    <input type="password" id="new_password1" name="new_password1"><br><br>
-                    <label for="new_password2">Confirm New Password:</label><br>
-                    <input type="password" id="new_password2" name="new_password2"><br><br>
-                    <button type="submit">Change Password</button>
-                </form>
-            </section>
-        </div>
+<div class="container-fluid" style="height: 50rem;">
+
+  <!-- Row 1 -->
+  <div class="row" style="height: 50rem;">
+
+    <!-- Row 1 Column 1 -->
+    <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
+      {% include 'main/includes/sidebar.html' %}
     </div>
+
+    <!-- Row 1 Column 2 -->
+    <div class="col content w-auto">
+
+      <!-- Row 1 Column 2 Row-->
+      <div class="row text-center" style="height: 4rem;">
+
+        <h2 class="border-bottom">Profile Information</h2>
+
+      </div>
+      
+      <!-- Profile update form -->
+      <div class="row" style="height: 40rem;">
+        
+        <form class="row g-3 mt-0" id="profile_form" method="post" action="{% url 'user_management:account_update' %}">
+          {% csrf_token %}
+
+          <div class="col-12">
+            <h5>Update Profile Information</h5>
+          </div>
+
+          <div class="col-md-6">
+            <label for="first_name" class="form-label">First Name</label>
+            <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First name" aria-label="First name" value="{{ user.first_name }}">
+          </div>
+          <div class="col-md-6">
+            <label for="last_name" class="form-label">Last Name</label>
+            <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" aria-label="Last name" value="{{ user.last_name }}">
+          </div>
+
+          <div class="col-12">
+            <label for="email" class="form-label">Email address</label>
+            <input type="email" class="form-control" name="email" id="email" aria-label="Email" value="{{ user.email }}">
+          </div>
+
+          <div class="col-12">
+            <label for="username" class="form-label">Username</label>
+            <input type="text" class="form-control" name="username" id="username" placeholder="Username" aria-label="Username" value="{{ user.username }}">
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-secondary">Update</button>
+          </div>
+
+        </form>
+
+        <form class="row g-3 mt-0" id="profile_form" method="post" action="{% url 'user_management:account_update' %}">
+
+          <div class="col-12">
+            <h5>Update Password</h5>
+          </div>
+
+          <div class="col-12">
+            <label for="old_password" class="form-label">Current Password</label>
+            <input type="password" class="form-control" name="old_password" id="old_password" placeholder="Old Password" aria-label="Old Password">
+          </div>
+
+          <div class="col-md-6">
+            <label for="new_password1" class="form-label">New Password</label>
+            <input type="password" class="form-control" name="new_password1" id="new_password1" placeholder="New Password" aria-label="New Password">
+          </div>
+          <div class="col-md-6">
+            <label for="new_password2" class="form-label">Confirm Password</label>
+            <input type="password" class="form-control" name="new_password2" id="new_password2" placeholder="Confirm Password" aria-label="Confirm Password">
+          </div>
+
+          <div class="col-12">
+            <button type="submit" class="btn btn-secondary">Update</button>
+          </div>
+
+          <div class="col d-block d-sm-none" style="background-color: blue;">
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
 
 {% endblock %}
