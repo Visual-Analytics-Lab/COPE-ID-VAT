@@ -2,47 +2,59 @@
 
 {% block content %}
 
-<div class="container-fluid" style="height: 94vh;">
+<!-- Page Content -->
+<div class="container-fluid" style="height: 50rem;">
 
   <!-- Row 1 -->
-  <div class="row" style="height: 94vh;">
+  <div class="row">
 
     <!-- Row 1 Column 1 -->
-    <div class="sidebar col-12 col-sm-auto d-none d-sm-block" style="max-width: max-content;">
+    <div class="col col-auto d-none d-sm-block text-center px-0" style="width: 8rem;">
+      <!-- Sidebar -->
       {% include 'main/includes/sidebar.html' %}
     </div>
 
     <!-- Row 1 Column 2 -->
-    <div class="col content w-auto">
+    <div class="col">
+      <!-- Main Content -->
 
       <!-- Row 1 Column 2 Row 1 -->
-      <div class="row text-center" style="height: 6vh;">
-
+      <div class="row text-center" style="height: 4rem;">
+        <!-- Page Title -->
         <h2 class="border-bottom">Inbox</h2>
-
       </div>
 
+      <!-- Row 1 Column 2 Row 1 -->
       <div class="row">
+
+        <!-- Check if Messages in Inbox -->
         {% if inbox %}
           {% for msg in inbox %}
 
-            <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+            <!-- Message Cards -->
+            <div class="col-sm-6 col-md-4 col-lg-3 mb-4 m-2" style="width: 18rem;">
               <form method="post">
                 {% csrf_token %}
+                <!-- Message Card -->
                 <div class="card" style="width: 18rem;">
                   <div class="card-body">
+                    <!-- Card Title -->
                     <h5 class="card-title">{{ msg.project }}</h5>
+
+                    <!-- Card Message -->
                     <p class="card-text">{{ msg.message }}</p>
                   </div>
                   <ul class="list-group list-group-flush">
                     <input type="text" class="form-control d-none" name="msg-id" id="msg-id" value="{{ msg.id }}">
                     <input type="hidden" name="action" id="action-{{ msg.id }}">
+                    <!-- Card Project Information -->
                     <li class="list-group-item">Principal Investigator: {{ msg.project.principal_investigator }}</li>
                     <li class="list-group-item">From: {{ msg.sender }}</li>
                     <li class="list-group-item">Role: {{ msg.role.role_name }}</li>
                     <li class="list-group-item">{{ msg.timestamp }}</li>
                   </ul>
                   <div class="card-body">
+                    <!-- Accept & Decline Buttons -->
                     <button class="btn btn-success" onclick="setActionAndSubmit('{{ msg.id }}', 'accept')">Accept</button>
                     <button class="btn btn-danger" onclick="setActionAndSubmit('{{ msg.id }}', 'decline')">Decline</button>
                   </div>
@@ -53,6 +65,7 @@
           {% endfor %}
         {% else %}
 
+          <!-- Output if no Messages -->
           <blockquote class="blockquote text-center">
             <p>No messages right now, check back later!</p>
           </blockquote>
