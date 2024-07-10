@@ -1,6 +1,6 @@
 <!-- Included in index.html -->
 
-<nav class="navbar navbar-expand-sm navbar-dark fixed-top" aria-label="Navbar" style="background-color: #5D1725;">
+<nav class="navbar navbar-expand-sm navbar-dark" aria-label="Navbar" style="background-color: #5D1725;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">COPE-ID</a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -10,16 +10,9 @@
     <div class="collapse navbar-collapse" id="navbar">
       <ul class="navbar-nav me-auto mb-2 mb-sm-0">
 
-        {% if user.is_authenticated %}
-        <li class="nav-item">
-          <a class="nav-link" href="#">{Role}</a>
-        </li>
-
-        {% else %}
         <li class="nav-item">
           <a class="nav-link d-none"></a>
         </li>
-        {% endif %}
 
       </ul>
 
