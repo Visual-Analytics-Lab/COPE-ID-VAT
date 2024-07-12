@@ -34,7 +34,7 @@ def homepage(request):
         "tutorials":Tutorial.objects.all,
         "distinct_platforms": distinct_platforms,
         "distinct_topics": distinct_topics,
-        "sample_data": page_obj
+        "sample_data": page_obj,
         "favorite_list": favorite_list,
         'sys_admin': sys_admin,
     }
