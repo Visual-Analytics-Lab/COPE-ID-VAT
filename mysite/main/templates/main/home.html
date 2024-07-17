@@ -4,153 +4,191 @@
 
 <div class="container-fluid" style="height: 50rem;">
 
-    <!-- Row 1 -->
-    <div class="row" style="height: 50rem;">
+  <!-- Row 1 -->
+  <div class="row" style="height: 50rem;">
 
-        <!-- Row 1 Column 1 -->
-        <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
-            {% include 'main/includes/sidebar.html' %}
-        </div>
-
-        <!-- Row 1 Column 2 -->
-        <div class="col content w-auto">
-
-            <!-- Row 1 Column 2 Row 1 -->
-            <div class="row">
-
-                <!-- Row 1 Column 2 Row 1 Column 1 -->
-                <div class="col-2 text-center" style="height: 46vh;">
-
-                    <!-- Row 1 Column 2 Row 1 Column 1 Row 1-->
-                    <div class="row p-1" style="height: 3rem;">
-                        <!-- Extract -->
-                        {% include 'main/includes/dashboard/createModal.html' %}
-                    </div>
-
-                    <!-- Row 1 Column 2 Row 1 Column 1 Row 2-->
-                    <div class="row p-1" style="height: 3rem;">
-                        <!-- Add Keywords -->
-                        <input type="text" class="form-control mb-2" name="search_query" value="{{ request.GET.search_query }}" placeholder="Add Keywords...">
-                    </div>
-
-                    <!-- Row 1 Column 2 Row 1 Column 1 Row 3-->
-                    <div class="row" style="height: 40vh;">
-                        {% include 'main/includes/dashboard/wordTable.html' %}
-                    </div>
-
-                </div>
-
-                <!-- Row 1 Column 2 Row 1 Column 2 -->
-                <div class="col-10 text-center">
-
-                    <!-- Row 1 Column 2 Row 1 Column 2 Row 1 -->
-                    <div class="row pt-1" style="height: 3rem;">
-
-                        <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 1 -->
-                        <div class="col-12 col-sm-auto">
-                            {% include 'main/includes/dashboard/dateTime.html' %}
-                        </div>
-
-                        <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 2 -->
-                        <div class="col d-none d-sm-block">
-                            <div class="d-none">placeholder</div>
-                        </div>
-
-                    </div>
-
-                    <!-- Row 1 Column 2 Row 1 Column 2 Row 2 -->
-                    <div class="row" style="height: 6vh;">
-                        <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
-                            <div class="col-2 px-2">
-                                <li class="nav-item" role="presentation">
-                                    <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden active" id="wordcloud-tab" data-bs-toggle="tab" data-bs-target="#wordcloud-tab-pane" type="button" role="tab" aria-controls="wordcloud-tab-pane" aria-selected="true">WordCloud</button>
-                                </li>
-                            </div>
-                        
-                            <div class="col-2 px-2">
-                                <li class="nav-item" role="presentation">
-                                    <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="pcp-tab" data-bs-toggle="tab" data-bs-target="#pcp-tab-pane" type="button" role="tab" aria-controls="pcp-tab-pane" aria-selected="false">Parallel Coordinate Plot</button>
-                                </li>
-                            </div>
-                        
-                            <div class="col-2 px-2">
-                                <li class="nav-item" role="presentation">
-                                    <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="tabular-tab" data-bs-toggle="tab" data-bs-target="#tabular-tab-pane" type="button" role="tab" aria-controls="tabular-tab-pane" aria-selected="false">Tabular</button>
-                                </li>
-                            </div>
-                        
-                            <div class="col-2 px-2">
-                                <li class="nav-item" role="presentation">
-                                    <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="keyword-tab" data-bs-toggle="tab" data-bs-target="#keyword-tab-pane" type="button" role="tab" aria-controls="keyword-tab-pane" aria-selected="false">Keyword's Context</button>
-                                </li>
-                            </div>
-                        
-                            <div class="col-2 px-2">
-                                <button class="btn btn-danger w-100 my-1 text-truncate overflow-hidden" id="refresh" type="submit" disabled>Generate</button>
-                            </div>
-                        
-                            <div class="col-2 px-2">
-                                <div class="d-none">placeholder</div>
-                            </div>
-                        </ul>
-                    </div>
-
-                    <!-- Row 1 Column 2 Row 1 Column 2 Row 3 -->
-                    <div class="row" style="height: 40vh">
-                        
-                        <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 1-->
-                        <div class="col-10" style="border: 1px solid #777777;">
-                            <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
-                                <div class="tab-content w-100 h-100" id="myTabContent">
-                                    <div class="tab-pane fade show active" id="wordcloud-tab-pane" role="tabpanel" aria-labelledby="wordcloud-tab" tabindex="0">{% include 'main/includes/dashboard/wordcloud.html' %}</div>
-                                    <div class="tab-pane fade" id="pcp-tab-pane" role="tabpanel" aria-labelledby="pcp-tab" tabindex="0">PCP</div>
-                                    <div class="tab-pane fade" id="tabular-tab-pane" role="tabpanel" aria-labelledby="tabular-tab" tabindex="0">Tabular</div>
-                                    <div class="tab-pane fade" id="keyword-tab-pane" role="tabpanel" aria-labelledby="keyword-tab" tabindex="0">{% include 'main/includes/dashboard/keywordsContextTable.html' %}</div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 2 -->
-                        <div class="col-2" style="height: 40vh;">
-
-                            <div class="row p-1" style="height: 20vh;">
-                                {% include 'main/includes/dashboard/platformFilter.html' %}
-                            </div>
-
-                            <div class="row p-1 justify-content-start" style="height: 20vh;">
-                                {% include 'main/includes/dashboard/topicFilter.html' %}
-                            </div>
-
-                        </div>
-
-                    </div>
-
-                </div>
-            </div>
-            
-            <!-- Row 1 Column 2 Row 2 -->
-            <div class="row" style="height: 40vh">
-
-                <!-- Row 1 Column 2 Row 2 Column 1-->
-                <div class="col-6" style="border: 1px solid #777777;">
-                    <div class="d-flex text-center" style="height: 5vh;"><h5 class="border-bottom">Units Included in Sample Frame</h5></div>
-                    <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
-                        Keyword's Context
-                    </div>
-                </div>
-
-                <!-- Row 1 Column 2 Row 2 Column 2 -->
-                <div class="col-6" style="border: 1px solid #777777;">
-                    <div class="d-flex text-center" style="height: 5vh;"><h5 class="border-bottom">Metadata Descriptives of Sample Frame</h5></div>
-                    <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
-                        Metadata for units filtered
-                    </div>
-                </div>
-
-            </div>
-        </div>
-
+    <!-- Row 1 Column 1 -->
+    <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
+      {% include 'main/includes/sidebar.html' %}
     </div>
+
+    <!-- Row 1 Column 2 -->
+    <div class="col content w-auto">
+
+      <!-- Row 1 Column 2 Row 1 -->
+      <div class="row">
+
+        <!-- Row 1 Column 2 Row 1 Column 1 -->
+        <div class="col-2 text-center" style="height: 46vh;">
+
+          <!-- Row 1 Column 2 Row 1 Column 1 Row 1-->
+          <div class="row p-1" style="height: 3rem;">
+            <!-- Extract -->
+            {% include 'main/includes/dashboard/createModal.html' %}
+          </div>
+
+          <!-- Row 1 Column 2 Row 1 Column 1 Row 2-->
+          <div class="row p-1" style="height: 3rem;">
+            <!-- Add Keywords -->
+            <input type="text" class="form-control mb-2" name="search_query" value="{{ request.GET.search_query }}" placeholder="Add Keywords...">
+          </div>
+
+          <!-- Row 1 Column 2 Row 1 Column 1 Row 3-->
+          <div class="row" style="height: 40vh;">
+            {% include 'main/includes/dashboard/wordTable.html' %}
+          </div>
+
+        </div>
+
+        <!-- Row 1 Column 2 Row 1 Column 2 -->
+        <div class="col-10 text-center">
+
+          <!-- Row 1 Column 2 Row 1 Column 2 Row 1 -->
+          <div class="row pt-1" style="height: 3rem;">
+
+            <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 1 -->
+            <div class="col-12 col-sm-auto">
+              {% include 'main/includes/dashboard/dateTime.html' %}
+            </div>
+
+            <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 2 -->
+            <div class="col d-none d-sm-block">
+              <div class="d-none">placeholder</div>
+            </div>
+
+          </div>
+
+          <!-- Row 1 Column 2 Row 1 Column 2 Row 2 -->
+          <div class="row" style="height: 6vh;">
+            <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
+              <div class="col-2 px-2">
+                <li class="nav-item" role="presentation">
+                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden active" id="wordcloud-tab" data-bs-toggle="tab" data-bs-target="#wordcloud-tab-pane" type="button" role="tab" aria-controls="wordcloud-tab-pane" aria-selected="true">WordCloud</button>
+                </li>
+              </div>
+
+              <div class="col-2 px-2">
+                <li class="nav-item" role="presentation">
+                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="pcp-tab" data-bs-toggle="tab" data-bs-target="#pcp-tab-pane" type="button" role="tab" aria-controls="pcp-tab-pane" aria-selected="false">Parallel Coordinate Plot</button>
+                </li>
+              </div>
+
+              <div class="col-2 px-2">
+                <li class="nav-item" role="presentation">
+                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="tabular-tab" data-bs-toggle="tab" data-bs-target="#tabular-tab-pane" type="button" role="tab" aria-controls="tabular-tab-pane" aria-selected="false">Tabular</button>
+                </li>
+              </div>
+
+              <div class="col-2 px-2">
+                <li class="nav-item" role="presentation">
+                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="keyword-tab" data-bs-toggle="tab" data-bs-target="#keyword-tab-pane" type="button" role="tab" aria-controls="keyword-tab-pane" aria-selected="false">Keyword's Context</button>
+                </li>
+              </div>
+
+              <div class="col-2 px-2">
+                <button class="btn btn-danger w-100 my-1 text-truncate overflow-hidden" id="refresh" type="submit" disabled>Generate</button>
+              </div>
+
+              <div class="col-2 px-2">
+                <div class="d-none">placeholder</div>
+              </div>
+            </ul>
+          </div>
+
+          <!-- Row 1 Column 2 Row 1 Column 2 Row 3 -->
+          <div class="row" style="height: 40vh">
+
+            <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 1-->
+            <div class="col-10" style="border: 1px solid #777777;">
+              <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
+                <div class="tab-content w-100 h-100" id="myTabContent">
+                  <div class="tab-pane fade show active" id="wordcloud-tab-pane" role="tabpanel" aria-labelledby="wordcloud-tab" tabindex="0">{% include 'main/includes/dashboard/wordcloud.html' %}
+                  </div>
+                  <div class="tab-pane fade" id="pcp-tab-pane" role="tabpanel" aria-labelledby="pcp-tab" tabindex="0">PCP</div>
+                  <div class="tab-pane fade" id="tabular-tab-pane" role="tabpanel" aria-labelledby="tabular-tab" tabindex="0">Tabular</div>
+                  <div class="tab-pane fade" id="keyword-tab-pane" role="tabpanel" aria-labelledby="keyword-tab" tabindex="0">{% include 'main/includes/dashboard/keywordsContextTable.html' %}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 2 -->
+            <div class="col-2" style="height: 40vh;">
+
+              <div class="row p-1" style="height: 20vh;">
+                {% include 'main/includes/dashboard/platformFilter.html' %}
+              </div>
+
+              <div class="row p-1 justify-content-start" style="height: 20vh;">
+                {% include 'main/includes/dashboard/topicFilter.html' %}
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Row 1 Column 2 Row 2 -->
+      <div class="row" style="height: 40vh">
+
+        <!-- Row 1 Column 2 Row 2 Column 1-->
+        <div class="col-6" style="border: 1px solid #777777;">
+          <div class="d-flex text-center" style="height: 5vh;">
+            <h5 class="border-bottom">Units Included in Sample Frame</h5>
+          </div>
+          <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
+            Keyword's Context
+          </div>
+        </div>
+
+        <!-- Row 1 Column 2 Row 2 Column 2 -->
+        <div class="col-6" style="border: 1px solid #777777;">
+          <div class="d-flex text-center" style="height: 5vh;">
+            <h5 class="border-bottom">Metadata Descriptives of Sample Frame</h5>
+          </div>
+          <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
+            Metadata for units filtered
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!-- DateTime Info Modal -->
+<div class="modal fade" id="dateTimeInfo" tabindex="-1" aria-labelledby="dateTimeInfoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="dateTimeInfoLabel">Date Time Filter</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Waiting to get the actual text for this from Terri -->
+        <p>Date Time is calculated in 24 hour format UTC.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Keyword's Table Info Modal -->
+<div class="modal fade" id="keywordInfo" tabindex="-1" aria-labelledby="keywordInfoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="keywordInfoLabel">Adding Keywords</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Waiting to get the actual text for this from Terri -->
+        <p>Something something about keywords.</p>
+      </div>
+    </div>
+  </div>
 </div>
 
 {% endblock %}

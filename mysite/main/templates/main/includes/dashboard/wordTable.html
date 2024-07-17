@@ -6,93 +6,23 @@
     <!-- Word Table Column Headers -->
     <thead class="sticky-top">
       <tr>
-        <th scope="col"></th>
-        <th scope="col">Keywords <i class="bi bi-info-circle text-info"></i></th>
+        <th scope="col"><i class="bi bi-trash"></i></th>
+        <th scope="col">keywords
+          <button type="button" class="btn p-0" data-bs-toggle="modal" data-bs-target="#keywordInfo">
+            <i class="bi bi-info-circle text-info"></i>
+          </button>
+        </th>
         <th scope="col">Count</th>
       </tr>
     </thead>
 
     <!-- Word Table Rows -->
-    <tbody class="table-group-divider">
+    <tbody class="table-group-divider" id="keyword-rows">
+      <!-- Possibly add some sample words to start? -->
       <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
+        <td><button type="button" class="btn btn-trash b-0" id="del-word-btn" aria-label="Delete"><i class="bi bi-trash"></i></button></td>
         <td>people</td>
         <td>30</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>vaccination</td>
-        <td>27</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>pfizer</td>
-        <td>26</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>astrazaneca</td>
-        <td>20</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>shots</td>
-        <td>19</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>covidshield</td>
-        <td>17</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>virus</td>
-        <td>14</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>homeless</td>
-        <td>10</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>rollout</td>
-        <td>5</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>coronavirus</td>
-        <td>4</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>health</td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>health</td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>health</td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>health</td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>health</td>
-        <td>3</td>
-      </tr>
-      <tr>
-        <th scope="row"><button type="button" class="btn btn-trash" aria-label="Delete"><i class="bi bi-trash"></i></button></th>
-        <td>LAST</td>
-        <td>3</td>
       </tr>
     </tbody>
   </table>

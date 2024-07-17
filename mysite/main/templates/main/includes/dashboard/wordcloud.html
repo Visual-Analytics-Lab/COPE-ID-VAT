@@ -4,6 +4,7 @@
   <canvas id="canvas"></canvas>
 </div>
 
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   window.onload = () => {
     const words = [
@@ -68,14 +69,44 @@
             }
           },
         },
+        // Listen for wordcloud word click
         onClick: (event, elements) => {
           if (elements.length > 0) {
             const element = elements[0];
             const word = data.labels[element.index];
-            alert(`You clicked on the word: ${word}`);
+
+            // Check if the word already exists in the table
+            let wordExists = false;
+            $('#keyword-rows td:nth-child(2)').each(function () {
+              if ($(this).text() === word) {
+                wordExists = true;
+                return false; // Exit the loop
+              }
+            });
+
+            if (!wordExists) {
+              const value = data.datasets[0].originalData[element.index];
+
+              // Add word and value to word table
+              const newValue =
+                `<tr>
+                  <td><button type="button" class="btn btn-trash b-0" id="del-word-btn" aria-label="Delete"><i class="bi bi-trash"></i></button></td>
+                  <td>${word}</td>
+                  <td>${value}</td>
+                </tr>`;
+              // Add new row to bottom of rows
+              $('#keyword-rows').append(newValue);
+            }
           }
         }
       },
+    });
+
+    // Listen for delete button click
+    $('#keyword-rows').on('click', '#del-word-btn', function () {
+      // Fetch nearest table row and delete
+      console.log("delete clicked");
+      $(this).closest('tr').remove();
     });
   };
 </script>
