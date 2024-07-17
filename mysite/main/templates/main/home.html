@@ -29,8 +29,8 @@
 
                     <!-- Row 1 Column 2 Row 1 Column 1 Row 2-->
                     <div class="row p-1" style="height: 3rem;">
-                        <!-- Search -->
-                        <input type="text" class="form-control mb-2" name="search_query" value="{{ request.GET.search_query }}" placeholder="Type to Search...">
+                        <!-- Add Keywords -->
+                        <input type="text" class="form-control mb-2" name="search_query" value="{{ request.GET.search_query }}" placeholder="Add Keywords...">
                     </div>
 
                     <!-- Row 1 Column 2 Row 1 Column 1 Row 3-->
@@ -86,7 +86,7 @@
                             </div>
                         
                             <div class="col-2 px-2">
-                                <button class="btn btn-success w-100 my-1 text-truncate overflow-hidden" id="refresh" type="submit">Refresh</button>
+                                <button class="btn btn-danger w-100 my-1 text-truncate overflow-hidden" id="refresh" type="submit" disabled>Generate</button>
                             </div>
                         
                             <div class="col-2 px-2">
@@ -117,7 +117,7 @@
                                 {% include 'main/includes/dashboard/platformFilter.html' %}
                             </div>
 
-                            <div class="row p-1" style="height: 20vh;">
+                            <div class="row p-1 justify-content-start" style="height: 20vh;">
                                 {% include 'main/includes/dashboard/topicFilter.html' %}
                             </div>
 
@@ -133,15 +133,17 @@
 
                 <!-- Row 1 Column 2 Row 2 Column 1-->
                 <div class="col-6" style="border: 1px solid #777777;">
-                    <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
-                        Time chart of selected keywords using line chart
+                    <div class="d-flex text-center" style="height: 5vh;"><h5 class="border-bottom">Units Included in Sample Frame</h5></div>
+                    <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
+                        Keyword's Context
                     </div>
                 </div>
 
                 <!-- Row 1 Column 2 Row 2 Column 2 -->
                 <div class="col-6" style="border: 1px solid #777777;">
-                    <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
-                        Bar chart of count of selected keywords across platforms
+                    <div class="d-flex text-center" style="height: 5vh;"><h5 class="border-bottom">Metadata Descriptives of Sample Frame</h5></div>
+                    <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
+                        Metadata for units filtered
                     </div>
                 </div>
 

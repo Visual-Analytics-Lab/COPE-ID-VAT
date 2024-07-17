@@ -43,7 +43,7 @@
   </div> 
 </div>-->
 
-<div class="overflow-y-scroll m-0 px-0 py-2" style="height: 15vh;">
+<div class="overflow-y-scroll m-0 px-0 py-2 text-start" style="height: 15vh;">
   <div class="form-check">
     <input class="form-check-input" type="checkbox" value="" id="platform1">
     <label class="form-check-label" for="platform1">
@@ -53,7 +53,7 @@
 
   <!-- Loop through all platforms -->
   {% for platform in distinct_platforms %}
-  <div class="form-check">
+  <div class="form-check text-start">
     <input class="form-check-input" type="checkbox" value="{{ platform }}" id="platform{{ forloop.counter }}">
     <label class="form-check-label" for="platform{{ forloop.counter }}">
       {{ platform }}

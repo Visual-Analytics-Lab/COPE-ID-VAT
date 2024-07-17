@@ -18,7 +18,7 @@
       <!-- Row 1 Column 2 Row-->
       <div class="row text-center" style="height: 4rem;">
 
-        <h2 class="border-bottom">Profile Information</h2>
+        <h2 class="border-bottom">My Profile</h2>
 
       </div>
       
@@ -28,63 +28,110 @@
         <form class="row g-3 mt-0" id="profile_form" method="post" action="{% url 'user_management:account_update' %}">
           {% csrf_token %}
 
+          <!-- Profile Information Title -->
           <div class="col-12">
-            <h5>Update Profile Information</h5>
+            <h5>Profile Information</h5>
           </div>
 
-          <div class="col-md-6">
+          <!-- First & Last Name, and Email -->
+          <div class="col-md-4">
             <label for="first_name" class="form-label">First Name</label>
             <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First name" aria-label="First name" value="{{ user.first_name }}">
           </div>
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label for="last_name" class="form-label">Last Name</label>
             <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" aria-label="Last name" value="{{ user.last_name }}">
           </div>
+          <div class="col-md-4">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" name="email" id="email" placeholder="Email" aria-label="Email" value="{{ user.email }}">
+          </div>
+          
+          <!-- Title, Department, and Organization -->
+          <div class="col-md-4">
+            <label for="last_name" class="form-label">Title</label>
+            <input type="text" class="form-control" name="title" id="title" placeholder="Title" aria-label="Title" value="">
+          </div>
+          <div class="col-md-4">
+            <label for="first_name" class="form-label">Department</label>
+            <input type="text" class="form-control" name="department" id="department" placeholder="Department" aria-label="Department" value="">
+          </div>
+          <div class="col-md-4">
+            <label for="last_name" class="form-label">Organization</label>
+            <input type="text" class="form-control" name="organization" id="organization" placeholder="Organization" aria-label="Organization" value="">
+          </div>
 
-          <div class="col-12">
-            <label for="email" class="form-label">Email address</label>
-            <input type="email" class="form-control" name="email" id="email" aria-label="Email" value="{{ user.email }}">
+          <!-- City, State, and Country -->
+          <div class="col-md-3">
+            <label for="email" class="form-label">City</label>
+            <input type="email" class="form-control" name="city" id="city" placeholder="City" aria-label="City" value="">
+          </div>
+          <div class="col-md-3">
+            <label for="first_name" class="form-label">State, Province or Equivalent</label>
+            <input type="text" class="form-control" name="state" id="state" placeholder="State" aria-label="State" value="">
+          </div>
+          <div class="col-md-3">
+            <label for="last_name" class="form-label">Zip Code</label>
+            <input type="text" class="form-control" name="zip_code" id="zip_code" placeholder="Zip Code" aria-label="Zip Code" value="">
+          </div>
+          <div class="col-md-3">
+            <label for="last_name" class="form-label">Country</label>
+            <input type="text" class="form-control" name="country" id="country" placeholder="Country" aria-label="Country" value="">
           </div>
 
           <div class="col-12">
-            <label for="username" class="form-label">Username</label>
-            <input type="text" class="form-control" name="username" id="username" placeholder="Username" aria-label="Username" value="{{ user.username }}">
-          </div>
-
-          <div class="col-12">
-            <button type="submit" class="btn btn-secondary">Update</button>
+            <button type="submit" class="btn btn-secondary">Update Profile Information</button>
           </div>
 
         </form>
 
+        <!-- Password Update Form -->
         <form class="row g-3 mt-0" id="profile_form" method="post" action="{% url 'user_management:account_update' %}">
 
+          <!-- Password Update Title -->
           <div class="col-12">
             <h5>Update Password</h5>
           </div>
 
-          <div class="col-12">
+          <!-- Current Password, New Password, and Confirm Password -->
+          <div class="col-md-4">
             <label for="old_password" class="form-label">Current Password</label>
-            <input type="password" class="form-control" name="old_password" id="old_password" placeholder="Old Password" aria-label="Old Password">
+            <input type="password" class="form-control" name="old_password" id="old_password" placeholder="Current Password" aria-label="Old Password">
           </div>
-
-          <div class="col-md-6">
+          <div class="col-md-4">
             <label for="new_password1" class="form-label">New Password</label>
             <input type="password" class="form-control" name="new_password1" id="new_password1" placeholder="New Password" aria-label="New Password">
           </div>
-          <div class="col-md-6">
-            <label for="new_password2" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" name="new_password2" id="new_password2" placeholder="Confirm Password" aria-label="Confirm Password">
+          <div class="col-md-4">
+            <label for="new_password2" class="form-label">Confirm New Password</label>
+            <input type="password" class="form-control" name="new_password2" id="new_password2" placeholder="Confirm New Password" aria-label="Confirm Password">
           </div>
 
+          <!-- Update Password button -->
           <div class="col-12">
-            <button type="submit" class="btn btn-secondary">Update</button>
-          </div>
-
-          <div class="col d-block d-sm-none" style="background-color: blue;">
+            <button type="submit" class="btn btn-secondary">Update Password</button>
           </div>
 
         </form>
+
+        <!-- Authorized User Information -->
+        <div class="row g-3 mt-0">
+
+          <div class="col-12">
+            <h5>DataViz  User Status: <small class="text-success">Authorized</small>/<small class="text-danger">Unauthorized</small></h5>
+          </div>
+
+          <div class="col-12">
+            <button class="btn btn-secondary">Become an Authorized User</button>
+          </div>
+
+          <!-- Extra padding on small screens -->
+          <!-- This may need to be moved now that we have the authorized row -->
+          <div class="col d-block d-md-none">
+          </div>
+
+        </div>
+
       </div>
 
     </div>
