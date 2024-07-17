@@ -29,8 +29,8 @@
 
                     <!-- Row 1 Column 2 Row 1 Column 1 Row 2-->
                     <div class="row p-1" style="height: 3rem;">
-                        <!-- Search -->
-                        <input type="text" class="form-control mb-2" placeholder="Add Keywords...">
+                        <!-- Add Keywords -->
+                        <input type="text" class="form-control mb-2" name="search_query" value="{{ request.GET.search_query }}" placeholder="Add Keywords...">
                     </div>
 
                     <!-- Row 1 Column 2 Row 1 Column 1 Row 3-->
@@ -86,7 +86,7 @@
                             </div>
                         
                             <div class="col-2 px-2">
-                                <button class="btn btn-danger w-100 my-1 text-truncate overflow-hidden" disabled>Generate</button>
+                                <button class="btn btn-danger w-100 my-1 text-truncate overflow-hidden" id="refresh" type="submit" disabled>Generate</button>
                             </div>
                         
                             <div class="col-2 px-2">
