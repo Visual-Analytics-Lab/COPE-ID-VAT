@@ -1,0 +1,58 @@
+<div class="d-flex flex-column flex-shrink-0 ps-1 d-none d-lg-block" style="width: 8rem;">
+  <ul class="list-unstyled ps-0">
+    <li class="mt-1" style="height: 3rem;">
+      <!-- Explore -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-none d-lg-block" href="/" id="explore-btn" style="width: 7rem;">Explore</a>
+    </li>
+    <li style="height: 3rem;">
+      <!-- My Projects -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-none d-lg-block" href="/my_projects" id="my_projects-btn" style="width: 7rem;">My Projects</a>
+    </li>
+    <li style="height: 3rem;">
+      <!-- Inbox -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-none d-lg-block" id="inbox-btn" href="/inbox" style="width: 7rem;">Inbox</a>
+    </li>
+    {% if sys_admin %}
+    <li style="height: 3rem;">
+      <!-- Users -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-none d-lg-block" href="/users" id="users-btn" style="width: 7rem;">Users</a>
+    </li>
+    {% endif %}
+    <li style="height: 3rem;">
+      <!-- Data Grid -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-none d-lg-block" href="/datagrid" style="width: 7rem;">Data Grid</a>
+    </li>
+
+  </ul>
+</div>
+
+<div class="d-flex flex-column flex-shrink-0 ps-1 d-block d-lg-none" style="width: 4rem;">
+  <ul class="list-unstyled ps-0">
+    <li class="mt-1" style="height: 3rem;">
+      <!-- Explore -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-block d-lg-none" href="/" id="explore-btn" style="width: 3rem;"><i class="bi bi-1-square-fill"></i></a>
+    </li>
+    <li style="height: 3rem;">
+      <!-- My Projects -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-block d-lg-none" href="/my_projects" id="my_projects-btn" style="width: 3rem;"><i class="bi bi-1-square-fill"></i></a>
+    </li>
+    <li style="height: 3rem;">
+      <!-- Inbox -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-block d-lg-none" id="inbox-btn" href="/inbox" style="width: 3rem;"><i class="bi bi-1-square-fill"></i></a>
+    </li>
+    {% if sys_admin %}
+    <li style="height: 3rem;">
+      <!-- Users -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-block d-lg-none" href="/users" id="users-btn" style="width: 3rem;"><i class="bi bi-1-square-fill"></i></a>
+    </li>
+    {% endif %}
+    <li style="height: 3rem;">
+      <!-- Data Grid -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center d-block d-lg-none" href="/datagrid" style="width: 3rem;"><i class="bi bi-1-square-fill"></i></a>
+    </li>
+
+  </ul>
+</div>
+
+{% load static %}
+<script src="{% static 'js/sidebar-toggle.js' %}"></script>
