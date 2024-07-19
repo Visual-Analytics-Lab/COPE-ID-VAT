@@ -12,7 +12,7 @@ from django import forms
 from django.views.generic import ListView, View
 from django.db.models import OuterRef, Exists, Prefetch
 from django.contrib.postgres.aggregates import StringAgg
-from .models import UserProfile
+from .models import my_profile_model
 from .forms import NewUserForm, CreateGroupForm, AccountUpdateForm, PasswordChangeForm
 from .utils import sys_admin_test
 from main.models import User, organization_model, project_list_model, user_project_model
