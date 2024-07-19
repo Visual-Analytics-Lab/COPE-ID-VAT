@@ -78,35 +78,35 @@ def login_request(request):
                     context={"form":form})
 
 # =============================================================
-# Account
+# myProfile
 # =============================================================
 
 @login_required
-def account(request):
-    return render(request, 'user_management/account.html')
+def myProfile(request):
+    return render(request, 'user_management/myProfile.html')
 
 # =============================================================
-# Account - Update
+# myProfile - Update
 # =============================================================
 
 @login_required
-def account_update(request):
+def myProfile_update(request):
     if request.method == 'POST':
         account_form = AccountUpdateForm(request.POST, instance=request.user)
         password_form = PasswordChangeForm(request.user, request.POST)
         if account_form.is_valid():
             account_form.save()
             messages.success(request, 'Your profile was successfully updated!')
-            return redirect('user_management:account')
+            return redirect('user_management:myProfile')
         elif password_form.is_valid():
             user = password_form.save()
             update_session_auth_hash(request, user)  # Important to keep the user logged in
             messages.success(request, 'Your password was successfully updated!')
-            return redirect('user_management:account')
+            return redirect('user_management:myProfile')
     else:
         account_form = AccountUpdateForm(instance=request.user)
         password_form = PasswordChangeForm(request.user)
-    return render(request, 'user_management/account_update.html', {'account_form': account_form, 'password_form': password_form})
+    return render(request, 'user_management/myProfile.html', {'account_form': account_form, 'password_form': password_form})
 
 # =============================================================
 # Password Update

@@ -18,8 +18,8 @@ urlpatterns = [
 
     # Account
     # =============================================================
-    path('account/', views.account, name='account'),
-    path('account/update/', views.account_update, name='account_update'),
+    path('myProfile/', views.myProfile, name='myProfile'),
+    path('myProfile/update/', views.myProfile_update, name='myProfile_update'),
 
     # Users (Admin only)
     # =============================================================
