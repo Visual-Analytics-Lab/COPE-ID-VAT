@@ -7,7 +7,9 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import slugify
 from django.core.validators import int_list_validator
+from django.conf import settings
 
+User = settings.AUTH_USER_MODEL
 
 # Create your models here.
 
@@ -107,8 +109,6 @@ class project_list_model(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.project.project_name}"
-
-User.add_to_class('favorite_projects', models.ManyToManyField(project_model, through=project_list_model, related_name='favorited_by'))
 
 # =============================================================
 # Role Model
