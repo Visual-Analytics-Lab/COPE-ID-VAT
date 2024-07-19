@@ -1,14 +1,13 @@
 from django import forms
-from django.db import models
 from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm
-from django.contrib.auth.models import User, AbstractUser
-from .models import UserProfile
+from .models import my_profile_model
+
 
 class NewUserForm(UserCreationForm):
     email = forms.EmailField(required=True)
 
     class Meta:
-        model = User
+        model = my_profile_model
         fields = ("username", "email", "first_name", "last_name", "password1", "password2")
 
     def save(self, commit=True):
@@ -20,7 +19,7 @@ class NewUserForm(UserCreationForm):
     
 class CreateGroupForm(forms.Form):
     group_name = forms.CharField(label='Group Name', max_length=100)
-    users = forms.ModelMultipleChoiceField(queryset=User.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
+    users = forms.ModelMultipleChoiceField(queryset=my_profile_model.objects.all(), widget=forms.CheckboxSelectMultiple, required=False)
     
 class AdminAddUser(forms.Form):
     username = forms.CharField(label='Username', max_length=100)
@@ -30,7 +29,7 @@ class AdminAddUser(forms.Form):
 
 class AccountUpdateForm(forms.ModelForm):
     class Meta:
-        model = UserProfile
+        model = my_profile_model
         fields = ['first_name', 'last_name', 'username', 'email']  # Add other fields as needed
 
 class PasswordUpdateForm(PasswordChangeForm):
