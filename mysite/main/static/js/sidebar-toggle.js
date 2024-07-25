@@ -40,7 +40,12 @@ document.addEventListener("DOMContentLoaded", function()
   {
     sidebarButton = document.getElementById('inbox-btn');
     // console.log('You are on the Inbox tab');
-  } else
+  } else if (tab === 'myProfile')
+  {
+    sidebarButton = document.getElementById('myProfile-btn');
+    // console.log('You are on the myProfile tab');
+  } 
+  else
   {
     sidebarButton = document.getElementById('explore-btn');
     // console.log('You are on the Explore tab');
