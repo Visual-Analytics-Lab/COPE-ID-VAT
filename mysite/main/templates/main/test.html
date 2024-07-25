@@ -5,100 +5,249 @@
 <div class="container-fluid" style="height: 50rem;">
   <!-- Row 1 -->
   <div class="row" style="height: 50rem;">
-    <form method="post" class="row align-items-center needs-validation" novalidate>
-      {% csrf_token %}
-      <div class="col-12">
-        <label for="input-type-1" class="form-label">Input 1</label>
-        <input type="text" name="variable-name-input" class="form-control validate-field" id="input-type-1" required>
-        <div class="valid-tooltip">
-          Looks good!
-        </div>
-        <div class="invalid-tooltip">
-          Invalid input or reserved keyword.
-        </div>
-      </div>
-      <div class="col-12">
-        <label for="input-type-2" class="form-label">Input 2</label>
-        <input type="text" name="variable-name-input" class="form-control validate-field" id="input-type-2" required>
-        <div class="valid-feedback">
-          Looks good!
-        </div>
-        <div class="invalid-feedback">
-          Invalid input or reserved keyword.
-        </div>
-      </div>
-      <div class="col-12">
-        <label for="variable-name-input3" class="form-label">Variable Name</label>
-        <input type="number" name="variable-name-input" class="form-control validate-field" id="variable-number-input" required>
-        <div class="valid-feedback">
-          Looks good!
-        </div>
-        <div class="invalid-feedback">
-          Invalid input or reserved keyword.
-        </div>
-      </div>
-      <div class="col-12">
-        <button class="btn btn-primary" type="submit">Submit form</button>
-      </div>
-    </form>
+
+    <canvas id="canvas"></canvas>
+
   </div>
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
 <script>
-  $(document).ready(function() {
-    const pattern = /^[a-zA-Z@][a-zA-Z0-9@#\$,._]*[a-zA-Z0-9@#\$,._]?$/;
-    const reservedKeywords = new Set(["ALL", "AND", "BY", "EQ", "GE", "GT", "LE", "LT", "NE", "NOT", "OR", "TO", "WITH",
-                                     "S1", "E1", "C1", "NET", "SUB", "TN", "CALC"]);
-
-    function validateInput(input) {
-      if (input.type === 'text') {
-        const value = input.value.toUpperCase();
-        if (!pattern.test(value) || reservedKeywords.has(value)) {
-          input.setCustomValidity("Invalid input or reserved keyword.");
-          input.classList.add('is-invalid');
-          input.classList.remove('is-valid');
-        } else {
-          input.setCustomValidity("");
-          input.classList.add('is-valid');
-          input.classList.remove('is-invalid');
-        }
-      } else if (input.type === 'number') {
-        if (isNaN(input.value) || input.value.trim() === '') {
-          input.setCustomValidity("Please enter a valid number.");
-          input.classList.add('is-invalid');
-          input.classList.remove('is-valid');
-        } else {
-          input.setCustomValidity("");
-          input.classList.add('is-valid');
-          input.classList.remove('is-invalid');
-        }
+  window.onload = () => {
+    const pcpWords = [
+      {
+        "word": "plandemic",
+        "March 2020": 21,
+        "September 2020": 160,
+        "April 2020": 110,
+        "August 2020": 3.9,
+        "May 2020": 2.62,
+        "June 2020": 16.46,
+        "July 2020": 4
+      },
+      {
+        "word": "covidhoax",
+        "March 2020": 21,
+        "September 2020": 160,
+        "April 2020": 110,
+        "August 2020": 3.9,
+        "May 2020": 2.875,
+        "June 2020": 17.02,
+        "July 2020": 4
+      },
+      {
+        "word": "covid19hoax",
+        "March 2020": 22.8,
+        "September 2020": 108,
+        "April 2020": 93,
+        "August 2020": 3.85,
+        "May 2020": 2.32,
+        "June 2020": 18.61,
+        "July 2020": 4
+      },
+      {
+        "word": "covid1984",
+        "March 2020": 21.4,
+        "September 2020": 258,
+        "April 2020": 110,
+        "August 2020": 3.08,
+        "May 2020": 3.215,
+        "June 2020": 19.44,
+        "July 2020": 3
+      },
+      {
+        "word": "people",
+        "March 2020": 18.7,
+        "September 2020": 360,
+        "April 2020": 175,
+        "August 2020": 3.15,
+        "May 2020": 3.44,
+        "June 2020": 17.02,
+        "July 2020": 3
+      },
+      {
+        "word": "trump2020",
+        "March 2020": 18.1,
+        "September 2020": 225,
+        "April 2020": 105,
+        "August 2020": 2.76,
+        "May 2020": 3.46,
+        "June 2020": 20.22,
+        "July 2020": 3
+      },
+      {
+        "word": "stopthesteal",
+        "March 2020": 14.3,
+        "September 2020": 360,
+        "April 2020": 245,
+        "August 2020": 3.21,
+        "May 2020": 3.57,
+        "June 2020": 15.84,
+        "July 2020": 3
+      },
+      {
+        "word": "billgates",
+        "March 2020": 24.4,
+        "September 2020": 146.7,
+        "April 2020": 62,
+        "August 2020": 3.69,
+        "May 2020": 3.19,
+        "June 2020": 20,
+        "July 2020": 4
+      },
+      {
+        "word": "virus",
+        "March 2020": 22.8,
+        "September 2020": 140.8,
+        "April 2020": 95,
+        "August 2020": 3.92,
+        "May 2020": 3.15,
+        "June 2020": 22.9,
+        "July 2020": 4
+      },
+      {
+        "word": "pandemic",
+        "March 2020": 19.2,
+        "September 2020": 167.6,
+        "April 2020": 123,
+        "August 2020": 3.92,
+        "May 2020": 3.44,
+        "June 2020": 18.3,
+        "July 2020": 4
+      },
+      {
+        "word": "trump",
+        "March 2020": 17.8,
+        "September 2020": 167.6,
+        "April 2020": 123,
+        "August 2020": 3.92,
+        "May 2020": 3.44,
+        "June 2020": 18.9,
+        "July 2020": 4
+      },
+      {
+        "word": "qanon",
+        "March 2020": 16.4,
+        "September 2020": 275.8,
+        "April 2020": 180,
+        "August 2020": 3.07,
+        "May 2020": 4.07,
+        "June 2020": 17.4,
+        "July 2020": 3
+      },
+      {
+        "word": "agenda21",
+        "March 2020": 17.3,
+        "September 2020": 275.8,
+        "April 2020": 180,
+        "August 2020": 3.07,
+        "May 2020": 3.73,
+        "June 2020": 17.6,
+        "July 2020": 3
+      },
+      {
+        "word": "fakenews",
+        "March 2020": 15.2,
+        "September 2020": 275.8,
+        "April 2020": 180,
+        "August 2020": 3.07,
+        "May 2020": 3.78,
+        "June 2020": 18,
+        "July 2020": 3
+      },
+      {
+        "word": "arrestbillgates",
+        "March 2020": 10.4,
+        "September 2020": 472,
+        "April 2020": 205,
+        "August 2020": 2.93,
+        "May 2020": 5.25,
+        "June 2020": 17.98,
+        "July 2020": 3
+      },
+      {
+        "word": "covidvaccine",
+        "March 2020": 10.4,
+        "September 2020": 460,
+        "April 2020": 215,
+        "August 2020": 3,
+        "May 2020": 5.424,
+        "June 2020": 17.82,
+        "July 2020": 3
+      },
+      {
+        "word": "electionfraud",
+        "March 2020": 14.7,
+        "September 2020": 440,
+        "April 2020": 230,
+        "August 2020": 3.23,
+        "May 2020": 5.345,
+        "June 2020": 17.42,
+        "July 2020": 3
+      },
+      {
+        "word": "nomandatoryvaccines",
+        "March 2020": 32.4,
+        "September 2020": 78.7,
+        "April 2020": 66,
+        "August 2020": 4.08,
+        "May 2020": 2.2,
+        "June 2020": 19.47,
+        "July 2020": 4
+      },
+      {
+        "word": "thegreatawakening",
+        "March 2020": 30.4,
+        "September 2020": 75.7,
+        "April 2020": 52,
+        "August 2020": 4.93,
+        "May 2020": 1.615,
+        "June 2020": 18.52,
+        "July 2020": 4
+      },
+      {
+        "word": "maga",
+        "March 2020": 33.9,
+        "September 2020": 71.1,
+        "April 2020": 65,
+        "August 2020": 4.22,
+        "May 2020": 1.835,
+        "June 2020": 19.9,
+        "July 2020": 4
       }
-    }
+    ];
 
-    $('.needs-validation').on('submit', function(event) {
-      const form = this;
-      let isValid = true;
+    const attrs = ['March 2020', 'April 2020', 'May 2020', 'June 2020', 'July 2020', 'August 2020', 'September 2020'];
 
-      $('.validate-field').each(function() {
-        validateInput(this);
-        if (!this.checkValidity()) {
-          isValid = false;
+    const ctx = document.getElementById('canvas').getContext('2d');
+    const chart = new Chart(ctx, {
+      type: 'pcp',
+      data: {
+        labels: pcpWords.map((c) => c.word),
+        datasets: attrs.map((attr) => ({
+          label: attr,
+          data: pcpWords.map((c) => c[attr]),
+        })),
+      },
+      options: {
+        scales: {
+          y: {
+            type: 'linear',
+            position: 'left',
+            title: {
+              display: true,
+              text: 'Words'
+            },
+            ticks: {
+              callback: function (value, index) {
+                return pcpWords[index].word;
+              }
+            }
+          }
         }
-      });
-
-      if (!isValid) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-
-      $(this).addClass('was-validated');
+      },
     });
-
-    $('.validate-field').on('input', function() {
-      validateInput(this);
-    });
-  });
+  };
 </script>
 
 {% endblock %}
