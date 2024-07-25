@@ -91,18 +91,31 @@ def myProfile(request):
 
 @login_required
 def myProfile_update(request):
+
+    # Process submitted forms
     if request.method == 'POST':
+        # Fetch forms from HTTP POST request
         account_form = AccountUpdateForm(request.POST, instance=request.user)
         password_form = PasswordChangeForm(request.user, request.POST)
+
+        # Check if account form is valid
         if account_form.is_valid():
+            # Update user model fields
             account_form.save()
+            # Message out success
             messages.success(request, 'Your profile was successfully updated!')
             return redirect('user_management:myProfile')
+        # Check if password form is valid
         elif password_form.is_valid():
+            # Update user model password
             user = password_form.save()
-            update_session_auth_hash(request, user)  # Important to keep the user logged in
+            # Important to keep the user logged in
+            update_session_auth_hash(request, user) 
+            # Message out success
             messages.success(request, 'Your password was successfully updated!')
             return redirect('user_management:myProfile')
+
+    # Generate blank forms
     else:
         account_form = AccountUpdateForm(instance=request.user)
         password_form = PasswordChangeForm(request.user)
