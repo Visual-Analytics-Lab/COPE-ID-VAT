@@ -122,13 +122,21 @@
         <div class="row g-3 mt-0">
 
           <div class="col-12">
-            <h5>DataViz  User Status: <small class="text-success">Authorized</small>/<small class="text-danger">Unauthorized</small></h5>
+            <h5>DataViz  User Status:
+              {% if authorized_user %}
+              <small class="text-success">Authorized</small>
+              {% else %}
+              <small class="text-danger">Unauthorized</small>
+              {% endif %}
+            </h5>
           </div>
 
+          {% if not authorized_user %}
           <div class="col-12">
             <button class="btn btn-secondary">Become an Authorized User</button>
           </div>
-
+          {% endif %}
+          
           <!-- Extra padding on small screens -->
           <div class="col d-block d-md-none">
           </div>

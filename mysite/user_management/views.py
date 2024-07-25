@@ -17,6 +17,7 @@ from .forms import NewUserForm, CreateGroupForm, AccountUpdateForm, PasswordChan
 from .utils import sys_admin_test
 from main.utils import favorite_projects_list
 from main.models import User, organization_model, project_list_model, user_project_model
+from django.contrib.auth.models import Group
 
 # =============================================================
 # Register
@@ -84,11 +85,12 @@ def login_request(request):
 
 @login_required
 def myProfile(request):
-    
-    favorite_list = favorite_projects_list(request.user)
 
+    favorite_list = favorite_projects_list(request.user)
+    authorized_user = Group.objects.filter(name="Authorized Tool User", user=request.user).exists()
     context = {
         'favorite_list': favorite_list,
+        'authorized_user': authorized_user,
     }
     return render(request, 'user_management/myProfile.html', context)
 
@@ -98,7 +100,6 @@ def myProfile(request):
 
 @login_required
 def myProfile_update(request):
-
     # Process submitted forms
     if request.method == 'POST':
         # Fetch forms from HTTP POST request
