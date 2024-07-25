@@ -15,6 +15,7 @@ from django.contrib.postgres.aggregates import StringAgg
 from .models import my_profile_model
 from .forms import NewUserForm, CreateGroupForm, AccountUpdateForm, PasswordChangeForm
 from .utils import sys_admin_test
+from main.utils import favorite_projects_list
 from main.models import User, organization_model, project_list_model, user_project_model
 
 # =============================================================
@@ -83,7 +84,13 @@ def login_request(request):
 
 @login_required
 def myProfile(request):
-    return render(request, 'user_management/myProfile.html')
+    
+    favorite_list = favorite_projects_list(request.user)
+
+    context = {
+        'favorite_list': favorite_list,
+    }
+    return render(request, 'user_management/myProfile.html', context)
 
 # =============================================================
 # myProfile - Update
@@ -119,7 +126,15 @@ def myProfile_update(request):
     else:
         account_form = AccountUpdateForm(instance=request.user)
         password_form = PasswordChangeForm(request.user)
-    return render(request, 'user_management/myProfile.html', {'account_form': account_form, 'password_form': password_form})
+
+    favorite_list = favorite_projects_list(request.user)
+
+    context = {
+        'favorite_list': favorite_list,
+        'account_form': account_form,
+        'password_form': password_form
+    }
+    return render(request, 'user_management/myProfile.html', context)
 
 # =============================================================
 # Password Update
