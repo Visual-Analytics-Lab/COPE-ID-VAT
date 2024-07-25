@@ -84,7 +84,7 @@ class project_model(models.Model):
     N = models.PositiveIntegerField(default=0) # Total number of unique units
     project_description = models.TextField(null=True, blank=True)
     codebook_protocol = models.TextField(null=True, blank=True)
-    units = models.ManyToManyField(bert_main_sample_data, related_name='projects')
+    units = models.ManyToManyField(bert_main_sample_data, related_name='projects', blank=True)
 
     def __str__(self):
         return self.project_name
@@ -133,7 +133,7 @@ class role_model(models.Model):
 
 class permission_model(models.Model):
     permission_name = models.CharField(max_length=64, unique=False, null=False, blank=False)
-    permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=True)
+    permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=False)
     permission_description = models.TextField(max_length=128, default='', null=True, blank=True)
     permission_rank = models.DecimalField(max_digits=4, decimal_places=2, default=0.0, null=True, blank=True)
     permission_assignable = models.BooleanField(default=False)
