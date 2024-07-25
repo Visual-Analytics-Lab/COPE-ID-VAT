@@ -28,9 +28,17 @@ class AdminAddUser(forms.Form):
     password2 = forms.PasswordInput()
 
 class AccountUpdateForm(forms.ModelForm):
+    title = forms.CharField(required=False)
+    department = forms.CharField(required=False)
+    organization = forms.CharField(required=False)
+    city = forms.CharField(required=False)
+    state = forms.CharField(required=False)
+    zip_code = forms.CharField(required=False)
+    country = forms.CharField(required=False)
+
     class Meta:
         model = my_profile_model
-        fields = ['first_name', 'last_name', 'username', 'email']  # Add other fields as needed
+        fields = ['first_name', 'last_name', 'email', 'title', 'department', 'organization', 'city', 'state', 'zip_code', 'country']
 
 class PasswordUpdateForm(PasswordChangeForm):
     old_password = forms.CharField(
