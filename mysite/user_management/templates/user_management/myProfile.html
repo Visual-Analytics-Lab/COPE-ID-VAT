@@ -50,33 +50,33 @@
           <!-- Title, Department, and Organization -->
           <div class="col-md-4">
             <label for="last_name" class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" id="title" placeholder="Title" aria-label="Title" value="">
+            <input type="text" class="form-control" name="title" id="title" placeholder="Title" aria-label="Title" value="{{ user.title }}">
           </div>
           <div class="col-md-4">
             <label for="first_name" class="form-label">Department</label>
-            <input type="text" class="form-control" name="department" id="department" placeholder="Department" aria-label="Department" value="">
+            <input type="text" class="form-control" name="department" id="department" placeholder="Department" aria-label="Department" value="{{ user.department }}">
           </div>
           <div class="col-md-4">
             <label for="last_name" class="form-label">Organization</label>
-            <input type="text" class="form-control" name="organization" id="organization" placeholder="Organization" aria-label="Organization" value="">
+            <input type="text" class="form-control" name="organization" id="organization" placeholder="Organization" aria-label="Organization" value="{{ user.organization }}">
           </div>
 
           <!-- City, State, and Country -->
           <div class="col-md-3">
-            <label for="email" class="form-label">City</label>
-            <input type="email" class="form-control" name="city" id="city" placeholder="City" aria-label="City" value="">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" name="city" id="city" placeholder="City" aria-label="City" value="{{ user.city }}">
           </div>
           <div class="col-md-3">
             <label for="first_name" class="form-label">State, Province or Equivalent</label>
-            <input type="text" class="form-control" name="state" id="state" placeholder="State" aria-label="State" value="">
+            <input type="text" class="form-control" name="state" id="state" placeholder="State" aria-label="State" value="{{ user.state }}">
           </div>
           <div class="col-md-3">
             <label for="last_name" class="form-label">Zip Code</label>
-            <input type="text" class="form-control" name="zip_code" id="zip_code" placeholder="Zip Code" aria-label="Zip Code" value="">
+            <input type="text" class="form-control" name="zip_code" id="zip_code" placeholder="Zip Code" aria-label="Zip Code" value="{{ user.zip_code }}">
           </div>
           <div class="col-md-3">
             <label for="last_name" class="form-label">Country</label>
-            <input type="text" class="form-control" name="country" id="country" placeholder="Country" aria-label="Country" value="">
+            <input type="text" class="form-control" name="country" id="country" placeholder="Country" aria-label="Country" value="{{ user.country }}">
           </div>
 
           <div class="col-12">
@@ -126,7 +126,6 @@
           </div>
 
           <!-- Extra padding on small screens -->
-          <!-- This may need to be moved now that we have the authorized row -->
           <div class="col d-block d-md-none">
           </div>
 
