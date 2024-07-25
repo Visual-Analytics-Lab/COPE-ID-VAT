@@ -6,10 +6,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch
-from .models import Tutorial, sample_data, bert_main_sample_data, User, organization_model, project_model, role_model, \
+from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, role_model, \
     permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model
 from .utils import favorite_projects_list
 from user_management.utils import sys_admin_test
+from user_management.models import my_profile_model
 
 # =============================================================
 # Homepage
@@ -485,7 +486,7 @@ def myProjects_editProject(request, project_id):
             email = request.POST.get('email')
 
             # Get user instance from database
-            recipient = User.objects.filter(email=email).first()
+            recipient = my_profile_model.objects.filter(email=email).first()
 
             # Get role key from HTTP POST request
             role_pk = request.POST.get('role-pk')
@@ -526,7 +527,7 @@ def myProjects_editProject(request, project_id):
             role_pk = request.POST.get('role-pk')
 
             # Fetch user instance from database
-            user = get_object_or_404(User, pk=user_id)
+            user = get_object_or_404(my_profile_model, pk=user_id)
 
             # Fetch role instance from database
             role = get_object_or_404(role_model, pk=role_pk)
@@ -598,7 +599,7 @@ def myProjects_userProfile(request, project_id, user_id):
     project = get_object_or_404(project_model, pk=project_id)
 
     # Fetch user with key
-    user = get_object_or_404(User, pk=user_id)
+    user = get_object_or_404(my_profile_model, pk=user_id)
 
     # Fetch user project instance from database
     user_project = user_project_model.objects.prefetch_related('permissions').get(user=user, project=project_id)
