@@ -28,6 +28,9 @@ class AdminAddUser(forms.Form):
     password2 = forms.PasswordInput()
 
 class AccountUpdateForm(forms.ModelForm):
+    first_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    email = forms.CharField(required=True)
     title = forms.CharField(required=False)
     department = forms.CharField(required=False)
     organization = forms.CharField(required=False)
