@@ -81,7 +81,7 @@
 
               <div class="col-2 px-2">
                 <li class="nav-item" role="presentation">
-                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="keyword-tab" data-bs-toggle="tab" data-bs-target="#keyword-tab-pane" type="button" role="tab" aria-controls="keyword-tab-pane" aria-selected="false">Keyword's Context</button>
+                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="barchart-tab" data-bs-toggle="tab" data-bs-target="#barchart-tab-pane" type="button" role="tab" aria-controls="barchart-tab-pane" aria-selected="false">Bar Chart</button>
                 </li>
               </div>
 
@@ -104,9 +104,9 @@
                 <div class="tab-content w-100 h-100" id="myTabContent">
                   <div class="tab-pane fade show active" id="wordcloud-tab-pane" role="tabpanel" aria-labelledby="wordcloud-tab" tabindex="0">{% include 'main/includes/dashboard/wordcloud.html' %}
                   </div>
-                  <div class="tab-pane fade" id="pcp-tab-pane" role="tabpanel" aria-labelledby="pcp-tab" tabindex="0">PCP</div>
+                  <div class="tab-pane fade" id="pcp-tab-pane" role="tabpanel" aria-labelledby="pcp-tab" tabindex="0">{% include 'main/includes/dashboard/pcp.html' %}</div>
                   <div class="tab-pane fade" id="tabular-tab-pane" role="tabpanel" aria-labelledby="tabular-tab" tabindex="0">Tabular</div>
-                  <div class="tab-pane fade" id="keyword-tab-pane" role="tabpanel" aria-labelledby="keyword-tab" tabindex="0">{% include 'main/includes/dashboard/keywordsContextTable.html' %}</div>
+                  <div class="tab-pane fade" id="barchart-tab-pane" role="tabpanel" aria-labelledby="barchart-tab" tabindex="0">{% include 'main/includes/dashboard/barChart.html' %}</div>
                 </div>
               </div>
             </div>
