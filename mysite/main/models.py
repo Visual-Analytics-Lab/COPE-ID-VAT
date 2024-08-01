@@ -31,8 +31,8 @@ class Tutorial(models.Model):
 
 class sample_data(models.Model):
     id = models.IntegerField
-    doc_text = models.TextField()
-    doc_json = models.TextField()
+    doc_text = models.TextField(null=True)
+    doc_json = models.TextField(null=True)
     doc_source = models.CharField(max_length=150)
 
     def __str__(self):
@@ -43,8 +43,7 @@ class sample_data(models.Model):
 # =============================================================
 
 class bert_main_sample_data(models.Model):
-    topic_id = models.AutoField(primary_key=True) # Josh
-    # topic_id = models.IntegerField(primary_key=True) # Jacob
+    topic_id = models.AutoField(primary_key=True)
     topic_name = models.TextField()
     documents = models.CharField()
  
