@@ -7,7 +7,9 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import slugify
 from django.core.validators import int_list_validator
+from django.conf import settings
 
+User = settings.AUTH_USER_MODEL
 
 # Create your models here.
 
@@ -29,8 +31,8 @@ class Tutorial(models.Model):
 
 class sample_data(models.Model):
     id = models.IntegerField
-    doc_text = models.TextField()
-    doc_json = models.TextField()
+    doc_text = models.TextField(null=True)
+    doc_json = models.TextField(null=True)
     doc_source = models.CharField(max_length=150)
 
     def __str__(self):
@@ -41,8 +43,7 @@ class sample_data(models.Model):
 # =============================================================
 
 class bert_main_sample_data(models.Model):
-    topic_id = models.AutoField(primary_key=True) # Josh
-    # topic_id = models.IntegerField(primary_key=True) # Jacob
+    topic_id = models.AutoField(primary_key=True)
     topic_name = models.TextField()
     documents = models.CharField()
  
@@ -82,7 +83,7 @@ class project_model(models.Model):
     N = models.PositiveIntegerField(default=0) # Total number of unique units
     project_description = models.TextField(null=True, blank=True)
     codebook_protocol = models.TextField(null=True, blank=True)
-    units = models.ManyToManyField(bert_main_sample_data, related_name='projects')
+    units = models.ManyToManyField(bert_main_sample_data, related_name='projects', blank=True)
 
     def __str__(self):
         return self.project_name
@@ -108,8 +109,6 @@ class project_list_model(models.Model):
     def __str__(self):
         return f"{self.user.username} - {self.project.project_name}"
 
-User.add_to_class('favorite_projects', models.ManyToManyField(project_model, through=project_list_model, related_name='favorited_by'))
-
 # =============================================================
 # Role Model
 # =============================================================
@@ -133,7 +132,7 @@ class role_model(models.Model):
 
 class permission_model(models.Model):
     permission_name = models.CharField(max_length=64, unique=False, null=False, blank=False)
-    permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=True)
+    permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=False)
     permission_description = models.TextField(max_length=128, default='', null=True, blank=True)
     permission_rank = models.DecimalField(max_digits=4, decimal_places=2, default=0.0, null=True, blank=True)
     permission_assignable = models.BooleanField(default=False)

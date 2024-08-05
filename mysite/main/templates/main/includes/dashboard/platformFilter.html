@@ -1,52 +1,12 @@
 <!-- Included in home.html -->
 
-<!-- Platform Filter Title -->
+<!-- Platforms Filter Title -->
 <h5 class="pb-2 border-bottom">Platforms</h5>
 
-<!-- Platforms to Filter By -->
-<!-- <div class="overflow-y-scroll m-0 px-0 py-2" style="height: 15vh;">
+<div class="overflow-y-scroll m-0 pe-0 ps-1 py-2 text-start" style="height: 15vh;">
   <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" id="platform1">
-    <label class="form-check-label" for="platform1">
-      Select All
-    </label>
-  </div>
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" id="platform2">
-    <label class="form-check-label" for="platform2">
-      Twitter
-    </label>
-  </div>
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" id="platform3">
-    <label class="form-check-label" for="platform3">
-      Parler
-    </label>
-  </div>
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" id="platform4">
-    <label class="form-check-label" for="platform4">
-      Reddit
-    </label>
-  </div>
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" id="platform5">
-    <label class="form-check-label" for="platform5">
-      YouTube
-    </label>
-  </div>
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" id="platform6">
-    <label class="form-check-label" for="platform6">
-      Flickr
-    </label>
-  </div> 
-</div>-->
-
-<div class="overflow-y-scroll m-0 px-0 py-2 text-start" style="height: 15vh;">
-  <div class="form-check">
-    <input class="form-check-input" type="checkbox" value="" id="platform1">
-    <label class="form-check-label" for="platform1">
+    <input class="form-check-input plats-check" type="checkbox" value="" id="all-plats">
+    <label class="form-check-label" for="all-plats">
       Select All
     </label>
   </div>
@@ -54,10 +14,25 @@
   <!-- Loop through all platforms -->
   {% for platform in distinct_platforms %}
   <div class="form-check text-start">
-    <input class="form-check-input" type="checkbox" value="{{ platform }}" id="platform{{ forloop.counter }}">
-    <label class="form-check-label" for="platform{{ forloop.counter }}">
+    <input class="form-check-input plats-check" type="checkbox" value="{{ platform }}" id="platform-{{ forloop.counter }}">
+    <label class="form-check-label" for="platform-{{ forloop.counter }}">
       {{ platform }}
     </label>
   </div>
   {% endfor %}
 </div>
+
+<script>
+  $('#all-plats').on('click', function () {
+      var isChecked = $(this).is(':checked');
+      $('.plats-check').prop('checked', isChecked);
+  });
+
+  $('.plats-check').not('#all-plats').on('click', function () {
+      if (!$(this).is(':checked')) {
+          $('#all-plats').prop('checked', false);
+      } else if ($('.plats-check').not('#all-plats').filter(':checked').length === $('.plats-check').not('#all-plats').length) {
+          $('#all-plats').prop('checked', true);
+      }
+  });
+</script>

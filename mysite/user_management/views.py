@@ -12,10 +12,12 @@ from django import forms
 from django.views.generic import ListView, View
 from django.db.models import OuterRef, Exists, Prefetch
 from django.contrib.postgres.aggregates import StringAgg
-from .models import UserProfile
+from .models import my_profile_model
 from .forms import NewUserForm, CreateGroupForm, AccountUpdateForm, PasswordChangeForm
 from .utils import sys_admin_test
+from main.utils import favorite_projects_list
 from main.models import User, organization_model, project_list_model, user_project_model
+from django.contrib.auth.models import Group
 
 # =============================================================
 # Register
@@ -83,7 +85,14 @@ def login_request(request):
 
 @login_required
 def myProfile(request):
-    return render(request, 'user_management/myProfile.html')
+
+    favorite_list = favorite_projects_list(request.user)
+    authorized_user = Group.objects.filter(name="Authorized Tool User", user=request.user).exists()
+    context = {
+        'favorite_list': favorite_list,
+        'authorized_user': authorized_user,
+    }
+    return render(request, 'user_management/myProfile.html', context)
 
 # =============================================================
 # myProfile - Update
@@ -91,22 +100,42 @@ def myProfile(request):
 
 @login_required
 def myProfile_update(request):
+    # Process submitted forms
     if request.method == 'POST':
+        # Fetch forms from HTTP POST request
         account_form = AccountUpdateForm(request.POST, instance=request.user)
         password_form = PasswordChangeForm(request.user, request.POST)
+
+        # Check if account form is valid
         if account_form.is_valid():
+            # Update user model fields
             account_form.save()
+            # Message out success
             messages.success(request, 'Your profile was successfully updated!')
             return redirect('user_management:myProfile')
+        # Check if password form is valid
         elif password_form.is_valid():
+            # Update user model password
             user = password_form.save()
-            update_session_auth_hash(request, user)  # Important to keep the user logged in
+            # Important to keep the user logged in
+            update_session_auth_hash(request, user) 
+            # Message out success
             messages.success(request, 'Your password was successfully updated!')
             return redirect('user_management:myProfile')
+
+    # Generate blank forms
     else:
         account_form = AccountUpdateForm(instance=request.user)
         password_form = PasswordChangeForm(request.user)
-    return render(request, 'user_management/myProfile.html', {'account_form': account_form, 'password_form': password_form})
+
+    favorite_list = favorite_projects_list(request.user)
+
+    context = {
+        'favorite_list': favorite_list,
+        'account_form': account_form,
+        'password_form': password_form
+    }
+    return render(request, 'user_management/myProfile.html', context)
 
 # =============================================================
 # Password Update

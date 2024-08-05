@@ -25,7 +25,7 @@
       <!-- Profile update form -->
       <div class="row" style="height: 40rem;">
         
-        <form class="row g-3 mt-0" id="profile_form" method="post" action="{% url 'user_management:myProfile_update' %}">
+        <form class="row g-3 mt-0 needs-validation" id="profile_form" method="post" action="{% url 'user_management:myProfile_update' %}" novalidate>
           {% csrf_token %}
 
           <!-- Profile Information Title -->
@@ -36,47 +36,50 @@
           <!-- First & Last Name, and Email -->
           <div class="col-md-4">
             <label for="first_name" class="form-label">First Name</label>
-            <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First name" aria-label="First name" value="{{ user.first_name }}">
+            <input type="text" class="form-control" name="first_name" id="first_name" placeholder="First name" aria-label="First name" value="{{ user.first_name }}" required>
+            <div class="invalid-feedback">Please provide a first name.</div>       
           </div>
           <div class="col-md-4">
             <label for="last_name" class="form-label">Last Name</label>
-            <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" aria-label="Last name" value="{{ user.last_name }}">
+            <input type="text" class="form-control" name="last_name" id="last_name" placeholder="Last name" aria-label="Last name" value="{{ user.last_name }}" required>
+            <div class="invalid-feedback">Please provide a last name.</div>         
           </div>
           <div class="col-md-4">
             <label for="email" class="form-label">Email</label>
-            <input type="email" class="form-control" name="email" id="email" placeholder="Email" aria-label="Email" value="{{ user.email }}">
+            <input type="email" class="form-control" name="email" id="email" placeholder="Email" aria-label="Email" value="{{ user.email }}" required>
+            <div class="invalid-feedback">Please provide a valid email.</div>        
           </div>
           
           <!-- Title, Department, and Organization -->
           <div class="col-md-4">
             <label for="last_name" class="form-label">Title</label>
-            <input type="text" class="form-control" name="title" id="title" placeholder="Title" aria-label="Title" value="">
+            <input type="text" class="form-control" name="title" id="title" placeholder="Title" aria-label="Title" value="{{ user.title }}">
           </div>
           <div class="col-md-4">
             <label for="first_name" class="form-label">Department</label>
-            <input type="text" class="form-control" name="department" id="department" placeholder="Department" aria-label="Department" value="">
+            <input type="text" class="form-control" name="department" id="department" placeholder="Department" aria-label="Department" value="{{ user.department }}">
           </div>
           <div class="col-md-4">
             <label for="last_name" class="form-label">Organization</label>
-            <input type="text" class="form-control" name="organization" id="organization" placeholder="Organization" aria-label="Organization" value="">
+            <input type="text" class="form-control" name="organization" id="organization" placeholder="Organization" aria-label="Organization" value="{{ user.organization }}">
           </div>
 
           <!-- City, State, and Country -->
           <div class="col-md-3">
-            <label for="email" class="form-label">City</label>
-            <input type="email" class="form-control" name="city" id="city" placeholder="City" aria-label="City" value="">
+            <label for="city" class="form-label">City</label>
+            <input type="text" class="form-control" name="city" id="city" placeholder="City" aria-label="City" value="{{ user.city }}">
           </div>
           <div class="col-md-3">
             <label for="first_name" class="form-label">State, Province or Equivalent</label>
-            <input type="text" class="form-control" name="state" id="state" placeholder="State" aria-label="State" value="">
+            <input type="text" class="form-control" name="state" id="state" placeholder="State" aria-label="State" value="{{ user.state }}">
           </div>
           <div class="col-md-3">
             <label for="last_name" class="form-label">Zip Code</label>
-            <input type="text" class="form-control" name="zip_code" id="zip_code" placeholder="Zip Code" aria-label="Zip Code" value="">
+            <input type="text" class="form-control" name="zip_code" id="zip_code" placeholder="Zip Code" aria-label="Zip Code" value="{{ user.zip_code }}">
           </div>
           <div class="col-md-3">
             <label for="last_name" class="form-label">Country</label>
-            <input type="text" class="form-control" name="country" id="country" placeholder="Country" aria-label="Country" value="">
+            <input type="text" class="form-control" name="country" id="country" placeholder="Country" aria-label="Country" value="{{ user.country }}">
           </div>
 
           <div class="col-12">
@@ -87,6 +90,7 @@
 
         <!-- Password Update Form -->
         <form class="row g-3 mt-0" id="password_form" method="post" action="{% url 'user_management:myProfile_update' %}">
+          {% csrf_token %}
 
           <!-- Password Update Title -->
           <div class="col-12">
@@ -118,15 +122,22 @@
         <div class="row g-3 mt-0">
 
           <div class="col-12">
-            <h5>DataViz  User Status: <small class="text-success">Authorized</small>/<small class="text-danger">Unauthorized</small></h5>
+            <h5>DataViz  User Status:
+              {% if authorized_user %}
+              <small class="text-success">Authorized</small>
+              {% else %}
+              <small class="text-danger">Unauthorized</small>
+              {% endif %}
+            </h5>
           </div>
 
+          {% if not authorized_user %}
           <div class="col-12">
             <button class="btn btn-secondary">Become an Authorized User</button>
           </div>
-
+          {% endif %}
+          
           <!-- Extra padding on small screens -->
-          <!-- This may need to be moved now that we have the authorized row -->
           <div class="col d-block d-md-none">
           </div>
 
@@ -139,5 +150,28 @@
   </div>
 </div>
 
+<script>
+  // Example starter JavaScript for disabling form submissions if there are invalid fields
+(() => {
+  'use strict'
+
+  // Fetch all the forms we want to apply custom Bootstrap validation styles to
+  const forms = document.querySelectorAll('.needs-validation')
+
+  // Loop over them and prevent submission
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault()
+        event.stopPropagation()
+      }
+
+      form.classList.add('was-validated')
+    }, false)
+  })
+})()
+
+
+</script>
 
 {% endblock %}

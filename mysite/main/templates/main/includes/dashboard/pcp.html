@@ -1,19 +1,194 @@
+<!-- Included in home.html -->
+
+<div class="d-flex justify-content-center" id="pcp-container" style="width: 100%; height: 40vh;">
+  <canvas id="parcoords"></canvas>
+</div>
+
 <script>
-    const objs = [
-    { label: 'A', f1: 5, f2: 3, f4: 3 },
-    { label: 'B', f1: 2, f2: 1, f4: 8 },
-    { label: 'C', f1: 10, f2: 6, f4: 2 },
-    ];
-    const attrs = ['f1', 'f2', 'f3'];
-    const config = {
-    type: 'pcp',
-    data: {
-        labels: objs.map((obj) => obj.label),
-        datasets: attrs.map((attr) => ({
-        label: attr,
-        data: objs.map((obj) => obj[attr]),
-        })),
+  const pcp = document.getElementById('parcoords').getContext('2d');
+  const pcpData = {
+    labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+    datasets: [
+      {
+        label: 'plandemic',
+        data: [217, 413, 158, 468, 336, 321, 177, 445, 392, 470, 230, 188],
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        fill: false
+      },
+      {
+        label: 'covidhoax',
+        data: [391, 165, 72, 146, 87, 120, 421, 259, 227, 259, 87, 124],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: false
+      },
+      {
+        label: 'covidhoax',
+        data: [246, 263, 149, 226, 496, 278, 375, 205, 203, 108, 367, 185],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: false
+      },
+      {
+        label: 'covid1984',
+        data: [331, 458, 279, 287, 135, 387, 232, 266, 196, 65, 373, 217],
+        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        fill: false
+      },
+      {
+        label: 'people',
+        data: [143, 438, 445, 66, 321, 214, 286, 365, 225, 87, 389, 287],
+        borderColor: 'rgba(255, 159, 64, 1)',
+        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+        fill: false
+      },
+      {
+        label: 'trump2020',
+        data: [410, 173, 256, 140, 396, 161, 324, 333, 230, 467, 94, 464],
+        borderColor: 'rgba(199, 199, 199, 1)',
+        backgroundColor: 'rgba(199, 199, 199, 0.2)',
+        fill: false
+      },
+      {
+        label: 'stopthesteal',
+        data: [285, 405, 233, 474, 461, 231, 98, 340, 331, 199, 197, 58],
+        borderColor: 'rgba(83, 102, 255, 1)',
+        backgroundColor: 'rgba(83, 102, 255, 0.2)',
+        fill: false
+      },
+      {
+        label: 'billgates',
+        data: [336, 448, 338, 268, 285, 92, 336, 138, 290, 137, 254, 488],
+        borderColor: 'rgba(255, 206, 86, 1)',
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        fill: false
+      },
+      {
+        label: 'virus',
+        data: [448, 403, 124, 319, 328, 134, 80, 189, 155, 221, 102, 105],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: false
+      },
+      {
+        label: 'pandemic',
+        data: [101, 102, 206, 151, 127, 194, 83, 219, 250, 199, 176, 90],
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        fill: false
+      },
+      {
+        label: 'trump',
+        data: [106, 352, 169, 380, 292, 255, 466, 293, 80, 380, 198, 80],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: false
+      },
+      {
+        label: 'qanon',
+        data: [134, 367, 342, 232, 370, 216, 75, 323, 341, 151, 153, 403],
+        borderColor: 'rgba(255, 159, 64, 1)',
+        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+        fill: false
+      },
+      {
+        label: 'agenda21',
+        data: [226, 388, 107, 185, 219, 468, 333, 405, 192, 105, 87, 174],
+        borderColor: 'rgba(153, 102, 255, 1)',
+        backgroundColor: 'rgba(153, 102, 255, 0.2)',
+        fill: false
+      },
+      {
+        label: 'fakenews',
+        data: [322, 487, 286, 216, 186, 308, 468, 213, 177, 179, 315, 438],
+        borderColor: 'rgba(199, 199, 199, 1)',
+        backgroundColor: 'rgba(199, 199, 199, 0.2)',
+        fill: false
+      },
+      {
+        label: 'arrestbillgates',
+        data: [286, 81, 312, 327, 222, 308, 139, 173, 455, 246, 453, 312],
+        borderColor: 'rgba(83, 102, 255, 1)',
+        backgroundColor: 'rgba(83, 102, 255, 0.2)',
+        fill: false
+      },
+      {
+        label: 'covidvaccine',
+        data: [253, 307, 241, 68, 59, 90, 217, 294, 221, 121, 302, 78],
+        borderColor: 'rgba(255, 206, 86, 1)',
+        backgroundColor: 'rgba(255, 206, 86, 0.2)',
+        fill: false
+      },
+      {
+        label: 'electionfraud',
+        data: [140, 388, 365, 207, 273, 82, 130, 131, 64, 311, 82, 261],
+        borderColor: 'rgba(75, 192, 192, 1)',
+        backgroundColor: 'rgba(75, 192, 192, 0.2)',
+        fill: false
+      },
+      {
+        label: 'nomandatoryvaccines',
+        data: [482, 99, 149, 66, 338, 306, 76, 218, 178, 451, 231, 89],
+        borderColor: 'rgba(255, 99, 132, 1)',
+        backgroundColor: 'rgba(255, 99, 132, 0.2)',
+        fill: false
+      },
+      {
+        label: 'thegreatawakening',
+        data: [206, 111, 227, 212, 301, 147, 99, 292, 215, 68, 197, 239],
+        borderColor: 'rgba(54, 162, 235, 1)',
+        backgroundColor: 'rgba(54, 162, 235, 0.2)',
+        fill: false
+      },
+      {
+        label: 'maga',
+        data: [469, 65, 83, 117, 366, 288, 408, 388, 130, 182, 376, 180],
+        borderColor: 'rgba(255, 159, 64, 1)',
+        backgroundColor: 'rgba(255, 159, 64, 0.2)',
+        fill: false
+      }
+    ]
+  };
+  const pcpOptions = {
+    responsive: true,
+    interaction: {
+      mode: 'index',
+      intersect: false
     },
-    options: {},
-    };
+    plugins: {
+      tooltip: {
+        mode: 'index',
+        intersect: false,
+        bodyFont: {
+          size: 10
+        },
+        padding: 6
+      }
+    },
+    scales: {
+      x: {
+        stacked: true,
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Months'
+        }
+      },
+      y: {
+        stacked: true,
+        beginAtZero: true,
+        title: {
+          display: true,
+          text: 'Frequency'
+        }
+      }
+    }
+  };
+  const parcoords = new Chart(pcp, {
+    type: 'line',
+    data: pcpData,
+    options: pcpOptions
+  });
 </script>

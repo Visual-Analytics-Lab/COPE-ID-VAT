@@ -1,0 +1,82 @@
+<!-- Included in home.html -->
+
+<div class="d-flex justify-content-center" id="bar-chart-container" style="width: 100%; height: 40vh;">
+  <canvas id="bar-chart"></canvas>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  var bc = document.getElementById("bar-chart").getContext("2d");
+
+const labels = ['People', 'Vaccination', 'Pfizer', 'Government'];
+const data = {
+  labels: labels,
+  datasets: [
+    {
+      label: 'Twitter',
+      data: [631, 727, 3202, 721],
+      borderColor: '#0084B4',
+      backgroundColor: '#08A0E9',
+    },
+    {
+      label: 'Reddit',
+      data: [784, 841, 3714, 726],
+      borderColor: '#FF4500',
+      backgroundColor: '#FF4500',
+    },
+    {
+      label: 'Parler',
+      data: [1276, 1007, 4561, 746],
+      borderColor: '#9B2A56',
+      backgroundColor: '#BF2346',
+    },
+    {
+      label: 'YouTube',
+      data: [974, 907, 3561, 946],
+      borderColor: '#000000',
+      backgroundColor: '#E62117',
+    },
+    {
+      label: 'Tumblr',
+      data: [1276, 1007, 4561, 746],
+      borderColor: '#34465D',
+      backgroundColor: '#34465D',
+    }
+  ]
+};
+
+const config = {
+  type: 'bar',
+  data: data,
+  options: {
+    indexAxis: 'y',
+    elements: {
+      bar: {
+        borderWidth: 2,
+      }
+    },
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'right',
+      },
+      title: {
+        display: true,
+        text: 'Posts of Selected Keywords by Platforms'
+      }
+    },
+    scales: {
+      x: {
+        title: {
+          display: true,
+          text: "Posts",
+          color: "black"
+        }
+      }
+    }
+  }
+};
+
+// Generate chart
+new Chart(bc, config);
+</script>

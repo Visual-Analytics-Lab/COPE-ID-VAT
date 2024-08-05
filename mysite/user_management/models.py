@@ -1,16 +1,13 @@
-from django.contrib.auth.models import User
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 
-class UserProfile(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    first_name = models.CharField(max_length=100)
-    last_name = models.CharField(max_length=100)
-    email = models.EmailField()
-    username = models.CharField(max_length=100)
-    # Add other profile fields as needed
-    # For example:
-    # bio = models.TextField(blank=True)
-    # profile_picture = models.ImageField(upload_to='profile_pics/', blank=True)
+class my_profile_model(AbstractUser):
+    title = models.CharField(max_length=32, default="", blank=True)
+    department = models.CharField(max_length=64, default="", blank=True)
+    organization = models.CharField(max_length=64, default="", blank=True)
+    city = models.CharField(max_length=32, default="", blank=True)
+    state = models.CharField(max_length=32, default='', blank=True)
 
-    def __str__(self):
-        return self.user.username
+    zip_code = models.CharField(max_length=5, default="", blank=True)
+    country = models.CharField(max_length=32, default="", blank=True)
+    favorite_projects = models.ManyToManyField('main.project_model', through='main.project_list_model', related_name='favorited_by')
