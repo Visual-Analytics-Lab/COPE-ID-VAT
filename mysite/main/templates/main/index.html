@@ -29,18 +29,22 @@
   <!-- COPE-ID CSS -->
   {% load static %}
   <link href="{% static 'css/cope-id.css' %}" rel="stylesheet">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Teko:wght@300..700&display=swap" rel="stylesheet">
 </head>
 
 <body>
   <div class="container-fluid px-0">
-    <div class="row mx-0 mb-2">
-      <div class="col-12 p-0">
+    <div class="row mx-0 p-0" style="height: 5rem;">
+
         <!-- content for first row goes here -->
         {% include 'main/includes/messaging.html' %}
         {% include 'main/includes/navbar.html' %}
-      </div>
+
     </div>
-    <div class="row mx-0" style="height:94vh; overflow-y:auto;">
+    <div class="row mx-0" style="min-height:94vh; overflow-y:auto;">
       {% block content %}
 
       {% endblock %}
