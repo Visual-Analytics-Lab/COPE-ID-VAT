@@ -1,7 +1,19 @@
 <!-- Included in home.html -->
 
-<div class="d-flex justify-content-center" id="pcp-container" style="width: 100%; height: 40vh;">
-  <canvas id="parcoords"></canvas>
+<div class="d-flex justify-content-center" id="pcp-container" style="height: 25rem;">
+
+  <div class="row">
+
+    <div class="col-1 pt-1">
+      <button class="btn btn-secondary" style="width: 3rem; height:3rem;" onclick="download()"><i class="bi bi-download"></i></button>
+    </div>
+
+    <div class="col">
+      <canvas id="parcoords" style="min-width: 40rem;"></canvas>
+    </div>
+
+  </div>
+
 </div>
 
 <script>
@@ -165,6 +177,9 @@
           size: 10
         },
         padding: 6
+      },
+      legend: {
+        position: 'right'
       }
     },
     scales: {
@@ -191,4 +206,13 @@
     data: pcpData,
     options: pcpOptions
   });
+
+
+  function download() {
+    const imageLink = document.createElement('a');
+    const canvas = document.getElementById('parcoords');
+    imageLink.download = 'canvas.png';
+    imageLink.href = canvas.toDataURL('image/png', 1);
+    imageLink.click();
+  }
 </script>
