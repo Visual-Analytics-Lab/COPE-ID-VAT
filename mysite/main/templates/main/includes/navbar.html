@@ -1,8 +1,18 @@
 <!-- Included in index.html -->
+<style>
+  .navbar {
+    z-index: 1030;
+  }
+  .collapse.show {
+    z-index: 1040;
+  }
+</style>
 
-<nav class="navbar navbar-expand-sm navbar-dark" aria-label="Navbar" style="background-color: #5D1725;">
+<nav class="navbar navbar-expand-sm navbar-dark" aria-label="Navbar" style="background-color: #5D1725; min-height: 5rem;">
   <div class="container-fluid">
-    <a class="navbar-brand" href="/">COPE-ID</a>
+    <a class="navbar-brand" href="/">
+      COPE-ID
+    </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
@@ -20,8 +30,8 @@
 
         {% if user.is_authenticated %}
 
-          <a class="btn btn-secondary" id="myProfile-btn" style="margin-right: 0.25rem;" href="/myProfile">My Profile</a>
-          <a class="btn btn-secondary" style="margin-right: 0.125rem; margin-left: 0.125rem;" href="/logout">Logout</a>
+          <a class="btn" id="myProfile-btn" style="margin-right: 0.25rem; color: #FFFFFF; background-color: #4A7B9D;" href="/myProfile"><strong>My Profile</strong></a>
+          <a class="btn" style="margin-right: 0.125rem; margin-left: 0.125rem; color: #FFFFFF; background-color: #4A7B9D;" href="/logout"><strong>Logout</strong></a>
 
         {% else %}
 
