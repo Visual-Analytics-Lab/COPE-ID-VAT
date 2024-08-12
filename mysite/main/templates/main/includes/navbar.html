@@ -8,7 +8,7 @@
   }
 </style>
 
-<nav class="navbar navbar-expand-sm navbar-dark" aria-label="Navbar" style="background-color: #5D1725; min-height: 5rem;">
+<nav class="navbar navbar-expand-sm navbar-dark" aria-label="Navbar" style="background-color: #5D1725; min-height: 4rem;">
   <div class="container-fluid">
     <a class="navbar-brand" href="/">
       COPE-ID
@@ -29,14 +29,25 @@
       <div class="d-lg-flex col-lg-3 justify-content-lg-end">
 
         {% if user.is_authenticated %}
+          
+          <div class="d-flex flex-row">
+            <a class="btn btn-navbar-main" id="myProfile-btn" href="/myProfile"><strong>My Profile</strong></a>
+            <a class="btn btn-navbar-main" href="/logout"><strong>Logout</strong></a>
+          </div>
 
-          <a class="btn" id="myProfile-btn" style="margin-right: 0.25rem; color: #FFFFFF; background-color: #4A7B9D;" href="/myProfile"><strong>My Profile</strong></a>
-          <a class="btn" style="margin-right: 0.125rem; margin-left: 0.125rem; color: #FFFFFF; background-color: #4A7B9D;" href="/logout"><strong>Logout</strong></a>
+          <div class="d-flex flex-row flex-wrap">
+            <a class="btn btn-secondary d-sm-none d-inline-block" style="width: 7rem; margin-top: 0.5rem; margin-left: 0.25rem; margin-right: 0.25rem;" href="/" id="explore-btn">Explore</a>
+            <a class="btn btn-secondary d-sm-none d-inline-block" style="width: 7rem; margin-top: 0.5rem; margin-left: 0.125rem; margin-right: 0.25rem;" href="/my_projects" id="my_projects-btn">My Projects</a>
+            <a class="btn btn-secondary d-sm-none d-inline-block" style="width: 7rem; margin-top: 0.5rem; margin-left: 0.125rem; margin-right: 0.25rem;" href="/inbox" id="inbox-btn">Inbox</a>
+            <a class="btn btn-secondary d-sm-none d-inline-block" style="width: 7rem; margin-top: 0.5rem; margin-left: 0.125rem; margin-right: 0.25rem;" href="/datagrid">Data Grid</a>
+          </div>
 
         {% else %}
 
-          <a class="btn btn-secondary" style="margin-right: 0.25rem;" href="/login">Login</a>
-          <a class="btn btn-secondary" style="margin-right: 0.125rem; margin-left: 0.125rem;" href="/register">Register</a>
+          <div class="d-flex flex-row">
+            <a class="btn btn-navbar-main" href="/login">Login</a>
+            <a class="btn btn-navbar-main" href="/register">Register</a>
+          </div>
 
         {% endif %}
 

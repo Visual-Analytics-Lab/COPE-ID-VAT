@@ -11,6 +11,7 @@ from .models import Tutorial, sample_data, bert_main_sample_data, organization_m
 from .utils import favorite_projects_list
 from user_management.utils import sys_admin_test
 from user_management.models import my_profile_model
+from collections import defaultdict
 
 # =============================================================
 # Homepage
@@ -149,6 +150,7 @@ def myProjects(request):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"My Projects",
         'user_projects': user_projects,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
@@ -168,6 +170,7 @@ def myProjects_units(request, project_id):
     favorite_list = favorite_projects_list(request.user)    
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"{project.project_name} Project Units",
         'project': project,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
@@ -227,6 +230,7 @@ def myProjects_codebook(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"{project.project_name} Codebook",
         'project': project,
         'favorite_list': favorite_list,
         'coding_variables': coding_variables,
@@ -304,6 +308,7 @@ def myProjects_addVariable(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"Add Variable to {project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'measurements': measurements,
@@ -419,6 +424,7 @@ def myProjects_editVariable(request, project_id, variable_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"Edit {variable.variable_name} in {project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'variable': variable,
@@ -443,6 +449,7 @@ def myProjects_irr(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"{project.project_name} Inter-Rater Reliability",
         'project': project,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
@@ -575,6 +582,8 @@ def myProjects_editProject(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"Edit {project.project_name}",
+        'edit_project': True,
         'active_user': active_user,
         'project': project,
         'favorite_list': favorite_list,
@@ -594,7 +603,7 @@ def myProjects_editProject(request, project_id):
 # =============================================================
 
 @login_required
-def myProjects_userProfile(request, project_id, user_id):
+def myProjects_projectProfile(request, project_id, user_id):
     # Fetch project from database
     project = get_object_or_404(project_model, pk=project_id)
 
@@ -609,6 +618,15 @@ def myProjects_userProfile(request, project_id, user_id):
 
     # Annotate the permissions queryset with boolean if permission is assigned
     permissions = permission_model.objects.filter(permission_assignable=True).order_by('permission_rank').annotate(assigned=Exists(user_project_permissions))
+
+    # Map to get human-readable category names
+    category_map = dict(permission_model.PERM_CATEGORY)
+
+    # Group permissions by human-readable category name
+    grouped_permissions = defaultdict(list)
+    for permission in permissions:
+        category_name = category_map.get(permission.permission_category, "Unassigned")
+        grouped_permissions[category_name].append(permission)
 
     # Fetch roles (excluding PI)
     roles = role_model.objects.exclude(role_name="Principal Investigator")
@@ -654,16 +672,18 @@ def myProjects_userProfile(request, project_id, user_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"Edit {user.first_name} {user.last_name} on {project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'user': user,
         'roles': roles,
         'user_project': user_project,
         'permissions': permissions,
+        'grouped_permissions': dict(grouped_permissions),
         'sys_admin': sys_admin,
     }
     
-    return render(request, 'main/myProjectsTabs/userProfile.html', context)
+    return render(request, 'main/myProjectsTabs/projectProfile.html', context)
 
 # =============================================================
 # My Projects - Sample & Results
@@ -677,6 +697,7 @@ def myProjects_sampleResults(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"{project.project_name} Samples & Results",
         'project': project,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
@@ -735,6 +756,7 @@ def inbox(request):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        'page_name': f"Inbox",
         'inbox': inbox,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,

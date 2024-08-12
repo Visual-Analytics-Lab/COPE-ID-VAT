@@ -1,0 +1,99 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+
+<!-- Page Content -->
+<div class="container-fluid" style="height: 50rem;">
+
+  {% include 'main/includes/pageTitle.html' %}
+
+  <!-- Row 1 -->
+  <div class="row">
+
+    <!-- Row 1 Column 1 -->
+    <div class="col col-auto d-none d-sm-block sidebar-style">
+      <!-- Sidebar -->
+      {% include 'main/includes/sidebar.html' %}
+    </div>
+
+    <!-- Row 1 Column 2 -->
+    <div class="col">
+
+      <!-- Main Content -->
+      <form method="post" class="needs-validation" novalidate>
+        {% csrf_token %}
+
+        <!-- Row 1 Column 2 Row 1 -->
+        <div class="row g-0 mb-1 mt-1 justify-content-center">
+
+          <div class="col-2 align-items-start">
+            <a class="btn btn-secondary d-inline-flex justify-content-center" id="return-btn" href="{% url 'main:myProjects_editProject' project.project_id %}" style="width: 8rem;"><i class="bi bi-arrow-left"></i> Edit Project</a>
+          </div>
+
+          <div class="col-7"><span class="d-none">placeholder</span></div>
+
+          <div class="col-3 align-items-start">
+            <div class="d-flex justify-content-end">
+              <button type="sbumit" class="btn btn-success d-inline-flex justify-content-center me-1" id="save-variable" style="width: 7rem;">Save</button>
+              <button type="button" class="btn btn-warning d-inline-flex justify-content-center me-1" id="cancel-variable" style="width: 7rem;">Cancel</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Row 1 Column 2 Row 2 -->
+        <div class="row">
+
+          {% include 'main/includes/myProjects/permsAccordion.html' %}
+
+        </div>
+
+        <!-- Row 1 Column 2 Row 3 -->
+        <div class="row g-0 mt-2 justify-content-center">
+
+          <div class="col-2 align-items-start">
+            <div class="d-flex justify-content-start">
+              {% if previous_var_id %}
+              <button type="submit" class="btn btn-secondary p-1 me-1" id="prev-btn" style="width: 9rem;">Previous</button>
+              {% else %}
+                <button class="btn btn-secondary p-1 me-1 disabled" style="width: 9rem;">Previous</button>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="col-7"><span class="d-none">placeholder</span></div>
+
+          <div class="col-2 align-items-start">
+            <div class="d-flex justify-content-end">
+              {% if next_var_id %}
+                <button type="submit" class="btn btn-secondary p-1" id="next-btn" style="width: 9rem;">Next</button>
+              {% else %}
+                <button class="btn btn-secondary p-1 me-1 disabled" style="width: 9rem;">Next</button>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="col-1"><span class="d-none">placeholder</span></div>
+        </div>
+
+        <input type="text" class="form-control d-none" name="edit-action" id="edit-action" value="">
+      </form>
+    </div>
+
+  </div>
+
+</div>
+
+{% endblock %}
+<!-- 
+<div class="row" style="height: 88vh;">
+
+  <div class="col">
+    {% include 'main/includes/myProjects/userProfileModal.html' %}
+  </div>
+
+  <div class="col">
+    {% include 'main/includes/myProjects/rolesTable.html' %}
+  </div>
+
+</div> -->

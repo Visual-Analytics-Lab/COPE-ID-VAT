@@ -32,7 +32,7 @@ urlpatterns = [
     # My Projects - Edit Project (Move profile later)
     # =============================================================
     path("my_projects/edit_project/<uuid:project_id>/", views.myProjects_editProject, name="myProjects_editProject"),
-    path("my_projects/profile/<uuid:project_id>/<int:user_id>/", views.myProjects_userProfile, name="myProjects_userProfile"),
+    path("my_projects/profile/<uuid:project_id>/<int:user_id>/", views.myProjects_projectProfile, name="myProjects_projectProfile"),
     path("my_projects/project_roles/<uuid:project_id>/", views.myProjects_sampleResults, name="myProjects_SampleResults"),
 
     # Inbox

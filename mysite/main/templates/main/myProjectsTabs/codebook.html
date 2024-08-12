@@ -2,14 +2,18 @@
 
 {% block content %}
 
+<!-- Set div containing buttons to have 0 !important padding top and bottom to align with sidebar -->
+
 <!-- Page Content -->
 <div class="container-fluid" style="height: 50rem;">
+
+  {% include 'main/includes/pageTitle.html' %}
 
   <!-- Row 1 -->
   <div class="row">
 
     <!-- Row 1 Column 1 -->
-    <div class="col col-auto d-none d-sm-block text-center px-0" style="width: 8rem;">
+    <div class="col col-auto d-none d-sm-block sidebar-style">
       <!-- Sidebar -->
       {% include 'main/includes/sidebar.html' %}
     </div>
@@ -17,12 +21,6 @@
     <!-- Row 1 Column 2 -->
     <div class="col">
       <!-- Main Content -->
-
-      <!-- Row 1 Column 2 Row 1 -->
-      <div class="row text-center" style="height: 4rem;">
-        <!-- Page Title -->
-        <h2 class="border-bottom">{{ project.project_name }} Units</h2>
-      </div>
 
       <!-- Row 1 Column 2 Row 2 -->
       <div class="row px-1" style="height: 4rem;">
