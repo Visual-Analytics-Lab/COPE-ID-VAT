@@ -1,25 +1,23 @@
 <div class="d-flex flex-column flex-shrink-0">
   <ul class="list-unstyled ps-0">
-    <li class="mt-1" style="height: 3rem;">
+    <li class="sidebar-li mt-1">
       <!-- Explore -->
-      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/" id="explore-btn" style="width: 7rem;">Explore</a>
+      <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/" id="explore-btn">Explore</a>
     </li>
     {% if favorite_list %}
       <li>
         <!-- My Projects -->
-        <a class="btn btn-secondary d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn" style="width: 7rem;">My Projects</a>
-        <button class="btn btn-secondary d-inline-flex align-items-center rounded border-0 collapsed d-none" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true">
-          Dashboard
-        </button>
+        <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn">My Projects</a>
+        <!-- <button class="btn btn-secondary d-inline-flex align-items-center rounded border-0 collapsed d-none" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true">Dashboard</button> -->
         <div class="collapse show" id="dashboard-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small text-center">
             {% if project %}
-              <li><a href="{% url 'main:myProjects_units' project.project_id %}" class="link-body-emphasis link-underline-secondary d-inline-flex rounded px-0 mx-0">{{ project.project_name }}</a></li>
+              <li><a class="link-body-emphasis link-underline-secondary d-inline-flex rounded px-0 mx-0" href="{% url 'main:myProjects_units' project.project_id %}">{{ project.project_name }}</a></li>
             {% endif %}
 
             {% for favorite in favorite_list %}
               {% if favorite != project %}
-                <li><a href="{% url 'main:myProjects_units' favorite.project_id %}" class="link-body-emphasis d-inline-flex text-decoration-none rounded px-0 mx-0">{{ favorite.project_name }}</a></li>
+                <li><a class="link-body-emphasis d-inline-flex text-decoration-none rounded px-0 mx-0" href="{% url 'main:myProjects_units' favorite.project_id %}">{{ favorite.project_name }}</a></li>
               {% endif %}
             {% endfor %}
             
@@ -27,24 +25,24 @@
         </div>
       </li>
     {% else %}
-      <li style="height: 3rem;">
+      <li class="sidebar-li">
         <!-- My Projects -->
-        <a class="btn btn-secondary d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn" style="width: 7rem;">My Projects</a>
+        <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn">My Projects</a>
       </li>
     {% endif %}
-    <li style="height: 3rem;">
+    <li class="sidebar-li">
       <!-- Inbox -->
-      <a class="btn btn-secondary d-inline-flex justify-content-center" id="inbox-btn" href="/inbox" style="width: 7rem;">Inbox</a>
+      <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" id="inbox-btn" href="/inbox">Inbox</a>
     </li>
     {% if sys_admin %}
-    <li style="height: 3rem;">
+    <li class="sidebar-li">
       <!-- Users -->
-      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/users" id="users-btn" style="width: 7rem;">Users</a>
+      <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/users" id="users-btn">Users</a>
     </li>
     {% endif %}
-    <li style="height: 3rem;">
+    <li class="sidebar-li">
       <!-- Data Grid -->
-      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/datagrid" style="width: 7rem;">Data Grid</a>
+      <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/datagrid">Data Grid</a>
     </li>
 
   </ul>
