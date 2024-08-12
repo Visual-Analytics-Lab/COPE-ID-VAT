@@ -1,0 +1,114 @@
+<!-- Included in myProjects/userProfile.html -->
+
+<div class="accordion accordion-flush" id="accordionFlushExample">
+  {% for category, permissions in grouped_permissions.items %}
+    <div class="accordion-item">
+      <h2 class="accordion-header">
+        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapse{{ forloop.counter }}" aria-expanded="false" aria-controls="flush-collapse{{ forloop.counter }}">
+          {{ category }}
+        </button>
+      </h2>
+      <div id="flush-collapse{{ forloop.counter }}" class="accordion-collapse collapse" data-bs-parent="#accordionFlushExample">
+        <div class="accordion-body">
+          {% for permission in permissions %}
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" name="permission[]" value="{{ permission.id }}" {% if permission.assigned %}checked{% endif %}>
+              <label class="form-check-label" for="permission-{{ permission.id }}">{{ permission.permission_name }}</label>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="helpMenu" tabindex="-1" aria-labelledby="helpMenuLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="helpMenuLabel">Privileges Information</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <table class="table table-striped table-hover mb-0">
+
+          <!-- User Table Column Headers -->
+          <thead class="sticky-top">
+            <tr>
+              <th scope="col">
+                Privilege
+              <th scope="col">Description</th>
+            </tr>
+          </thead>
+
+          <!-- User Table Rows -->
+          <tbody class="table-group-divider">
+            <tr>
+              <th scope="row">Create the Project</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">Add Users to Project</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">View Codebook Variables</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">Edit Codebook Variables</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">Assign Coding Assignments to Team</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">Set IRR Overlap Requirements</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">Code Individual Posts</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">View Posts</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">Edit Posts</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">View Project's Overview/Dashboard Visualizations</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">View IRR of Project</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">View Project's Coded Descriptives</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">Export Posts</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">Export Coded Results</th>
+              <td>...</td>
+            </tr>
+            <tr>
+              <th scope="row">Export Project's IRR Results & Overview/Descriptives Visualizations</th>
+              <td>...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
