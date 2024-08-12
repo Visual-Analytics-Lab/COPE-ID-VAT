@@ -36,7 +36,7 @@
             {% if user.user != project.principal_investigator %}
               <!-- First & Last Name -->
               <th scope="row">
-                <a class="link-body-emphasis icon-link link-underline-opacity-25 link-underline-opacity-100-hover" href="{% url 'main:myProjects_userProfile' project.project_id user.user.id %}">
+                <a class="link-body-emphasis icon-link link-underline-opacity-25 link-underline-opacity-100-hover" href="{% url 'main:myProjects_projectProfile' project.project_id user.user.id %}">
                   <i class="bi-pencil-square"></i>{{ user.user.first_name }} {{ user.user.last_name }}
                 </a>
               </th>
