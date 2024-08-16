@@ -8,8 +8,12 @@
   <div class="row" style="height: 50rem;">
 
     <!-- Row 1 Column 1 -->
-    <div class="col col-auto d-none d-sm-block text-center px-0" style="width: 8rem;">
+    <div class="col col-auto d-none d-md-block text-center px-0" style="width: 8rem;">
       {% include 'main/includes/sidebar.html' %}
+    </div>
+
+    <div class="col col-auto d-block d-md-none text-center px-0" style="width: 3.5rem;">
+      {% include 'main/includes/sidebar_min.html' %}
     </div>
 
     <!-- Row 1 Column 2 -->
@@ -138,7 +142,7 @@
             <h5 class="border-bottom">Units Included in Sample Frame</h5>
           </div>
           <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
-            Keyword's Context
+            {% include 'main/includes/dashboard/keywordsContextTable.html' %}
           </div>
         </div>
 
