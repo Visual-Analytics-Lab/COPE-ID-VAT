@@ -8,26 +8,21 @@
   }
 </style>
 
-<nav class="navbar navbar-expand-sm navbar-dark" aria-label="Navbar" style="background-color: #5D1725; min-height: 4rem;">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/">
-      COPE-ID
-    </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
+<nav class="navbar navbar-expand-md" aria-label="Dataviz navbar" style="background-color: #5D1725; min-height: 7rem;">
+  <div class="container-fluid" style="background-color: #5D1725;">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#datavizNavbar" aria-controls="datavizNavbar" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbar">
-      <ul class="navbar-nav me-auto mb-2 mb-sm-0">
-
-        <li class="nav-item">
-          <a class="nav-link d-none"></a>
-        </li>
-
+    <div class="collapse navbar-collapse d-lg-flex" id="datavizNavbar">
+      <a class="navbar-brand col-lg-3 me-0" href="/">
+        {% load static %}
+        <img type="image/png" width="200" height="85" src="{% static 'images/COPEID_HEADER_ICON.png' %}"/>
+      </a>
+      <ul class="navbar-nav col-md-6 justify-content-md-center">
+        <h2 class="h1-page-title" style="z-index: 1050;">{{ page_name }}{% if edit_project and pi %} <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProjectName"><i class="bi bi-pencil text-white"></i></button>{% endif %}</h2>
       </ul>
-
-      <div class="d-lg-flex col-lg-3 justify-content-lg-end">
-
+      <div class="d-md-flex col-md-3 justify-content-md-end">
         {% if user.is_authenticated %}
           
           <div class="d-flex flex-row">
@@ -50,9 +45,11 @@
           </div>
 
         {% endif %}
-
       </div>
-
     </div>
   </div>
 </nav>
+
+<div class="p-0 m-0">
+  <hr class="border hr-navbar-border m-0"> 
+</div>

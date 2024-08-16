@@ -45,18 +45,22 @@
   }
 </style>
 
-<div class="container" style="height: 94vh;">
+<!-- Page Content -->
+<div class="container-fluid" style="height: 50rem;">
 
   <!-- Row 1 -->
-  <div class="row" style="height: 94vh;">
+  <div class="row">
 
     <!-- Row 1 Column 1 -->
-    <div class="sidebar col-12 col-sm-auto d-none d-sm-block">
+    <div class="col col-auto d-none d-sm-block sidebar-style">
+      <!-- Sidebar -->
       {% include 'main/includes/sidebar.html' %}
     </div>
 
     <!-- Row 1 Column 2 -->
-    <div class="col content">
+    <div class="col">
+      <!-- Main Content -->
+       
       <form method="post" class="needs-validation" novalidate>
         {% csrf_token %}
 

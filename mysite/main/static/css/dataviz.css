@@ -22,7 +22,18 @@
   --btn-star-fav-hover-color-dark: black;
   --btn-star-fav-hover-outline-color-light: black; /* Hover outline color */
   --btn-star-fav-hover-outline-color-dark: white;
-}
+
+  --myProj-nav-row-height: 3rem;
+  --myProj-nav-row-padding: 0.25rem !important;
+
+  --myProj-nav-div-width: 100% !important;
+  --myProj-nav-div-max-width: 18rem;
+  --myProj-nav-div-min-width: 5rem;
+  --myProj-nav-div-padding: 0.5rem !important;
+
+  --myProj-nav-a-width: 100% !important;
+  --myProj-nav-a-margin: 0.25rem !important;
+  --myProj-nav-a-padding: 0.375rem !important;}
 
 /* Role Button */
 .btn-role {
@@ -196,7 +207,7 @@
 
 /* Page Title Div */
 .div-page-title {
-  background-color: var(--dataviz-maroon);
+  /* background-color: var(--dataviz-maroon); */
   color: var(--dataviz-white);
   height: 3rem;
   text-align: center !important;
@@ -207,4 +218,27 @@
 .h1-page-title {
   font-weight: 500;
   font-family: 'Roboto', sans-serif;
+  z-index: 1040;
+  color: var(--dataviz-white);
+}
+
+/* My Projects Navbar Buttons 272x48 */
+.myProjects-nav-div {
+  width: var(--myProj-nav-div-width) !important;
+  max-width: var(--myProj-nav-div-max-width);
+  min-width: var(--myProj-nav-div-min-width);
+  padding-right: var(--myProj-nav-div-padding);
+  padding-left: var(--myProj-nav-div-padding);
+}
+
+.myProjects-nav-a {
+  width: var(--myProj-nav-a-width) !important;
+  margin-top: var(--myProj-nav-a-margin);
+  margin-bottom: var(--myProj-nav-a-margin);
+}
+
+.myProjects-nav-row {
+  height: var(--myProj-nav-row-height);
+  padding-right: var(--myProj-nav-row-padding);
+  padding-left: var(--myProj-nav-row-padding);
 }
