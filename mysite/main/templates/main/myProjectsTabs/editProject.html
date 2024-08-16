@@ -4,8 +4,6 @@
 
 <!-- Page Content -->
 <div class="container-fluid" style="height: 50rem;">
-
-  {% include 'main/includes/pageTitle.html' %}
   
   <!-- Row 1 -->
   <div class="row">
@@ -21,33 +19,33 @@
       <!-- Main Content -->
 
       <!-- Row 1 Column 2 Row 2 -->
-      <div class="row px-1" style="height: 4rem;">
+      <div class="row myProjects-nav-row">
         <!-- Navigation Buttons -->
 
         <div class="d-flex flex-row justify-content-start">
           <!-- Units of Analysis -->
-          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
-            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
           </div>
   
           <!-- Codebook -->
-          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
-            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
           </div>
   
           <!-- Inter-Rater Reliability -->
-          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
-            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
           </div>
   
           <!-- Sample & Results -->
-          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
-            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
           </div>
   
           <!-- Edit Project -->
-          <div class="p-2 w-100" style="max-width: 18rem; min-width: 5rem;">
-            <a class="btn btn-secondary w-100 my-1 pb-2 text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Edit Project</a>
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Edit Project</a>
           </div>
   
         </div>
