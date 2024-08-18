@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.core.validators import int_list_validator
 from django.conf import settings
+import json
 
 User = settings.AUTH_USER_MODEL
 
@@ -37,6 +38,15 @@ class sample_data(models.Model):
 
     def __str__(self):
         return self.doc_json
+
+    @property
+    def created_at(self):
+        try:
+            doc_json_data = json.loads(self.doc_json)
+            # Try to get 'createdAt' first, then fall back to 'created_at'
+            return doc_json_data.get("createdAt") or doc_json_data.get("created_at", "N/A")
+        except json.JSONDecodeError:
+            return "Invalid JSON"
     
 # =============================================================
 # Bert Main Sample Data
@@ -48,7 +58,7 @@ class bert_main_sample_data(models.Model):
     documents = models.CharField()
  
     def __str__(self):
-        return self.doc_json
+        return self.topic_name
    
     class Meta:
         db_table = 'main_bert_main_sample_data'
@@ -83,7 +93,7 @@ class project_model(models.Model):
     N = models.PositiveIntegerField(default=0) # Total number of unique units
     project_description = models.TextField(null=True, blank=True)
     codebook_protocol = models.TextField(null=True, blank=True)
-    units = models.ManyToManyField(bert_main_sample_data, related_name='projects', blank=True)
+    units = models.ManyToManyField(sample_data, related_name='projects', blank=True)
 
     def __str__(self):
         return self.project_name
@@ -275,7 +285,7 @@ class coding_value(models.Model):
 # =============================================================
 
 class unit_coding(models.Model):
-    unit = models.ForeignKey(bert_main_sample_data, on_delete=models.CASCADE)
+    unit = models.ForeignKey(sample_data, on_delete=models.CASCADE)
     variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE)
     value = models.ForeignKey(coding_value, on_delete=models.CASCADE)
 
@@ -285,7 +295,7 @@ class unit_coding(models.Model):
     def __str__(self):
         return f"{self.unit} - {self.variable} - {self.value}"
 
-bert_main_sample_data.add_to_class('coding_variables', models.ManyToManyField(coding_variable, through=unit_coding, related_name='posts'))
+sample_data.add_to_class('coding_variables', models.ManyToManyField(coding_variable, through=unit_coding, related_name='posts'))
 
 # =============================================================
 # Inbox Model
