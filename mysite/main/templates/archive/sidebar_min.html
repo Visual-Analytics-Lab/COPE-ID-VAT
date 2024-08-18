@@ -1,0 +1,30 @@
+<div class="d-flex flex-column px-0 mx-0 bx-0" style="width: 1rem;">
+  <ul class="list-unstyled ps-0 px-0 mx-0 bx-0" style="width: 1rem;">
+    <li class="mt-1" style="height: 3rem;">
+      <!-- Explore -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/" id="explore-btn" style="width: 1rem;"><i class="bi bi-house"></i></a>
+    </li>
+    <li style="height: 3rem;">
+      <!-- My Projects -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn" style="width: 1rem;"><i class="bi bi-list-task"></i></a>
+    </li>
+    <li style="height: 3rem;">
+      <!-- Inbox -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" id="inbox-btn" href="/inbox" style="width: 1rem;"><i class="bi bi-envelope"></i></a>
+    </li>
+    {% if sys_admin %}
+    <li style="height: 3rem;">
+      <!-- Users -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/users" id="users-btn" style="width: 1rem;"><i class="bi bi-people"></i></a>
+    </li>
+    {% endif %}
+    <li style="height: 3rem;">
+      <!-- Data Grid -->
+      <a class="btn btn-secondary d-inline-flex justify-content-center" href="/datagrid" style="width: 1rem;"><i class="bi bi-grid"></i></a>
+    </li>
+
+  </ul>
+</div>
+
+{% load static %}
+<script src="{% static 'js/sidebar-toggle.js' %}"></script>
