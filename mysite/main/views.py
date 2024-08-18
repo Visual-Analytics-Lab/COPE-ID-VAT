@@ -167,15 +167,55 @@ def myProjects_units(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
-    favorite_list = favorite_projects_list(request.user)    
+    search_query = request.GET.get('search')
+    if search_query:
+        units = project.units.filter(doc_text__icontains=search_query).order_by('id')
+    else:
+        units = project.units.all().order_by("id")
+
+    paginator = Paginator(units, 25)  # Show 25 units per page.
+
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+
+
+    # Fetch project units from database
+    units = project.units.all().order_by("id")
+
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'page_name': f"{project.project_name} Project Units",
         'project': project,
+        'units': page_obj,
+        'search_query': search_query,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjectsTabs/units.html', context)
+
+# =============================================================
+# My Projects - Code Unit
+# =============================================================
+
+@login_required
+def myProjects_codeUnit(request, project_id, unit_id):
+    # Fetch project from database
+    project = get_object_or_404(project_model, project_id=project_id)
+
+    # Fetch unit from database
+    unit = get_object_or_404(sample_data, id=unit_id)
+
+    context = {
+        'doc_id': unit_id,
+        'doc_text': unit.doc_text,
+        'doc_json': unit.doc_json,
+        'doc_source': unit.doc_source,
+    }
+
+    return render(request, 'main/myProjectsTabs/codeUnit.html', context)
+
 
 # =============================================================
 # My Projects - Codebook
