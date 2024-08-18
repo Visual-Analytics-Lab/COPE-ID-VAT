@@ -90,12 +90,12 @@
             <!-- Search -->
             <form method="get">
               <div class="input-group">
-                {% if query %}
+                {% if search_query %}
                   <!-- Populate Search Input if Search -->
-                  <input type="text" class="form-control" name="search" id="searchBar" placeholder="Search..." value="{{ query }}">
+                  <input type="text" class="form-control" name="search_query" id="searchBar" placeholder="Search..." value="{{ search_query }}">
                 {% else %}
                   <!-- Empty Search Input -->
-                  <input type="text" class="form-control" name="search" id="searchBar" placeholder="Search...">
+                  <input type="text" class="form-control" name="search_query" id="searchBar" placeholder="Search...">
                 {% endif %}
                 <!-- Submit Button -->
                 <button type="submit" class="btn btn-secondary">Search</button>
@@ -129,16 +129,17 @@
             <!-- Units Table Rows -->
             <tbody class="table-group-divider">
 
+              {% for unit in units %}
               <!-- Loop through Post -->
               <tr>
                 <!-- Unit ID -->
-                <td>1</td>
+                <td><a class="btn btn-secondary" href="{% url 'main:myProjects_codeUnit' project.project_id unit.id %}">{{ unit.id }}</a></td>
 
                 <!-- Source -->
-                <td>Text</td>
+                <td>{{ unit.doc_text|truncatechars:50 }}</td>
 
                 <!-- Source -->
-                <td>Twitter</td>
+                <td>{{ unit.doc_source }}</td>
 
                 <!-- Assigned -->
                 <td>User</td>
@@ -147,62 +148,15 @@
                 <td><i class="bi bi-circle text-danger"></i></td>
 
                 <!-- Last Modified -->
-                <td>Date</td>
+                <td>{{ unit.created_at }}</td>
 
                 <!-- Last Modified -->
-                <td>Add</td>
-                
-              </tr>
-
-              <!-- Loop through Post -->
-              <tr>
-                <!-- Unit ID -->
-                <td>2</td>
-
-                <!-- Source -->
-                <td>Text</td>
-
-                <!-- Source -->
-                <td>Twitter</td>
-
-                <!-- Assigned -->
                 <td>User</td>
-
-                <!-- Status -->
-                <td><i class="bi bi-circle-half text-warning"></i></td>
-
-                <!-- Last Modified -->
-                <td>Date</td>
-
-                <!-- Last Modified -->
-                <td>Info btn</td>
                 
               </tr>
 
-              <!-- Loop through Post -->
-              <tr>
-                <!-- Unit ID -->
-                <td>3</td>
+              {% endfor %}
 
-                <!-- Source -->
-                <td>Text</td>
-
-                <!-- Source -->
-                <td>Twitter</td>
-
-                <!-- Assigned -->
-                <td>User</td>
-
-                <!-- Status -->
-                <td><i class="bi bi-circle-fill text-success"></i></td>
-
-                <!-- Last Modified -->
-                <td>Date</td>
-
-                <!-- Last Modified -->
-                <td>User Name</td>
-                
-              </tr>
             </tbody>
           </table>
         </div>
@@ -214,5 +168,12 @@
   </div>
 
 </div>
+
+
+<!-- Status Icons -->
+<!-- <td><i class="bi bi-circle text-danger"></i></td> -->
+<!-- <td><i class="bi bi-circle-half text-warning"></i></td> -->
+<!-- <td><i class="bi bi-circle-fill text-success"></i></td> -->
+<!-- Don't forget to add info button -->
 
 {% endblock %}
