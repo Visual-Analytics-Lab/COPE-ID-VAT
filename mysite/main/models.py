@@ -126,7 +126,7 @@ class project_list_model(models.Model):
 class role_model(models.Model):
     role_name = models.CharField(max_length=64, unique=True, null=False, blank=False)
     role_acronym = models.CharField(max_length=8, unique=True, null=False, blank=False)
-    role_description = models.TextField(max_length=128, blank=True, default='')
+    role_description = models.TextField(max_length=1024, blank=True, default='')
     role_permissions = models.ManyToManyField('permission_model', related_name='roles', blank=True)
 
     def __str__(self):
@@ -143,7 +143,7 @@ class role_model(models.Model):
 class permission_model(models.Model):
     permission_name = models.CharField(max_length=64, unique=False, null=False, blank=False)
     permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=False)
-    permission_description = models.TextField(max_length=128, default='', null=True, blank=True)
+    permission_description = models.TextField(max_length=256, default='', null=True, blank=True)
     permission_rank = models.DecimalField(max_digits=4, decimal_places=2, default=0.0, null=True, blank=True)
     permission_assignable = models.BooleanField(default=False)
 
