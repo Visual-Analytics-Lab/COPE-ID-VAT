@@ -5,13 +5,16 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.core.cache import cache
 from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch
 from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, role_model, \
-    permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model
+    permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, unit_coding
 from .utils import favorite_projects_list
 from user_management.utils import sys_admin_test
 from user_management.models import my_profile_model
 from collections import defaultdict
+
+
 
 # =============================================================
 # Homepage
@@ -207,7 +210,62 @@ def myProjects_codeUnit(request, project_id, unit_id):
     # Fetch unit from database
     unit = get_object_or_404(sample_data, id=unit_id)
 
+    cache_key = f"coding_variables_{project_id}"
+    coding_variables = cache.get(cache_key)
+    if not coding_variables:
+        coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values')
+        cache.set(cache_key, coding_variables, 60*15)
+
+    coding_exists = unit_coding.objects.filter(project=project, unit=unit, user=request.user).exists()
+    
+    if coding_exists:
+        selected_values = {}
+        existing_codings = unit_coding.objects.filter(project=project, unit=unit, user=request.user)
+        selected_values = {coding.variable_id: coding.value_id for coding in existing_codings}
+
+        coding_outputs = []
+        for variable in coding_variables:
+            variable_dict = {
+                'variable_name': variable.variable_name,
+                'values': [
+                    {
+                        'value': value.value,
+                        'selected': value.id == selected_values.get(variable.variable_id)
+                    } for value in variable.values.all()
+                ]
+            }
+            coding_outputs.append(variable_dict)
+    else:
+        coding_outputs = [
+            {
+                'variable_name': variable.variable_name,
+                'values': [
+                    {
+                        'value': value.value,
+                        'selected': False
+                    } for value in variable.values.all()
+                ]
+            }
+            for variable in coding_variables
+        ]
+    
+
+    if request.method == "POST":
+        user = request.user  # Get the currently logged-in user
+        for variable in coding_variables:
+            selected_value = request.POST.get(f"{variable.variable_name}")
+            if selected_value:
+                value_obj = get_object_or_404(coding_value, variable=variable, value=selected_value)
+                unit_coding.objects.update_or_create(
+                    project=project,
+                    unit=unit,
+                    variable=variable,
+                    user=user,
+                    defaults={'value': value_obj}
+                )
+
     context = {
+        'coding_outputs': coding_outputs,
         'doc_id': unit_id,
         'doc_text': unit.doc_text,
         'doc_json': unit.doc_json,
