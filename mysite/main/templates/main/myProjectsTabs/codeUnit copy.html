@@ -1,0 +1,192 @@
+{% extends 'main/index.html' %}
+
+
+{% block content %}
+
+<div class="container-fluid" style="height: 88vh;">
+
+  <!-- Title -->
+  <h2 class="mt-4">Post ID: {{ doc_id }}</h2>
+  <h3>Source: {{ doc_source }}</h3>
+
+  <div class="row mb-3 text-center">
+
+    <div class="row">
+
+      <!-- Post Text -->
+      <div class="col-md-4 themed-grid-col">
+        <div class="card" style="width: 100%;">
+          <div class="card-header">Post Text</div>
+          <div class="card-body">
+            <p class="card-text user-select-none">{{ doc_text }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post JSON -->
+      <div class="col-md-4 themed-grid-col">
+        <div class="card" style="width: 100%;">
+          <div class="card-header">Post JSON</div>
+          <div class="card-body">
+            <p class="card-text user-select-none">{{ doc_json }}</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Post JSON -->
+      <div class="col-md-4 themed-grid-col">
+        <div class="card" style="width: 100%;">
+          <div class="card-header">Variables (Add help menu for details)</div>
+          <div class="card-body mx-auto">
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width: 125px;">Relevance</li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_relevance" value="" id="relevance_1">
+                <label class="form-check-label" for="relevance_1">1</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_relevance" value="" id="relevance_2">
+                <label class="form-check-label" for="relevance_2">2</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_relevance" value="" id="relevance_99"
+                  checked>
+                <label class="form-check-label" for="relevance_99">99</label>
+              </li>
+            </ul>
+            <ul class="list-group list-group-horizontal w-100">
+              <li class="list-group-item" style="width: 125px;">News</li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_news" value="" id="news_1">
+                <label class="form-check-label" for="news_1">1</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_news" value="" id="news_2">
+                <label class="form-check-label" for="news_2">2</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_news" value="" id="news_99" checked>
+                <label class="form-check-label" for="news_99">99</label>
+              </li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width: 125px;">G_misinfo</li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_g_misinfo" value="" id="g_misinfo_1">
+                <label class="form-check-label" for="g_misinfo_1">1</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_g_misinfo" value="" id="g_misinfo_2">
+                <label class="form-check-label" for="g_misinfo_2">2</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_g_misinfo" value="" id="g_misinfo_99"
+                  checked>
+                <label class="form-check-label" for="g_misinfo_99">99</label>
+              </li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width: 125px;">GC_misinfo</li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_gc_misinfo" value="" id="gc_misinfo_1">
+                <label class="form-check-label" for="gc_misinfo_1">1</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_gc_misinfo" value="" id="gc_misinfo_2">
+                <label class="form-check-label" for="gc_misinfo_2">2</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_gc_misinfo" value="" id="gc_misinfo_99"
+                  checked>
+                <label class="form-check-label" for="gc_misinfo_99">99</label>
+              </li>
+            </ul>
+            <ul class="list-group list-group-horizontal">
+              <li class="list-group-item" style="width: 125px;">V_misinfo</li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_v_misinfo" value="" id="v_misinfo_1">
+                <label class="form-check-label" for="v_misinfo_1">1</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_v_misinfo" value="" id="v_misinfo_2">
+                <label class="form-check-label" for="v_misinfo_2">2</label>
+              </li>
+              <li class="list-group-item">
+                <input class="form-check-input me-1" type="radio" name="lg_v_misinfo" value="" id="v_misinfo_99"
+                  checked>
+                <label class="form-check-label" for="v_misinfo_99">99</label>
+              </li>
+            </ul>
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-between px-3">
+              <button type="submit" class="btn btn-danger w-25">Cancel</button>
+              <button type="submit" class="btn btn-success w-25">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="externalLinkModal" tabindex="-1" aria-labelledby="externalLinkModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="externalLinkModalLabel"><i class="bi bi-exclamation-circle-fill"></i> Alert!
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger">This is an external link and its safety and authenticity can not be confirmed,
+          proceed with caution.</div>
+        <span class="modal-link-clickable"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+  function linkify(str) {
+    var newStr = str.replace(/(<a href=")?((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)))(">(.*)<\/a>)?/gi, function () {
+      var url = arguments[2];
+      var displayText = arguments[7] || arguments[2];
+      return '<a type="button" class="modal-link" data-bs-toggle="modal" data-bs-target="#externalLinkModal" data-url="' + url + '" data-display-text="' + displayText + '">' + displayText + '</a>';
+    });
+    console.log(newStr)
+    $('div').html(newStr); //fill output area
+  }
+
+  var data = $('div').html(); //get input (content)
+  linkify(data); //run function on content
+
+  $(document).ready(function () {
+    $('.modal-link').on('click', function () {
+      var url = $(this).data('url'); // Fetch URL clicked
+      var displayText = $(this).data('display-text'); // Fetch text stored in modal
+      var linkHtml = '<a href="' + url + '" target="_blank">' + displayText + '</a>'; // Create hyperlink
+      $('#externalLinkModal .modal-link-clickable').html(linkHtml); // Display hyperlink in modal
+    });
+
+    $('.list-group-item').on('click', function () {
+      var input = $(this).find('.form-check-input');  // Fetch form-check-input nested in list-group-item
+      input.prop('checked', true);  // Check input nested within list-group-item
+    })
+  });
+</script>
+
+
+
+{% endblock %}
