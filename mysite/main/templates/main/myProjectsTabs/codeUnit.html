@@ -2,7 +2,6 @@
 
 
 {% block content %}
-
 <div class="container-fluid" style="height: 88vh;">
 
   <!-- Title -->
@@ -36,99 +35,35 @@
       <!-- Post JSON -->
       <div class="col-md-4 themed-grid-col">
         <div class="card" style="width: 100%;">
-          <div class="card-header">Variables (Add help menu for details)</div>
-          <div class="card-body mx-auto">
-            <ul class="list-group list-group-horizontal">
-              <li class="list-group-item" style="width: 125px;">Relevance</li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_relevance" value="" id="relevance_1">
-                <label class="form-check-label" for="relevance_1">1</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_relevance" value="" id="relevance_2">
-                <label class="form-check-label" for="relevance_2">2</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_relevance" value="" id="relevance_99"
-                  checked>
-                <label class="form-check-label" for="relevance_99">99</label>
-              </li>
-            </ul>
-            <ul class="list-group list-group-horizontal w-100">
-              <li class="list-group-item" style="width: 125px;">News</li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_news" value="" id="news_1">
-                <label class="form-check-label" for="news_1">1</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_news" value="" id="news_2">
-                <label class="form-check-label" for="news_2">2</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_news" value="" id="news_99" checked>
-                <label class="form-check-label" for="news_99">99</label>
-              </li>
-            </ul>
-            <ul class="list-group list-group-horizontal">
-              <li class="list-group-item" style="width: 125px;">G_misinfo</li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_g_misinfo" value="" id="g_misinfo_1">
-                <label class="form-check-label" for="g_misinfo_1">1</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_g_misinfo" value="" id="g_misinfo_2">
-                <label class="form-check-label" for="g_misinfo_2">2</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_g_misinfo" value="" id="g_misinfo_99"
-                  checked>
-                <label class="form-check-label" for="g_misinfo_99">99</label>
-              </li>
-            </ul>
-            <ul class="list-group list-group-horizontal">
-              <li class="list-group-item" style="width: 125px;">GC_misinfo</li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_gc_misinfo" value="" id="gc_misinfo_1">
-                <label class="form-check-label" for="gc_misinfo_1">1</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_gc_misinfo" value="" id="gc_misinfo_2">
-                <label class="form-check-label" for="gc_misinfo_2">2</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_gc_misinfo" value="" id="gc_misinfo_99"
-                  checked>
-                <label class="form-check-label" for="gc_misinfo_99">99</label>
-              </li>
-            </ul>
-            <ul class="list-group list-group-horizontal">
-              <li class="list-group-item" style="width: 125px;">V_misinfo</li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_v_misinfo" value="" id="v_misinfo_1">
-                <label class="form-check-label" for="v_misinfo_1">1</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_v_misinfo" value="" id="v_misinfo_2">
-                <label class="form-check-label" for="v_misinfo_2">2</label>
-              </li>
-              <li class="list-group-item">
-                <input class="form-check-input me-1" type="radio" name="lg_v_misinfo" value="" id="v_misinfo_99"
-                  checked>
-                <label class="form-check-label" for="v_misinfo_99">99</label>
-              </li>
-            </ul>
-          </div>
-          <div class="card-footer">
-            <div class="d-flex justify-content-between px-3">
-              <button type="submit" class="btn btn-danger w-25">Cancel</button>
-              <button type="submit" class="btn btn-success w-25">Save</button>
+          <form method="post">
+            {% csrf_token %}
+            <div class="card-header">Variables (Add help menu for details)</div>
+            <div class="card-body mx-auto">
+
+              {% for variable in coding_outputs %}
+                <ul class="list-group list-group-horizontal justify-content-center align-items-center">
+                  <li class="list-group-item" style="width: 125px;">{{ variable.variable_name }}</li>
+                  {% for value in variable.values %}
+                  <li class="list-group-item">
+                    <input class="form-check-input me-1" type="radio" name="{{ variable.variable_name }}" value="{{ value.value }}" id="{{ variable.variable_name }}_{{ value.value }}" {% if value.selected %}checked{% endif %}>
+                    <label class="form-check-label" for="{{ variable.variable_name }}_{{ value.value }}">{{ value.value }}</label>
+                  </li>
+                  {% endfor %}
+                </ul>
+              {% endfor %}
+
             </div>
-          </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between px-3">
+                <button type="submit" class="btn btn-danger w-25">Cancel</button>
+                <button type="submit" class="btn btn-success w-25">Save</button>
+              </div>
+            </div>
+          </form>
         </div>
       </div>
     </div>
   </div>
-
 </div>
 
 
