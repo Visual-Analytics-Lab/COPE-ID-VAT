@@ -247,6 +247,9 @@ class coding_variable(models.Model):
     class Meta:
         verbose_name = "Coding Variable"
         verbose_name_plural = "Coding Variables"
+        indexes = [
+            models.Index(fields=['variable_project']),
+        ]
     
     # Get a list of variable values
     def get_values(self):
@@ -279,6 +282,9 @@ class coding_value(models.Model):
     class Meta:
         verbose_name = "Coding Value"
         verbose_name_plural = "Coding Values"
+        indexes = [
+            models.Index(fields=['variable']),
+        ]
 
 # =============================================================
 # Post Coding
@@ -288,15 +294,27 @@ class unit_coding(models.Model):
     unit = models.ForeignKey(sample_data, on_delete=models.CASCADE)
     variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE)
     value = models.ForeignKey(coding_value, on_delete=models.CASCADE)
+    project = models.ForeignKey(project_model, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Add this to track who did the coding
 
     class Meta:
-        unique_together = ('unit', 'variable')
+        unique_together = ('unit', 'variable', 'project', 'user')  # Ensure uniqueness per unit, variable, project, and user
 
     def __str__(self):
-        return f"{self.unit} - {self.variable} - {self.value}"
-
-sample_data.add_to_class('coding_variables', models.ManyToManyField(coding_variable, through=unit_coding, related_name='posts'))
-
+        return f"{self.unit} - {self.variable} - {self.value} (Project: {self.project}, User: {self.user})"
+    
+    def output(self):
+        return {
+            'variable_name': self.variable.variable_name,
+            'variable_values': [
+                {
+                    'value': value.value,
+                    'selected': value == self.value  # True if this value is selected, False otherwise
+                } for value in self.variable.get_values()
+            ],
+            'value': self.value.value  # This can be used to show the selected value
+        }
+    
 # =============================================================
 # Inbox Model
 # =============================================================
