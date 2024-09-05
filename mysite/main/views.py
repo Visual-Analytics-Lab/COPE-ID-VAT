@@ -210,19 +210,33 @@ def myProjects_codeUnit(request, project_id, unit_id):
     # Fetch unit from database
     unit = get_object_or_404(sample_data, id=unit_id)
 
+    # Setup key to access cached variables and values
     cache_key = f"coding_variables_{project_id}"
     coding_variables = cache.get(cache_key)
+
+    # Check if cached variables and values exist
     if not coding_variables:
+        # Fetch variables and values in database
         coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values')
+        # Set time to keep them in cache
         cache.set(cache_key, coding_variables, 60*15)
 
+    print("project:", project)
+    print("project.project_id", project.project_id)
+
+    # Check if previous coded values exist
     coding_exists = unit_coding.objects.filter(project=project, unit=unit, user=request.user).exists()
     
+    # If previous values exist
     if coding_exists:
         selected_values = {}
+        # Fetch previously coded values from database
         existing_codings = unit_coding.objects.filter(project=project, unit=unit, user=request.user)
+
+        # Map variables and values
         selected_values = {coding.variable_id: coding.value_id for coding in existing_codings}
 
+        # Format previously coded values for output
         coding_outputs = []
         for variable in coding_variables:
             variable_dict = {
@@ -230,12 +244,15 @@ def myProjects_codeUnit(request, project_id, unit_id):
                 'values': [
                     {
                         'value': value.value,
+                        # Check if value is coded value
                         'selected': value.id == selected_values.get(variable.variable_id)
                     } for value in variable.values.all()
                 ]
             }
             coding_outputs.append(variable_dict)
+    # If previous values don't exist
     else:
+        # Format project's variables and values for output
         coding_outputs = [
             {
                 'variable_name': variable.variable_name,
