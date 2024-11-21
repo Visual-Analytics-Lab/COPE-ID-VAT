@@ -217,7 +217,7 @@ def myProjects_codeUnit(request, project_id, unit_id):
     # Check if cached variables and values exist
     if not coding_variables:
         # Fetch variables and values in database
-        coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values')
+        coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_id')
         # Set time to keep them in cache
         cache.set(cache_key, coding_variables, 60*15)
 
@@ -241,10 +241,13 @@ def myProjects_codeUnit(request, project_id, unit_id):
         for variable in coding_variables:
             variable_dict = {
                 'variable_name': variable.variable_name,
+                'variable_description': variable.variable_description,
                 'values': [
                     {
                         'value': value.value,
                         # Check if value is coded value
+                        'label': value.label,
+                        'example': value.example,
                         'selected': value.id == selected_values.get(variable.variable_id)
                     } for value in variable.values.all()
                 ]
@@ -256,9 +259,12 @@ def myProjects_codeUnit(request, project_id, unit_id):
         coding_outputs = [
             {
                 'variable_name': variable.variable_name,
+                'variable_description': variable.variable_description,
                 'values': [
                     {
                         'value': value.value,
+                        'label': value.label,
+                        'example': value.example,
                         'selected': False
                     } for value in variable.values.all()
                 ]
@@ -281,12 +287,17 @@ def myProjects_codeUnit(request, project_id, unit_id):
                     defaults={'value': value_obj}
                 )
 
+    created_at = unit.created_at
+
     context = {
+        'project': project,
+        'coding_variables': coding_variables,
         'coding_outputs': coding_outputs,
         'doc_id': unit_id,
         'doc_text': unit.doc_text,
         'doc_json': unit.doc_json,
         'doc_source': unit.doc_source,
+        'created_at': created_at
     }
 
     return render(request, 'main/myProjectsTabs/codeUnit.html', context)
