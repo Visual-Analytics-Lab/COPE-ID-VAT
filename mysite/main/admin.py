@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Tutorial, sample_data, organization_model, project_model, role_model, permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model
+from .models import Tutorial, sample_data, organization_model, project_model, role_model, permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, unit_coding
 
 # =============================================================
 # Tutorial Admin
@@ -262,3 +262,4 @@ admin.site.register(coding_variable, coding_variable_admin)
 admin.site.register(coding_value, coding_value_admin)
 admin.site.register(inbox_model, inbox_model_admin)
 admin.site.register(project_list_model)
+admin.site.register(unit_coding)

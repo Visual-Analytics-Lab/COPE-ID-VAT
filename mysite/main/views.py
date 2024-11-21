@@ -5,13 +5,16 @@ from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
+from django.core.cache import cache
 from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch
 from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, role_model, \
-    permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model
+    permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, unit_coding
 from .utils import favorite_projects_list
 from user_management.utils import sys_admin_test
 from user_management.models import my_profile_model
 from collections import defaultdict
+
+
 
 # =============================================================
 # Homepage
@@ -167,15 +170,138 @@ def myProjects_units(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
-    favorite_list = favorite_projects_list(request.user)    
+    search_query = request.GET.get('search')
+    if search_query:
+        units = project.units.filter(doc_text__icontains=search_query).order_by('id')
+    else:
+        units = project.units.all().order_by("id")
+
+    paginator = Paginator(units, 25)  # Show 25 units per page.
+
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+
+
+    # Fetch project units from database
+    units = project.units.all().order_by("id")
+
+    favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'page_name': f"{project.project_name} Project Units",
         'project': project,
+        'units': page_obj,
+        'search_query': search_query,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
     }
     return render(request, 'main/myProjectsTabs/units.html', context)
+
+# =============================================================
+# My Projects - Code Unit
+# =============================================================
+
+@login_required
+def myProjects_codeUnit(request, project_id, unit_id):
+    # Fetch project from database
+    project = get_object_or_404(project_model, project_id=project_id)
+
+    # Fetch unit from database
+    unit = get_object_or_404(sample_data, id=unit_id)
+
+    # Setup key to access cached variables and values
+    cache_key = f"coding_variables_{project_id}"
+    coding_variables = cache.get(cache_key)
+
+    # Check if cached variables and values exist
+    if not coding_variables:
+        # Fetch variables and values in database
+        coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_id')
+        # Set time to keep them in cache
+        cache.set(cache_key, coding_variables, 60*15)
+
+    print("project:", project)
+    print("project.project_id", project.project_id)
+
+    # Check if previous coded values exist
+    coding_exists = unit_coding.objects.filter(project=project, unit=unit, user=request.user).exists()
+    
+    # If previous values exist
+    if coding_exists:
+        selected_values = {}
+        # Fetch previously coded values from database
+        existing_codings = unit_coding.objects.filter(project=project, unit=unit, user=request.user)
+
+        # Map variables and values
+        selected_values = {coding.variable_id: coding.value_id for coding in existing_codings}
+
+        # Format previously coded values for output
+        coding_outputs = []
+        for variable in coding_variables:
+            variable_dict = {
+                'variable_name': variable.variable_name,
+                'variable_description': variable.variable_description,
+                'values': [
+                    {
+                        'value': value.value,
+                        # Check if value is coded value
+                        'label': value.label,
+                        'example': value.example,
+                        'selected': value.id == selected_values.get(variable.variable_id)
+                    } for value in variable.values.all()
+                ]
+            }
+            coding_outputs.append(variable_dict)
+    # If previous values don't exist
+    else:
+        # Format project's variables and values for output
+        coding_outputs = [
+            {
+                'variable_name': variable.variable_name,
+                'variable_description': variable.variable_description,
+                'values': [
+                    {
+                        'value': value.value,
+                        'label': value.label,
+                        'example': value.example,
+                        'selected': False
+                    } for value in variable.values.all()
+                ]
+            }
+            for variable in coding_variables
+        ]
+    
+
+    if request.method == "POST":
+        user = request.user  # Get the currently logged-in user
+        for variable in coding_variables:
+            selected_value = request.POST.get(f"{variable.variable_name}")
+            if selected_value:
+                value_obj = get_object_or_404(coding_value, variable=variable, value=selected_value)
+                unit_coding.objects.update_or_create(
+                    project=project,
+                    unit=unit,
+                    variable=variable,
+                    user=user,
+                    defaults={'value': value_obj}
+                )
+
+    created_at = unit.created_at
+
+    context = {
+        'project': project,
+        'coding_variables': coding_variables,
+        'coding_outputs': coding_outputs,
+        'doc_id': unit_id,
+        'doc_text': unit.doc_text,
+        'doc_json': unit.doc_json,
+        'doc_source': unit.doc_source,
+        'created_at': created_at
+    }
+
+    return render(request, 'main/myProjectsTabs/codeUnit.html', context)
+
 
 # =============================================================
 # My Projects - Codebook

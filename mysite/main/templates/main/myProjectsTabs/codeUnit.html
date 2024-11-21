@@ -1,0 +1,292 @@
+{% extends 'main/index.html' %}
+
+
+{% block content %}
+<div class="container-fluid" style="height: 88vh;">
+
+  <!-- Title -->
+  <div class="row ps-3">
+    <div class="col">
+
+      <h2 class="mt-4">Unit ID: {{ doc_id }}</h2>
+      <h3>Platform: {{ doc_source }}</h3>
+
+    </div>
+  </div>
+
+
+  <div class="row mb-3 text-center px-3">
+
+
+      <!-- Post Text -->
+      <div class="col-md-6 themed-grid-col">
+
+        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+          <div class="card" style="width: 100%;">
+            <div class="card-header">
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active dataviz-sub-header" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Unit</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link dataviz-sub-header" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Metadata</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link dataviz-sub-header" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">JSON</button>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ doc_text }}</p></div>
+                <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ created_at }}</p></div>
+                <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ doc_json }}</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+  
+      </div>
+
+      <!-- Coding Variables -->
+      <div class="col-md-6 themed-grid-col">
+
+        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+          <div class="card" style="width: 100%;">
+            <div class="card-header">
+              <ul class="nav nav-tabs" id="myTab" role="tablist">
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link active dataviz-sub-header" id="codesheet-tab" data-bs-toggle="tab" data-bs-target="#codesheet-tab-pane" type="button" role="tab" aria-controls="codesheet-tab-pane" aria-selected="true">Coding Sheet</button>
+                </li>
+                <li class="nav-item" role="presentation">
+                  <button class="nav-link dataviz-sub-header" id="codebook-tab" data-bs-toggle="tab" data-bs-target="#codebook-tab-pane" type="button" role="tab" aria-controls="codebook-tab-pane" aria-selected="false">Codebook</button>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body">
+              <div class="tab-content" id="myTabContent">
+
+
+
+                <!-- Coding Sheet -->
+
+                <div class="tab-pane fade show active" id="codesheet-tab-pane" role="tabpanel" aria-labelledby="codesheet-tab" tabindex="0">
+                  <div class="card" style="width: 100%;">
+                    <form method="post">
+                      {% csrf_token %}
+                      <div class="card-header dataviz-sub-header">{{ project.project_name }}
+                        <button type="button" class="btn px-0 pt-0 pb-1" data-bs-toggle="modal" data-bs-target="#codingProto">
+                          <i class="bi bi-info-circle text-info"></i>
+                        </button>
+                      </div>
+                      <div class="card-body mx-auto">
+        
+                      <!-- Create a tuple of the variable name and value within the views.py function in order to output both in the nested for loop -->
+        
+                      {% for variable in coding_outputs %}
+                        <ul class="list-group">
+                          <li class="list-group-item flex-fill list-group-item-light">{{ variable.variable_name }}</li>
+        
+                            <ul class="list-group list-group-horizontal">
+                              {% for value in variable.values %}
+                                <li class="list-group-item flex-fill">
+                                  <input class="form-check-input me-1" type="radio" name="{{ variable.variable_name }}" value="{{ value.value }}" id="{{ variable.variable_name }}_{{ value.value }}" {% if value.selected %}checked{% endif %}>
+                                  <label class="form-check-label" for="{{ variable.variable_name }}_{{ value.value }}">{{ value.label }}</label>
+                                </li>
+                              {% endfor %}
+                            </ul>
+        
+                        </ul>
+                      {% endfor %}
+        
+                      </div>
+                      <div class="card-footer">
+                        <div class="d-flex px-3">
+                          <button type="submit" class="btn btn-danger">Reset Codes <i class="bi bi-arrow-counterclockwise"></i></button>
+                        </div>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+
+
+
+                <!-- Code Book -->
+              
+                <div class="tab-pane fade" id="codebook-tab-pane" role="tabpanel" aria-labelledby="codebook-tab" tabindex="0">
+
+                  <div class="accordion" id="accordion-codebook">
+
+                    {% for variable in coding_outputs %}
+
+                    <div class="accordion-item">
+                      <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ variable.variable_name }}" aria-expanded="true" aria-controls="collapse-{{ variable.variable_name }}">
+                          {{ variable.variable_name }}
+                        </button>
+                      </h2>
+                      <div id="collapse-{{ variable.variable_name }}" class="accordion-collapse collapse" data-bs-parent="#accordion-codebook">
+                        <div class="accordion-body">
+                          <p class="text-start text-break">
+                            <strong>Description:</strong>
+                            {{ variable.variable_description }}
+                          </p>
+                    
+                          <table class="table table-striped">
+                            <thead>
+                              <tr>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                                <th scope="col"></th>
+                              </tr>
+                            </thead>
+                          
+                            <tbody>
+                              {% for value in variable.values %}
+                              <tr>
+                                <td style="width:20%" class="text-start">{{ value.label }}</td>
+                                <td style="width:80%" class="text-start">{{ value.example }}</td>
+                              </tr>
+                              {% endfor %}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                    
+                    {% endfor %}
+
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+
+
+        </div> -->
+
+      </div>
+
+  </div>
+</div>
+
+
+
+<!-- External Link Modal -->
+<div class="modal fade" id="externalLinkModal" tabindex="-1" aria-labelledby="externalLinkModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="externalLinkModalLabel"><i class="bi bi-exclamation-circle-fill"></i> Alert!
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger">This is an external link and its safety and authenticity can not be confirmed,
+          proceed with caution.</div>
+        <span class="modal-link-clickable"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Coding Protocol Modal -->
+<div class="modal fade" id="codingProto" tabindex="-1" aria-labelledby="codingProtoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="codingProtoLabel">Coding Protocol</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>Protocol</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+  function linkify(str) {
+    // https://t.co/xsaNSh4Ag1 does not get picked up by script
+    var newStr = str.replace(/(<a href=")?((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)))(">(.*)<\/a>)?/gi, function () {
+      var url = arguments[2];
+      var displayText = arguments[7] || arguments[2];
+      return '<a type="button" class="modal-link" data-bs-toggle="modal" data-bs-target="#externalLinkModal" data-url="' + url + '" data-display-text="' + displayText + '">' + displayText + '</a>';
+    });
+    console.log(newStr)
+    $('div').html(newStr); //fill output area
+  }
+
+  var data = $('div').html(); //get input (content)
+  linkify(data); //run function on content
+
+  $(document).ready(function () {
+    $('.modal-link').on('click', function () {
+      var url = $(this).data('url'); // Fetch URL clicked
+      var displayText = $(this).data('display-text'); // Fetch text stored in modal
+      var linkHtml = '<a href="' + url + '" target="_blank">' + displayText + '</a>'; // Create hyperlink
+      $('#externalLinkModal .modal-link-clickable').html(linkHtml); // Display hyperlink in modal
+    });
+
+    $('.list-group-item').on('click', function () {
+      var input = $(this).find('.form-check-input');  // Fetch form-check-input nested in list-group-item
+      input.prop('checked', true);  // Check input nested within list-group-item
+    })
+  });
+
+
+  // Update tab colors to be more distinct from background when selected
+  // Make selected tab bold
+
+//   const tabEl = document.querySelector('button[data-bs-toggle="tab"]')
+//   tabEl.addEventListener('shown.bs.tab', event => {
+//     console.log(event);
+//     event.target // newly activated tab
+//     console.log(event.target);
+//     event.relatedTarget // previous active tab
+//     console.log(event.relatedTarget);
+// })
+
+</script>
+
+
+<!-- <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+  <div class="card" style="width: 100%;">
+    <div class="card-header">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Unit</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Metadata</button>
+        </li>
+        <li class="nav-item" role="presentation">
+          <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">JSON</button>
+        </li>
+      </ul>
+    </div>
+    <div class="card-body">
+      <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ doc_text }}</p></div>
+        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ created_at }}</p></div>
+        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ doc_json }}</p></div>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+{% endblock %}

@@ -18,6 +18,7 @@ urlpatterns = [
     # =============================================================
     path("my_projects/", views.myProjects, name="myProjects"),
     path("my_projects/units/<uuid:project_id>/", views.myProjects_units, name="myProjects_units"),
+    path("my_projects/code_unit/<uuid:project_id>/<int:unit_id>", views.myProjects_codeUnit, name="myProjects_codeUnit"),
 
     # My Projects - Codebook
     # =============================================================
@@ -29,7 +30,7 @@ urlpatterns = [
     # =============================================================
     path("my_projects/irr/<uuid:project_id>/", views.myProjects_irr, name="myProjects_irr"),
 
-    # My Projects - Edit Project (Move profile later)
+    # My Projects - Edit Project
     # =============================================================
     path("my_projects/edit_project/<uuid:project_id>/", views.myProjects_editProject, name="myProjects_editProject"),
     path("my_projects/profile/<uuid:project_id>/<int:user_id>/", views.myProjects_projectProfile, name="myProjects_projectProfile"),

@@ -8,6 +8,7 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django.core.validators import int_list_validator
 from django.conf import settings
+import json
 
 User = settings.AUTH_USER_MODEL
 
@@ -37,6 +38,17 @@ class sample_data(models.Model):
 
     def __str__(self):
         return self.doc_json
+
+    # tweetLanguage, tweetMentions, tweetHashtags, tweetAnnotations, tweetURLs, retweetCount, replyCount, likeCunt, and createdAt
+
+    @property
+    def created_at(self):
+        try:
+            doc_json_data = json.loads(self.doc_json)
+            # Try to get 'createdAt' first, then fall back to 'created_at'
+            return doc_json_data.get("createdAt") or doc_json_data.get("created_at", "N/A")
+        except json.JSONDecodeError:
+            return "Invalid JSON"
     
 # =============================================================
 # Bert Main Sample Data
@@ -48,7 +60,7 @@ class bert_main_sample_data(models.Model):
     documents = models.CharField()
  
     def __str__(self):
-        return self.doc_json
+        return self.topic_name
    
     class Meta:
         db_table = 'main_bert_main_sample_data'
@@ -83,7 +95,7 @@ class project_model(models.Model):
     N = models.PositiveIntegerField(default=0) # Total number of unique units
     project_description = models.TextField(null=True, blank=True)
     codebook_protocol = models.TextField(null=True, blank=True)
-    units = models.ManyToManyField(bert_main_sample_data, related_name='projects', blank=True)
+    units = models.ManyToManyField(sample_data, related_name='projects', blank=True)
 
     def __str__(self):
         return self.project_name
@@ -116,7 +128,7 @@ class project_list_model(models.Model):
 class role_model(models.Model):
     role_name = models.CharField(max_length=64, unique=True, null=False, blank=False)
     role_acronym = models.CharField(max_length=8, unique=True, null=False, blank=False)
-    role_description = models.TextField(max_length=128, blank=True, default='')
+    role_description = models.TextField(max_length=1024, blank=True, default='')
     role_permissions = models.ManyToManyField('permission_model', related_name='roles', blank=True)
 
     def __str__(self):
@@ -133,7 +145,7 @@ class role_model(models.Model):
 class permission_model(models.Model):
     permission_name = models.CharField(max_length=64, unique=False, null=False, blank=False)
     permission_slug = models.SlugField(max_length=64, unique=False, blank=True, editable=False)
-    permission_description = models.TextField(max_length=128, default='', null=True, blank=True)
+    permission_description = models.TextField(max_length=256, default='', null=True, blank=True)
     permission_rank = models.DecimalField(max_digits=4, decimal_places=2, default=0.0, null=True, blank=True)
     permission_assignable = models.BooleanField(default=False)
 
@@ -237,6 +249,9 @@ class coding_variable(models.Model):
     class Meta:
         verbose_name = "Coding Variable"
         verbose_name_plural = "Coding Variables"
+        indexes = [
+            models.Index(fields=['variable_project']),
+        ]
     
     # Get a list of variable values
     def get_values(self):
@@ -269,24 +284,39 @@ class coding_value(models.Model):
     class Meta:
         verbose_name = "Coding Value"
         verbose_name_plural = "Coding Values"
+        indexes = [
+            models.Index(fields=['variable']),
+        ]
 
 # =============================================================
 # Post Coding
 # =============================================================
 
 class unit_coding(models.Model):
-    unit = models.ForeignKey(bert_main_sample_data, on_delete=models.CASCADE)
+    unit = models.ForeignKey(sample_data, on_delete=models.CASCADE)
     variable = models.ForeignKey(coding_variable, on_delete=models.CASCADE)
     value = models.ForeignKey(coding_value, on_delete=models.CASCADE)
+    project = models.ForeignKey(project_model, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)  # Add this to track who did the coding
 
     class Meta:
-        unique_together = ('unit', 'variable')
+        unique_together = ('unit', 'variable', 'project', 'user')  # Ensure uniqueness per unit, variable, project, and user
 
     def __str__(self):
-        return f"{self.unit} - {self.variable} - {self.value}"
-
-bert_main_sample_data.add_to_class('coding_variables', models.ManyToManyField(coding_variable, through=unit_coding, related_name='posts'))
-
+        return f"{self.unit} - {self.variable} - {self.value} (Project: {self.project}, User: {self.user})"
+    
+    def output(self):
+        return {
+            'variable_name': self.variable.variable_name,
+            'variable_values': [
+                {
+                    'value': value.value,
+                    'selected': value == self.value  # True if this value is selected, False otherwise
+                } for value in self.variable.get_values()
+            ],
+            'value': self.value.value  # This can be used to show the selected value
+        }
+    
 # =============================================================
 # Inbox Model
 # =============================================================
