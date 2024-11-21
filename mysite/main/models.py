@@ -39,6 +39,8 @@ class sample_data(models.Model):
     def __str__(self):
         return self.doc_json
 
+    # tweetLanguage, tweetMentions, tweetHashtags, tweetAnnotations, tweetURLs, retweetCount, replyCount, likeCunt, and createdAt
+
     @property
     def created_at(self):
         try:
