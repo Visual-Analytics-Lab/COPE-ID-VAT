@@ -1,0 +1,73 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+
+<div class="container-fluid" style="height: 50rem;">
+
+  <!-- Row 1 -->
+  <div class="row" style="height: 50rem;">
+
+    <div class="col-md-6 themed-grid-col">
+      <div class="card" style="width: 100%;">
+        <div class="card-header">Post Text</div>
+        <div class="card-body">
+          <p class="card-text user-select-none">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+        </div>
+      </div>
+
+      <div class="accordion" id="accordionPanelsStayOpenExample">
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+              Meta Data
+            </button>
+          </h2>
+          <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+            <div class="accordion-body">
+              <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+            </div>
+          </div>
+        </div>
+  
+      </div>
+
+
+    </div>
+
+    <div class="col-md-6 themed-grid-col">
+      <div class="card" style="width: 100%;">
+        <form method="post">
+          {% csrf_token %}
+          <div class="card-header">Variables (Add help menu for details)</div>
+          <div class="card-body mx-auto">
+
+            {% for variable in coding_outputs %}
+              <ul class="list-group list-group-horizontal justify-content-center align-items-center">
+                <li class="list-group-item" style="width: 125px;">{{ variable.variable_name }}</li>
+                {% for value in variable.values %}
+                <li class="list-group-item">
+                  <input class="form-check-input me-1" type="radio" name="{{ variable.variable_name }}" value="{{ value.value }}" id="{{ variable.variable_name }}_{{ value.value }}" {% if value.selected %}checked{% endif %}>
+                  <label class="form-check-label" for="{{ variable.variable_name }}_{{ value.value }}">{{ value.value }}</label>
+                </li>
+                {% endfor %}
+              </ul>
+            {% endfor %}
+
+          </div>
+          <div class="card-footer">
+            <div class="d-flex justify-content-between px-3">
+              <button type="submit" class="btn btn-danger w-25">Cancel</button>
+              <button type="submit" class="btn btn-success w-25">Save</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+  </div>
+    
+    
+</div>
+
+
+{% endblock %}
