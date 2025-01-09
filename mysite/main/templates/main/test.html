@@ -4,190 +4,335 @@
 
 <div class="container-fluid" style="height: 50rem;">
 
-  <!-- Row 1 -->
-  <div class="row" style="height: 50rem;">
+  <div class="row">
 
-    <!-- Row 1 Column 1 -->
-    <div class="col col-auto d-none d-sm-block text-center px-0" style="width: 8rem;">
+    <div class="col col-auto d-none d-md-block text-center px-0" style="width: 8rem;">
       {% include 'main/includes/sidebar.html' %}
     </div>
 
-    <!-- Row 1 Column 2 -->
-    <div class="col content w-auto">
+    <div class="col content w-auto"> 
+      <!-- Row 1 -->
+      <div class="row" style="height: 27rem;">
+  
+        <!-- Filter Options -->
+        <div class="col-5">
+  
+          <div class="row" style="height: 23rem;">
+  
+            <div class="col">
+              
+              <!-- <span>NOTE FOR US LATER: Accordion style menu since font size is already so small. Accordion contains Platforms, TM Alg, and Topics, with only one being displayed at a time.</span> -->
+              <!-- <span>NOTE TO SELF: title colors are inversed in the accordion vs the card with the visualizations.</span> -->
 
-      <!-- Row 1 Column 2 Row 1 -->
-      <div class="row">
+              <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+                <div class="accordion" id="accordionExample">
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" style="height: 3rem;">
+                      <button class="accordion-button dashboard-sub-title" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" style="height: 3rem;">
+                        Filter by Search Terms
+                      </button>
+                    </h2>
+                    <div id="collapseOne" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
+                      <div class="accordion-body overflow-y-auto" style="max-height: 12rem;">
+                        <input type="text" class="form-control mb-2" name="search_query" value="{{ request.GET.search_query }}" placeholder="Add Keywords...">
 
-        <!-- Row 1 Column 2 Row 1 Column 1 -->
-        <div class="col-2 text-center" style="height: 46vh; background-color: red;">
+                        {% include 'main/includes/dashboard/wordTable.html' %}
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" style="height: 3rem;">
+                      <button class="accordion-button dashboard-sub-title collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" style="height: 3rem;">
+                        Select Topic Modeling Algorithm
+                      </button>
+                    </h2>
+                    <div id="collapseTwo" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                      <div class="accordion-body overflow-y-auto" style="max-height: 12rem;">
+                        <strong>This is the second item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                      </div>
+                    </div>
+                  </div>
+                  <div class="accordion-item">
+                    <h2 class="accordion-header" style="height: 3rem;">
+                      <button class="accordion-button dashboard-sub-title collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree" style="height: 3rem;">
+                        Filter by Topic Clusters
+                      </button>
+                    </h2>
+                    <div id="collapseThree" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
+                      <div class="accordion-body overflow-y-auto" style="max-height: 12rem;">
+                        <strong>This is the third item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
 
-          <!-- Row 1 Column 2 Row 1 Column 1 Row 1-->
-          <div class="row p-1" style="height: 3rem;">
-            <!-- Extract -->
-            {% include 'main/includes/dashboard/createModal.html' %}
+            </div>
+  
           </div>
-
-          <!-- Row 1 Column 2 Row 1 Column 1 Row 2-->
-          <div class="row p-1" style="height: 3rem;">
-            <!-- Add Keywords -->
-            <input type="text" class="form-control mb-2" name="search_query" value="{{ request.GET.search_query }}" placeholder="Add Keywords...">
-          </div>
-
-          <!-- Row 1 Column 2 Row 1 Column 1 Row 3-->
-          <div class="row" style="height: 40vh; background-color: blue;">
-            {% include 'main/includes/dashboard/wordTable.html' %}
-          </div>
-
-        </div>
-
-        <!-- Row 1 Column 2 Row 1 Column 2 -->
-        <div class="col-10 text-center">
-
-          <!-- Row 1 Column 2 Row 1 Column 2 Row 1 -->
-          <div class="row pt-1" style="height: 3rem;">
-
-            <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 1 -->
-            <div class="col-12 col-sm-auto" style="background-color: cornflowerblue;">
+  
+          <div class="row" style="height: 4rem; background-color: magenta;">
+            
+            <div class="col-10 mt-2" style="background-color: orange;">
               {% include 'main/includes/dashboard/dateTime.html' %}
             </div>
-
-            <!-- Row 1 Column 2 Row 1 Column 2 Row 1 Column 2 -->
-            <div class="col d-none d-sm-block">
-              <div class="d-none">placeholder</div>
+  
+            <div class="col-2 mt-2" style="background-color: brown;">
+              <button type="button" class="btn btn-success px-3 w-100" style="font-size: 18px;"><i class="bi bi-funnel-fill"></i> Filter</button>
             </div>
-
+  
           </div>
-
-          <!-- Row 1 Column 2 Row 1 Column 2 Row 2 -->
-          <div class="row" style="height: 6vh; background-color: aqua;">
-            <ul class="nav nav-pills mb-3" id="myTab" role="tablist">
-              <div class="col-2 px-2">
-                <li class="nav-item" role="presentation">
-                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden active" id="wordcloud-tab" data-bs-toggle="tab" data-bs-target="#wordcloud-tab-pane" type="button" role="tab" aria-controls="wordcloud-tab-pane" aria-selected="true">WordCloud</button>
-                </li>
+  
+        </div>
+  
+        <!-- Visualizations -->
+        <div class="col-7" style="background-color: pink;">
+          
+          <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+            <div class="card" style="width: 100%; height: 24rem;">
+              <div class="card-header">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active dashboard-sub-title" id="wc-tab" data-bs-toggle="tab" data-bs-target="#wc-tab-pane" type="button" role="tab" aria-controls="wc-tab-pane" aria-selected="true">Word Cloud</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link dashboard-sub-title" id="swp-tab" data-bs-toggle="tab" data-bs-target="#swp-tab-pane" type="button" role="tab" aria-controls="swp-tab-pane" aria-selected="false">Salient Words by Platform</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link dashboard-sub-title" id="wpat-tab" data-bs-toggle="tab" data-bs-target="#wpat-tab-pane" type="button" role="tab" aria-controls="wpat-tab-pane" aria-selected="false">Word Prevalence Aross Time</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link dashboard-sub-title" id="sa-tab" data-bs-toggle="tab" data-bs-target="#sa-tab-pane" type="button" role="tab" aria-controls="sa-tab-pane" aria-selected="false">Sentiment Analysis</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link dashboard-sub-title" id="tcm-tab" data-bs-toggle="tab" data-bs-target="#tcm-tab-pane" type="button" role="tab" aria-controls="tcm-tab-pane" aria-selected="false">Topic Modeling Cluster Map</button>
+                  </li>
+                </ul>
               </div>
+              <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+  
+  
+  
+                  <!-- Word Cloud -->
+  
+                  <div class="tab-pane fade show active" id="wc-tab-pane" role="tabpanel" aria-labelledby="wc-tab" tabindex="0">
+  
+                    <h5>Word Cloud Here</h5>
+  
+                  </div>
+  
+                  <!-- Salient Words by Platform -->
+                
+                  <div class="tab-pane fade" id="swp-tab-pane" role="tabpanel" aria-labelledby="twp-tab" tabindex="0">
+  
+                    <h5>Salient Words by Platform Here</h5>
+  
+                  </div>
+  
+                  <!-- Top Words Across Time -->
+  
+                  <div class="tab-pane fade" id="wpat-tab-pane" role="tabpanel" aria-labelledby="wpat-tab" tabindex="0">
+  
+                    <h5>Word Prevalence Across Time Here</h5>
+  
+                  </div>
+  
+                  <!-- Sentiment Analysis -->
+  
+                  <div class="tab-pane fade justify-content-center" id="sa-tab-pane" role="tabpanel" aria-labelledby="sa-tab" tabindex="0">
 
-              <div class="col-2 px-2">
-                <li class="nav-item" role="presentation">
-                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="pcp-tab" data-bs-toggle="tab" data-bs-target="#pcp-tab-pane" type="button" role="tab" aria-controls="pcp-tab-pane" aria-selected="false">Parallel Coordinate Plot</button>
-                </li>
-              </div>
 
-              <div class="col-2 px-2">
-                <li class="nav-item" role="presentation">
-                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="tabular-tab" data-bs-toggle="tab" data-bs-target="#tabular-tab-pane" type="button" role="tab" aria-controls="tabular-tab-pane" aria-selected="false">Tabular</button>
-                </li>
-              </div>
 
-              <div class="col-2 px-2">
-                <li class="nav-item" role="presentation">
-                  <button class="btn btn-secondary w-100 my-1 text-truncate overflow-hidden" id="barchart-tab" data-bs-toggle="tab" data-bs-target="#barchart-tab-pane" type="button" role="tab" aria-controls="barchart-tab-pane" aria-selected="false">Bar Chart</button>
-                </li>
-              </div>
+                    <!-- <h5>Sentiment Analysis Here</h5> -->
 
-              <div class="col-2 px-2">
-                <button class="btn btn-danger w-100 my-1 text-truncate overflow-hidden" id="refresh" type="submit" disabled>Generate</button>
-              </div>
+                    <div class="row justify-content-center" id="sentiment-analysis-container" style="height: 20rem;">
+                      <canvas id="sentiment-analysis"></canvas>
+                    </div>
 
-              <div class="col-2 px-2">
-                <div class="d-none">placeholder</div>
-              </div>
-            </ul>
-          </div>
+  
+                  </div>
+  
+                  <!-- Topic Modeling Cluster Map -->
+  
+                  <div class="tab-pane fade" style="width: 800px;" id="tcm-tab-pane" role="tabpanel" aria-labelledby="tcm-tab" tabindex="0">
+  
+                    <!-- <h5>Topic Modeling Cluster Map Here</h5> -->
 
-          <!-- Row 1 Column 2 Row 1 Column 2 Row 3 -->
-          <div class="row" style="height: 40vh; background-color: orange;">
+                    <div id="container" style="width: 800px; height: 600px; background: white"></div>
 
-            <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 1-->
-            <div class="col-10" style="border: 1px solid #777777;">
-              <div class="d-flex justify-content-center align-items-center" style="height: 40vh;">
-                <div class="tab-content w-100 h-100" id="myTabContent" style="background-color: purple;">
-                  <div class="tab-pane fade show active" id="wordcloud-tab-pane" role="tabpanel" aria-labelledby="wordcloud-tab" tabindex="0">Wordcloud</div>
-                  <div class="tab-pane fade" id="pcp-tab-pane" role="tabpanel" aria-labelledby="pcp-tab" tabindex="0">PCP</div>
-                  <div class="tab-pane fade" id="tabular-tab-pane" role="tabpanel" aria-labelledby="tabular-tab" tabindex="0">Tabular</div>
-                  <div class="tab-pane fade" id="barchart-tab-pane" role="tabpanel" aria-labelledby="barchart-tab" tabindex="0">Barchart</div>
+  
+                  </div>
+  
                 </div>
               </div>
             </div>
-
-            <!-- Row 1 Column 2 Row 1 Column 2 Row 3 Column 2 -->
-            <div class="col-2" style="height: 40vh;">
-
-              <div class="row p-1" style="height: 20vh;">
-                {% include 'main/includes/dashboard/platformFilter.html' %}
+          </div>
+  
+        </div>    
+  
+      </div>
+        
+      <!-- Row 2 -->
+      <div class="row" style="height: 20rem; background-color: red;">
+  
+        <!-- Metadata of Selected Units & Search Units Selected -->
+        <div class="col-6" style="height: 20rem; background-color: purple;">
+  
+          <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+            <div class="card" style="width: 100%; height: 18rem;">
+              <div class="card-header">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active dashboard-sub-title" id="msu-tab" data-bs-toggle="tab" data-bs-target="#msu-tab-pane" type="button" role="tab" aria-controls="msu-tab-pane" aria-selected="true">Metadata of Selected Units</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link dashboard-sub-title" id="sus-tab" data-bs-toggle="tab" data-bs-target="#sus-tab-pane" type="button" role="tab" aria-controls="sus-tab-pane" aria-selected="false">Search Units Selected</button>
+                  </li>
+                </ul>
               </div>
-
-              <div class="row p-1 justify-content-start" style="height: 20vh;">
-                {% include 'main/includes/dashboard/topicFilter.html' %}
+              <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+  
+  
+  
+                  <!-- Metadata of Selected Units -->
+  
+                  <div class="tab-pane fade show active" id="msu-tab-pane" role="tabpanel" aria-labelledby="msu-tab" tabindex="0">
+  
+                    <h5>Metadata of Selected Units Here</h5>
+  
+                  </div>
+  
+  
+  
+                  <!-- Search Units Selected -->
+                
+                  <div class="tab-pane fade" id="sus-tab-pane" role="tabpanel" aria-labelledby="sus-tab" tabindex="0">
+  
+                    <h5>Search Units Selected Here</h5>
+  
+                  </div>
+  
+                </div>
               </div>
-
             </div>
-
           </div>
-
+  
         </div>
+  
+        <!-- TM Keyword Clusters in Topics Selected & TM Topic Selected WC? -->
+        <div class="col-6" style="height: 20rem; background-color: orange;">
+  
+          <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+            <div class="card" style="width: 100%; height: 18rem;">
+              <div class="card-header">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link active dashboard-sub-title" id="tkcts-tab" data-bs-toggle="tab" data-bs-target="#tkcts-tab-pane" type="button" role="tab" aria-controls="tkcts-tab-pane" aria-selected="true">Topic Modeling Keyword Clusters in Topics Selected</button>
+                  </li>
+                  <li class="nav-item" role="presentation">
+                    <button class="nav-link dashboard-sub-title" id="ttsw-tab" data-bs-toggle="tab" data-bs-target="#ttsw-tab-pane" type="button" role="tab" aria-controls="ttsw-tab-pane" aria-selected="false">Topic Modeling Selected Topic Word Cloud</button>
+                  </li>
+                </ul>
+              </div>
+              <div class="card-body">
+                <div class="tab-content" id="myTabContent">
+  
+  
+  
+                  <!-- Topic Modeling Keyword Clusters in Topics Selected -->
+  
+                  <div class="tab-pane fade show active" id="tkcts-tab-pane" role="tabpanel" aria-labelledby="tkcts-tab" tabindex="0">
+  
+                    <h5>Topic Modeling Keyword Clusters in Topics Selected Here</h5>
+  
+                  </div>
+  
+  
+  
+                  <!-- Topic Modeling Selected Topic Word Cloud -->
+                
+                  <div class="tab-pane fade" id="ttsw-tab-pane" role="tabpanel" aria-labelledby="ttsw-tab" tabindex="0">
+  
+                    <h5>Topic Modeling Selected Topic Word Cloud Here</h5>
+  
+                  </div>
+  
+                </div>
+              </div>
+            </div>
+          </div>
+  
+        </div>
+  
       </div>
-
-      <!-- Row 1 Column 2 Row 2 -->
-      <div class="row" style="height: 40vh">
-
-        <!-- Row 1 Column 2 Row 2 Column 1-->
-        <div class="col-6" style="border: 1px solid #777777;">
-          <div class="d-flex text-center" style="height: 5vh;">
-            <h5 class="border-bottom">Units Included in Sample Frame</h5>
+  
+        <!-- Row 3 -->
+        <div class="row justify-content-end" style="height: 3rem;">
+  
+  
+      
+          <div class="col-2 text-center mt-2">
+            <button type="button" class="btn btn-success px-3" style="font-size: 18px;">Draw Sample</button>
           </div>
-          <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
-            Keyword's Context
-          </div>
+  
+          
+  
         </div>
-
-        <!-- Row 1 Column 2 Row 2 Column 2 -->
-        <div class="col-6" style="border: 1px solid #777777;">
-          <div class="d-flex text-center" style="height: 5vh;">
-            <h5 class="border-bottom">Metadata Descriptives of Sample Frame</h5>
-          </div>
-          <div class="d-flex justify-content-center align-items-center" style="height: 35vh;">
-            Metadata for units filtered
-          </div>
-        </div>
-
-      </div>
+        
     </div>
 
   </div>
-</div>
 
 
-<!-- DateTime Info Modal -->
-<div class="modal fade" id="dateTimeInfo" tabindex="-1" aria-labelledby="dateTimeInfoLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="dateTimeInfoLabel">Date Time Filter</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!-- Waiting to get the actual text for this from Terri -->
-        <p>Date Time is calculated in 24 hour format UTC.</p>
-      </div>
-    </div>
-  </div>
+
+
 </div>
 
-<!-- Keyword's Table Info Modal -->
-<div class="modal fade" id="keywordInfo" tabindex="-1" aria-labelledby="keywordInfoLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg modal-dialog-scrollable">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="keywordInfoLabel">Adding Keywords</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <!-- Waiting to get the actual text for this from Terri -->
-        <p>Something something about keywords.</p>
-      </div>
-    </div>
-  </div>
-</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+  var bc = document.getElementById("sentiment-analysis").getContext("2d");
+
+  const data = {
+    labels: [
+      'Red',
+      'Blue',
+      'Yellow'
+    ],
+    datasets: [{
+      label: 'My First Dataset',
+      data: [300, 50, 100],
+      backgroundColor: [
+        'rgb(255, 99, 132)',
+        'rgb(54, 162, 235)',
+        'rgb(255, 205, 86)'
+      ],
+      hoverOffset: 4
+    }]
+  };
+
+  const config = {
+    type: 'doughnut',
+    data: data,
+    options: { // Corrected section
+      plugins: {
+        legend: {
+          position: 'right' // Move legend to the right
+        }
+      },
+      layout: {
+        padding: 0
+      }
+    }
+  };
+
+  // https://www.chartjs.org/docs/latest/general/padding.html
+  // alternatively, check if margin is the issue
+
+  new Chart(bc, config);
+</script>
+
+
 
 {% endblock %}
