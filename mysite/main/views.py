@@ -8,7 +8,7 @@ from django.core.paginator import Paginator
 from django.core.cache import cache
 from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch
 from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, role_model, \
-    permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, unit_coding
+    permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, test_model, unit_coding
 from .utils import favorite_projects_list
 from user_management.utils import sys_admin_test
 from user_management.models import my_profile_model
@@ -35,6 +35,47 @@ def homepage(request):
 
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
+
+    if request.method == 'POST':
+        # STEP ONE
+        # Project Name
+        project_name = request.POST.get('project-name')
+        print("project_name:", project_name)
+
+        # n units
+        n_units = request.POST.get('n-units')
+        print("n_units:", n_units)
+
+        # STEP TWO
+        # Clustering YES/NO
+        cluster_choice = request.POST.get('cluster-choice')
+        print("cluster_choice:", cluster_choice)
+
+        # n per platform (10 inputs)
+        # project_name = request.POST.get('project-name')
+        # print("project_name:", project_name)
+
+        # STEP THREE
+        # Sampling technique (3 options)
+        sample_pref = request.POST.get('sample-pref')
+
+        if sample_pref in dict(project_model.SAMPLE_PREFERENCE):
+            preference = sample_pref
+
+        print("sample_pref:", sample_pref)
+
+        org = organization_model.objects.filter(org_users=request.user).first()
+
+        project = project_model(project_name = project_name,
+                        project_org = org,
+                        principal_investigator = request.user,
+                        N = 1000)
+        project.save()
+
+
+
+
+
     context = {
         "tutorials":Tutorial.objects.all,
         "distinct_platforms": distinct_platforms,
@@ -53,9 +94,7 @@ def homepage(request):
 @login_required
 def addProject(request):
 
-    print('in add project')
     if request.method == 'POST':
-        print("method=post")
         project_name = request.POST.get('project-name')
         overlap_percentage = request.POST.get('overlap-percentage')
         org = organization_model.objects.first()
@@ -73,8 +112,6 @@ def addProject(request):
         user_project.save()
         print(project)
         return redirect('main:my_projects')
-    
-    print("no post")
 
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
@@ -964,12 +1001,34 @@ def docInfo(request):
 def test(request):
     test = None
 
+    testTexts = test_model.objects.all()    
+
+    print("testTexts", testTexts)
+
+    if request.method == 'POST':
+        print("POST")
+        richText = request.POST.get('content-textarea')
+
+        print("richText:", richText)
+
+        newRichText = test_model(
+            content=richText,
+        )
+
+        # Save new variable instance
+        newRichText.save()
+
+        print("newRichText:", newRichText)
+
+
+
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'test': test,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
+        'testTexts':  testTexts,
     }
     
     return render(request, 'main/test.html', context)
