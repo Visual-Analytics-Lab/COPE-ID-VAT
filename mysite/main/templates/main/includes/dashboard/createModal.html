@@ -6,330 +6,457 @@
 </button>
 
 
-
-<!-- Create Project Step 1 -->
-<div class="modal fade" id="stepOne" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="stepOneLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="stepOneLabel">Sampling Technique Preferences</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-
-        <div class="row border-bottom text-center">
-          <span class="pb-3" style="font-size: 17px;"><strong>Step 1: Establish Desired Units in the Completed Sample</strong></span>
+<form method="post">
+  {% csrf_token %}
+  <!-- Create Project Step 1 -->
+  <div class="modal fade" id="stepOne" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="stepOneLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="stepOneLabel">Sampling Technique Preferences</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
+        <div class="modal-body">
 
-        <div class="row g-3 align-items-start pt-3">
-          <div class="col-auto">
-            <label for="projectName" class="col-form-label" style="line-height: 24px;"><strong>Project Name:</strong></label>
+          <div class="row border-bottom text-center">
+            <span class="pb-3" style="font-size: 17px;"><strong>Step 1: Establish Desired Units in the Completed Sample</strong></span>
           </div>
-          <div class="col-auto">
-            <input type="text" id="projectName" class="form-control" aria-describedby="projectName">
-          </div>
-        </div>
 
-        <div class="row text-start pt-3">
-          <!-- Autopopulate # of units in their sample frame -->
-           <!-- add underline to sample frame that when hovered over, it says the definition -->
-          <p style="margin-bottom: 0;"><strong>Your current selected sample frame includes:</strong> ________ units (<i>N</i>)</p>
-        </div>
-
-        <div class="row text-start pt-3">
-          <!-- (text entry with rule that has to be number-based entry + the number can not exceed what the N was calculated at) -->
-          <span><p style="margin-bottom: 0;"><strong>How many units of analysis would you like included in your complete sample?</strong></p></span>
-        </div>
-
-        <div class="row g-3 align-items-start pt-3 ps-3">
-          <div class="col-auto">
-            <label for="projectName" class="col-form-label"><span style="line-height: 24px;"><i>n</i> units =</span></label>
-          </div>
-          <div class="col-auto">
-            <input class="form-control" type="numeric" placeholder="1,000">
-          </div>
-        </div>
-
-      </div>
-      <div class="modal-footer justify-content-between">
-        <!-- Use the maroon for the cancel button -->
-        <button type="button" class="btn btn-danger test-btn" data-bs-dismiss="modal" id="step1Cancel">Cancel</button>
-        <button type="submit" class="btn btn-success test-btn-next" data-bs-toggle="modal" data-bs-target="#stepTwo" id="step1Next">Next</button>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<!-- Create Project Step 2 -->
-<div class="modal fade" id="stepTwo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="stepTwoLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="stepTwoLabel">Sampling Technique Preferences</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-
-        <!-- <div class="row border-bottom text-center" style="padding-bottom: 0.25rem; vertical-align: middle;"> -->
-        <div class="row border-bottom text-center">
-
-          <!-- Fix vertical alignment to be center -->
-          <span class="pb-3" style="font-size: 17px;"><strong>Step 2: Select Cluster Sampling Preference</strong></span>
-        </div>
-
-
-        <!-- Initial Question -->
-        <div class="row text-start pt-3">
-          <span><strong>Would you like your completed sample to be drawn from your established sample frame using a clustering technique?</strong></span>
-        </div>
-
-        <!-- <br> -->
-
-        <!-- Choices -->
-        <div class="row text-start pt-3 ps-5">
-          <!-- Ensure padding for this stays consitent with n = units and selected units input -->
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="clusterChoice" id="option1Radio">
-            <label class="form-check-label" for="option1Radio">
-              <strong>No.</strong> I do not want to have my sample drawn using a clustering technique. I only want a true random sample of units.
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="clusterChoice" id="option2Radio">
-            <label class="form-check-label" for="option2Radio">
-              <strong>Yes.</strong> I want to cluster my drawn sample by platform.
-            </label>
-          </div>
-        </div>
-
-        <!-- <br> -->
-
-        <!-- The filler text should be the actual number of units in the sample that they have filtered. For example, in their sample frame,
-        the highest possible number of Twitter posts that they can include in their final drawn sample. In addition, if there are no posts
-        that can be drawn from a platform, not only should the filler default be 0, but there should be some sort of visual que that these
-        documents are not applicable to this current step e.g., gray out + not editable. -->
-
-        <!-- Fix spacing between boxes and inputs -->
-
-        <!-- Set maximum input as units from sample -->
-
-        <div class="row pt-3">
-          <label for="platform1" class="col-3 col-form-label col-form-label-sm">4chan <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform1" placeholder="100">
-          </div>
-          <label for="platform2" class="col-3 col-form-label col-form-label-sm">8kun <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform2" placeholder="100">
-          </div>
-        </div>
-
-        <div class="row">
-          <label for="platform3" class="col-3 col-form-label col-form-label-sm">Flickr <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform3" placeholder="100">
-          </div>
-          <label for="platform4" class="col-3 col-form-label col-form-label-sm">Gab <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform4" placeholder="100">
-          </div>
-        </div>
-
-        <div class="row">
-          <label for="platform5" class="col-3 col-form-label col-form-label-sm">Mastodon <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform5" placeholder="100">
-          </div>
-          <label for="platform6" class="col-3 col-form-label col-form-label-sm">Parler <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform6" placeholder="100">
-          </div>
-        </div>
-
-        <div class="row">
-          <label for="platform7" class="col-3 col-form-label col-form-label-sm">Reddit <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform7" placeholder="100">
-          </div>
-          <label for="platform8" class="col-3 col-form-label col-form-label-sm">Tumblr <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform8" placeholder="100">
-          </div>
-        </div>
-
-        <div class="row">
-          <label for="platform9" class="col-3 col-form-label col-form-label-sm">Twitter <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform9" placeholder="100">
-          </div>
-          <label for="platform10" class="col-3 col-form-label col-form-label-sm">YouTube <i>n</i> =</label>
-          <div class="col-3">
-            <input type="numerical" class="form-control form-control-sm" id="platform10" placeholder="100">
-          </div>
-        </div>
-
-        <!-- <br> -->
-
-        <div class="row text-start pt-3">
-          <span><p style="margin-bottom: 0;"><strong>Desired number of units to be drawn from sample frame:</strong></p></span>
-        </div>
-
-
-        <div class="row text-start pt-3 ps-5">
-          <!-- Fix spacing to match the input below -->
-          <span><p style="margin-bottom: 0;"><i>n</i> = ______ units</p></span>
-        </div>
-
-        <!-- <br> -->
-        
-        <div class="row text-start pt-3">
-          <span><p style="margin-bottom: 0;"><strong>Selected number of units clustered by platform:</strong></p></span>
-        </div>
-
-        <div class="row g-3 align-items-start pt-3 ps-5">
-          <div class="col-auto">
-            <!-- Fix spacing to align with input on part 1 -->
-            <label for="projectName" class="col-form-label">
-          </div>
-          <div class="col-auto">
-            <!-- Prefill validation box with desired units -->
-            <input type="numerical" class="form-control form-control-sm is-invalid" id="validationServer03" placeholder="100">
-            <!-- Set error for when the selected units are less than or greater than desired number of units -->
-            <!-- The number of selected units are less than the desired number of units to be drawn. -->
-            <!-- The number of selected units exceeds the desired number of units to be drawn.   -->
-            <!-- Set to green when desired and selected units are equal -->
-            <!-- The number of selected units is equal to the desired number of units to be drawn. -->
-            <div id="validationServer03Feedback" class="invalid-feedback">
-              Selected units exceed desired units.
+          <div class="row g-3 align-items-start pt-3">
+            <div class="col-auto">
+              <label for="project-name" class="col-form-label" style="line-height: 24px;"><strong>Project Name:</strong></label>
+            </div>
+            <div class="col-auto">
+              <input class="form-control" type="text" id="in-project-name" name="project-name" aria-describedby="project-name">
             </div>
           </div>
+
+          <div class="row text-start pt-3">
+            <!-- Autopopulate # of units in their sample frame -->
+            <!-- add underline to sample frame that when hovered over, it says the definition -->
+            <p style="margin-bottom: 0;"><strong>Your current selected sample frame includes:</strong> ________ units (<i>N</i>)</p>
+          </div>
+
+          <div class="row text-start pt-3">
+            <!-- (text entry with rule that has to be number-based entry + the number can not exceed what the N was calculated at) -->
+            <span><p style="margin-bottom: 0;"><strong>How many units of analysis would you like included in your complete sample?</strong></p></span>
+          </div>
+
+          <div class="row g-3 align-items-start pt-3 ps-3">
+            <div class="col-auto">
+              <label for="in-n-units" class="col-form-label"><span style="line-height: 24px;"><i>n</i> units =</span></label>
+            </div>
+            <div class="col-auto">
+              <input class="form-control" type="numeric" id="in-n-units" name="in-n-units" placeholder="1,000" aria-describedby="in-n-units">
+            </div>
+          </div>
+
         </div>
-
-
+        <div class="modal-footer justify-content-between">
+          <!-- Use the maroon for the cancel button -->
+          <button type="button" class="btn btn-danger test-btn" data-bs-dismiss="modal" id="step1Cancel">Cancel</button>
+          <button type="button" class="btn btn-success test-btn-next" data-bs-toggle="modal" data-bs-target="#stepTwo" id="step1Next">Next</button>
+        </div>
       </div>
-
-
-
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stepOne" id="step2Prev">Previous</button>
-        <!-- Disable next button until a choice has been made -->
-        <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#stepThree" id="step2Next">Next</button>
-      </div>
-
     </div>
   </div>
-</div>
 
 
 
-<!-- Create Project Step 3 -->
-<div class="modal fade" id="stepThree" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="stepThreeLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="stepThreeLabel">Sampling Technique Preferences</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
+  <!-- Create Project Step 2 -->
+  <div class="modal fade" id="stepTwo" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="stepTwoLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="stepTwoLabel">Sampling Technique Preferences</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
 
-        <!-- <div class="row border-bottom text-center" style="padding-bottom: 0.25rem; vertical-align: middle;"> -->
-        <div class="row border-bottom text-center">
+          <!-- <div class="row border-bottom text-center" style="padding-bottom: 0.25rem; vertical-align: middle;"> -->
+          <div class="row border-bottom text-center">
 
-          <!-- Fix vertical alignment to be center -->
-          <span class="pb-3" style="font-size: 17px;"><strong>Step 3: Select Additional Sampling Preference</strong></span>
+            <!-- Fix vertical alignment to be center -->
+            <span class="pb-3" style="font-size: 17px;"><strong>Step 2: Select Cluster Sampling Preference</strong></span>
+          </div>
+
+
+          <!-- Initial Question -->
+          <div class="row text-start pt-3">
+            <span><strong>Would you like your completed sample to be drawn from your established sample frame using a clustering technique?</strong></span>
+          </div>
+
+          <!-- Choices -->
+          <div class="row text-start pt-3 ps-5">
+            <!-- Ensure padding for this stays consitent with n = units and selected units input -->
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="cluster-choice" value="no" id="cchoice-1">
+              <label class="form-check-label" for="cchoice-1">
+                <strong>No.</strong> I do not want to have my sample drawn using a clustering technique. I only want a true random sample of units.
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="cluster-choice" value="yes" id="cchoice-2">
+              <label class="form-check-label" for="cchoice-2">
+                <strong>Yes.</strong> I want to cluster my drawn sample by platform.
+              </label>
+            </div>
+          </div>
+
+          <!-- The filler text should be the actual number of units in the sample that they have filtered. For example, in their sample frame,
+          the highest possible number of Twitter posts that they can include in their final drawn sample. In addition, if there are no posts
+          that can be drawn from a platform, not only should the filler default be 0, but there should be some sort of visual que that these
+          documents are not applicable to this current step e.g., gray out + not editable. -->
+
+          <!-- Fix spacing between boxes and inputs -->
+
+          <!-- Set maximum input as units from sample -->
+
+          <div class="row pt-3">
+            <label for="platform1" class="col-3 col-form-label col-form-label-sm">4chan <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform1" placeholder="100">
+            </div>
+            <label for="platform2" class="col-3 col-form-label col-form-label-sm">8kun <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform2" placeholder="100">
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="platform3" class="col-3 col-form-label col-form-label-sm">Flickr <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform3" placeholder="100">
+            </div>
+            <label for="platform4" class="col-3 col-form-label col-form-label-sm">Gab <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform4" placeholder="100">
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="platform5" class="col-3 col-form-label col-form-label-sm">Mastodon <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform5" placeholder="100">
+            </div>
+            <label for="platform6" class="col-3 col-form-label col-form-label-sm">Parler <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform6" placeholder="100">
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="platform7" class="col-3 col-form-label col-form-label-sm">Reddit <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform7" placeholder="100">
+            </div>
+            <label for="platform8" class="col-3 col-form-label col-form-label-sm">Tumblr <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform8" placeholder="100">
+            </div>
+          </div>
+
+          <div class="row">
+            <label for="platform9" class="col-3 col-form-label col-form-label-sm">Twitter <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform9" placeholder="100">
+            </div>
+            <label for="platform10" class="col-3 col-form-label col-form-label-sm">YouTube <i>n</i> =</label>
+            <div class="col-3">
+              <input type="numerical" class="form-control form-control-sm" id="platform10" placeholder="100">
+            </div>
+          </div>
+
+          <div class="row text-start pt-3">
+            <span><p style="margin-bottom: 0;"><strong>Desired number of units to be drawn from sample frame:</strong></p></span>
+          </div>
+
+
+          <div class="row text-start pt-3 ps-5">
+            <!-- Fix spacing to match the input below -->
+            <span><p style="margin-bottom: 0;"><i>n</i> = <span id="out-desired-units">______</span> units</p></span>
+          </div>
+          
+          <div class="row text-start pt-3">
+            <span><p style="margin-bottom: 0;"><strong>Selected number of units clustered by platform:</strong></p></span>
+          </div>
+
+          <div class="row g-3 align-items-start pt-3 ps-5">
+            <div class="col-auto">
+              <!-- Fix spacing to align with input on part 1 -->
+              <label for="selected-units" class="col-form-label">
+            </div>
+            <div class="col-auto">
+              <!-- Prefill validation box with desired units -->
+              <input type="numerical" class="form-control form-control-sm" id="in-selected-units" name="selected-units" required>
+              <!-- Set error for when the selected units are less than or greater than desired number of units -->
+              <!-- The number of selected units are less than the desired number of units to be drawn. -->
+              <!-- The number of selected units exceeds the desired number of units to be drawn.   -->
+              <!-- Set to green when desired and selected units are equal -->
+              <!-- The number of selected units is equal to the desired number of units to be drawn. -->
+              <div id="in-selected-units-feedback" class="invalid-feedback">
+                Selected units exceed desired units.
+              </div>
+            </div>
+          </div>
+
+
         </div>
 
 
-        <!-- Initial Question -->
-        <div class="row text-start pt-3">
-          <span><strong>Lastly, would you like your drawn sample to utilize any one of the following sampling techniques?</strong></span>
-        </div>
 
-        <!-- <br> -->
-
-        <!-- Choices -->
-        <div class="row text-start pt-3 ps-5">
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="samplePref" id="samplePref1">
-            <label class="form-check-label" for="samplePref1">
-              Simple Random Sample
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="samplePref" id="samplePref2">
-            <label class="form-check-label" for="samplePref2">
-              Systematic Random Sampling
-            </label>
-          </div>
-          <div class="form-check">
-            <input class="form-check-input" type="radio" name="samplePref" id="samplePref3" checked>
-            <label class="form-check-label" for="samplePref3">
-              <strong>No.</strong> I want my sample to be drawn chronologically by the units post ID.
-            </label>
-          </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stepOne" id="step2Prev">Previous</button>
+          <!-- Disable next button until a choice has been made -->
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#stepThree" id="step2Next">Next</button>
         </div>
 
       </div>
-
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stepTwo" id="step3Prev">Previous</button>
-        <!-- Disable next button until a choice has been made -->
-        <button type="submit" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#stepFour" id="step3Next">Next</button>
-      </div>
-
     </div>
   </div>
-</div>
 
 
 
-<!-- Create Project Step 4 -->
-<div class="modal fade" id="stepFour" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="stepFourLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="stepFourLabel">Sampling Technique Preferences</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
+  <!-- Create Project Step 3 -->
+  <div class="modal fade" id="stepThree" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="stepThreeLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="stepThreeLabel">Sampling Technique Preferences</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
 
-        <!-- <div class="row border-bottom text-center" style="padding-bottom: 0.25rem; vertical-align: middle;"> -->
-        <div class="row border-bottom text-center">
+          <!-- <div class="row border-bottom text-center" style="padding-bottom: 0.25rem; vertical-align: middle;"> -->
+          <div class="row border-bottom text-center">
 
-          <!-- Fix vertical alignment to be center -->
-          <span class="pb-3" style="font-size: 17px;"><strong>Step 4: Review and Finalize Drawn Sample</strong></span>
+            <!-- Fix vertical alignment to be center -->
+            <span class="pb-3" style="font-size: 17px;"><strong>Step 3: Select Additional Sampling Preference</strong></span>
+          </div>
+
+
+          <!-- Initial Question -->
+          <div class="row text-start pt-3">
+            <span><strong>Lastly, would you like your drawn sample to utilize any one of the following sampling techniques?</strong></span>
+          </div>
+
+          <!-- Choices -->
+          <div class="row text-start pt-3 ps-5">
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="sample-pref" value="simple" id="simp-rand">
+              <label class="form-check-label" for="simp-rand">
+                Simple Random Sample
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="sample-pref" value="systematic" id="sys-rand">
+              <label class="form-check-label" for="sys-rand">
+                Systematic Random Sampling
+              </label>
+            </div>
+            <div class="form-check">
+              <input class="form-check-input" type="radio" name="sample-pref" value="chronologically" id="chrono" checked>
+              <label class="form-check-label" for="chrono">
+                <strong>No.</strong> I want my sample to be drawn chronologically by the units post ID.
+              </label>
+            </div>
+          </div>
+
         </div>
 
-        <div class="row text-start pt-3">
-          <ul class="list-unstyled">
-            <li class="pt-3">Project Name: XXXX</li>
-            <li class="pt-3">Sample Frame (<i>N</i>): XXX units</li>
-            <li class="pt-3">Drawn Sample (<i>n</i>): XXX units</li>
-            <li class="pt-3">Sampling Technique(s) Utilized: XXXX</li>
-              <!-- <ul>
-                <li>Simple Random</li>
-                <li>Systematic Random</li>
-                <li>Chronological by Post ID</li>
-              </ul> -->
-            </li>
-            <li class="pt-3">Clustered by Platform Utilized: XXXX</li>
-              <!-- <ul>
-                <li>Yes</li>
-                <li>No</li>
-              </ul> -->
-          </ul>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stepTwo" id="step3Prev">Previous</button>
+          <!-- Disable next button until a choice has been made -->
+          <button type="button" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#stepFour" id="step3Next">Next</button>
         </div>
 
       </div>
-
-      <div class="modal-footer justify-content-between">
-        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stepThree" id="step4Prev">Previous</button>
-        <!-- Disable next button until a choice has been made -->
-        <button type="submit" class="btn btn-success">Create Final Sample</button>
-      </div>
-
     </div>
   </div>
-</div>
+
+
+
+  <!-- Create Project Step 4 -->
+  <div class="modal fade" id="stepFour" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="stepFourLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="stepFourLabel">Sampling Technique Preferences</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <!-- <div class="row border-bottom text-center" style="padding-bottom: 0.25rem; vertical-align: middle;"> -->
+          <div class="row border-bottom text-center">
+
+            <!-- Fix vertical alignment to be center -->
+            <span class="pb-3" style="font-size: 17px;"><strong>Step 4: Review and Finalize Drawn Sample</strong></span>
+          </div>
+
+          <div class="row text-start pt-3">
+            <ul class="list-unstyled">
+              <li class="pt-3">Project Name: <span id="out-project-name"></span></li>
+              <li class="pt-3">Sample Frame (<i>N</i>): XXX units</li>
+              <li class="pt-3">Drawn Sample (<i>n</i>): <span id="out-drawn-sample"></span> units</li>
+              <li class="pt-3">Sampling Technique(s) Utilized: <span id="out-sample-tech"></span></li>
+                <!-- <ul>
+                  <li>Simple Random</li>
+                  <li>Systematic Random</li>
+                  <li>Chronological by Post ID</li>
+                </ul> -->
+              </li>
+              <li class="pt-3">Clustered by Platform Utilized: <span id="out-cluster-choice"></li>
+                <!-- <ul>
+                  <li>Yes</li>
+                  <li>No</li>
+                </ul> -->
+            </ul>
+          </div>
+
+        </div>
+
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stepThree" id="step4Prev">Previous</button>
+          <!-- Disable next button until a choice has been made -->
+          <button type="submit" class="btn btn-success">Create Final Sample</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</form>
+
+
+
+
+<script>
+  // Initialize step values
+  const stepValues = {
+    step1: { nUnits: 0 } // Initialize nUnits as 0
+  };
+
+
+  // Function to store step values
+  function storeValue(step, key, inputOrValue) {
+    // Initialize step object if uninitialized
+    if (!stepValues[step]) {
+      stepValues[step] = {};
+    }
+
+    // Check if third argument is DOM element ID or direct value
+    const value =
+      document.getElementById(inputOrValue) !== null
+        ? document.getElementById(inputOrValue).value // If DOM element ID, get the value
+        : inputOrValue; // Otherwise, use direct value
+
+    // Store the value
+    stepValues[step][key] = value;
+  }
+
+  // Function to update span content
+  function updateSpan(spanId, value) {
+    const spanElement = document.getElementById(spanId);
+    spanElement.textContent = value;
+  }
+
+  // Select all 'cluster-choice' radio buttons
+  const clusterOptions = document.querySelectorAll('input[name="cluster-choice"]');
+
+  // Function to get the currently selected cluster choice
+  function getClusterChoice() {
+    let selectedValue = null;
+    clusterOptions.forEach(option => {
+      if (option.checked) {
+        selectedValue = option.value; // Get the value of the selected cluster option
+      }
+    });
+    return selectedValue;
+  }
+
+  // Select all 'sample-pref' radio buttons
+  const sampleOptions = document.querySelectorAll('input[name="sample-pref"]');
+
+  // Sampling preference mapping object
+  const samplingTechniqueMapping = {
+    simple: "Simple Random Sample",
+    systematic: "Systematic Random Sampling",
+    chronologically: "Chronologically by unit post ID"
+  };
+
+  // Function to get the currently selected sampling technique
+  function getSamplingTechnique() {
+    let selectedValue = null;
+    sampleOptions.forEach(option => {
+      if (option.checked) {
+        selectedValue = samplingTechniqueMapping[option.value]; // Get the value of the selected sampling preference
+      }
+    });
+    return selectedValue;
+  }
+
+  // Select all platform input fields
+  const platformInputs = document.querySelectorAll('#platform1, #platform2, #platform3, #platform4, #platform5, #platform6, #platform7, #platform8, #platform9, #platform10');
+
+  // Select the total field
+  const selectedUnitsInput = document.getElementById('in-selected-units');
+
+  // Function to calculate the total value
+  function updateTotalUnits() {
+    const nUnitsValue = stepValues['step1']['nUnits'];
+    let total = 0;
+
+    // Sum up the values of all platform inputs
+    platformInputs.forEach(input => {
+      const value = parseInt(input.value) || 0; // Convert to number or use 0 if empty
+      total += value;
+    });
+
+    // Update the total field
+    selectedUnitsInput.value = total;
+
+    if (total > nUnitsValue) {
+      // Add the 'is-invalid' class
+      selectedUnitsInput.classList.add('is-invalid');
+    } else {
+      // Remove the 'is-invalid' class
+      selectedUnitsInput.classList.remove('is-invalid');
+    }
+  }
+
+  // Add event listeners to all platform inputs
+  platformInputs.forEach(input => {
+    input.addEventListener('input', updateTotalUnits);
+  });
+
+  // Initialize the total field on page load
+  updateTotalUnits();
+
+  // Listen for Step 1 Next Button
+  const s1NextBtn = document.getElementById('step1Next');
+  s1NextBtn.addEventListener('click', () => {
+    storeValue('step1', 'projectName', 'in-project-name'); // Store project name
+    storeValue('step1', 'nUnits', 'in-n-units'); // Store n units
+
+    updateSpan('out-desired-units', stepValues['step1']['nUnits']);
+  });
+
+  // Listen for Step 2 Next Button
+  const s2NextBtn = document.getElementById('step2Next');
+  s2NextBtn.addEventListener('click', () => {
+    const selectedCluster = getClusterChoice(); // Get cluster choice
+    storeValue('step2', 'clusterChoice', selectedCluster); // Store cluster choice
+  });
+
+  // Listen for Step 3 Next Button
+  const s3NextBtn = document.getElementById('step3Next');
+  s3NextBtn.addEventListener('click', () => {
+    // Use stored values to update spans
+    updateSpan('out-project-name', stepValues['step1']['projectName']);
+    updateSpan('out-drawn-sample', stepValues['step1']['nUnits']);
+    updateSpan('out-cluster-choice', stepValues['step2']['clusterChoice'] ? stepValues['step2']['clusterChoice'].charAt(0).toUpperCase() + stepValues['step2']['clusterChoice'].slice(1) : "None selected");
+
+    const selectedSample = getSamplingTechnique(); // Get sampling technique choice
+    storeValue('step3', 'sampleChoice', selectedSample); // Store sampling technique choice
+    updateSpan('out-sample-tech', stepValues['step3']['sampleChoice']);
+  });
+</script>
