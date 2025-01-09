@@ -2,6 +2,7 @@ from django.db import models
 from datetime import datetime
 import uuid
 from django.contrib.auth.models import User
+from django.db.models import JSONField
 from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.utils import timezone
@@ -93,6 +94,21 @@ class project_model(models.Model):
     principal_investigator = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True)
     timestamp = models.DateTimeField(default=timezone.now)
     N = models.PositiveIntegerField(default=0) # Total number of unique units
+    cluster = models.BooleanField(default=False)
+    platform_units = JSONField(default=dict, blank=True)
+    SAMPLE_PREFERENCE = (
+    ('simple', 'Simple Random Sample'),
+    ('systematic', 'Systematic Random Sampling'),
+    ('chronologically', 'Chronologically by unit post ID'),
+    )
+
+    sample_preference = models.CharField(
+        max_length=16,
+        choices=SAMPLE_PREFERENCE,
+        blank=False,
+        default='chronologically',
+        help_text='Sample Preference',
+    )
     project_description = models.TextField(null=True, blank=True)
     codebook_protocol = models.TextField(null=True, blank=True)
     units = models.ManyToManyField(sample_data, related_name='projects', blank=True)
@@ -339,3 +355,13 @@ class inbox_model(models.Model):
         verbose_name = "Inbox"
         verbose_name_plural = "Inbox"
     
+
+# =============================================================
+# Test Model
+# =============================================================
+
+class test_model(models.Model):
+    content = models.TextField() 
+
+    def __str__(self):
+        return f"{self.content}"
