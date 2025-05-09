@@ -54,7 +54,9 @@ document.addEventListener("DOMContentLoaded", function()
   // Disable button
   if (sidebarButton)
   {
-    sidebarButton.classList.add('disabled');
+    // sidebarButton.classList.add('disabled');
+    sidebarButton.classList.remove('btn-sidebar');
+    sidebarButton.classList.add('btn-sidebar-disabled');
     sidebarButton.setAttribute('aria-disabled', 'true');
     sidebarButton.setAttribute('tabindex', '-1');
     sidebarButton.setAttribute('href', '#');
