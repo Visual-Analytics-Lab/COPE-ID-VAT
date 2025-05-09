@@ -2,12 +2,12 @@
   <ul class="list-unstyled ps-0">
     <li class="sidebar-li mt-1">
       <!-- Explore -->
-      <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/" id="explore-btn">Explore</a>
+      <a class="btn btn-sidebar d-inline-flex justify-content-center" href="/" id="explore-btn">Explore</a>
     </li>
     {% if favorite_list %}
       <li>
         <!-- My Projects -->
-        <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn">My Projects</a>
+        <a class="btn btn-sidebar d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn">My Projects</a>
         <!-- <button class="btn btn-secondary d-inline-flex align-items-center rounded border-0 collapsed d-none" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="true">Dashboard</button> -->
         <div class="collapse show" id="dashboard-collapse">
           <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small text-center">
@@ -27,22 +27,22 @@
     {% else %}
       <li class="sidebar-li">
         <!-- My Projects -->
-        <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn">My Projects</a>
+        <a class="btn btn-sidebar d-inline-flex justify-content-center" href="/my_projects" id="my_projects-btn">My Projects</a>
       </li>
     {% endif %}
     <li class="sidebar-li">
       <!-- Inbox -->
-      <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" id="inbox-btn" href="/inbox">Inbox</a>
+      <a class="btn btn-sidebar d-inline-flex justify-content-center" id="inbox-btn" href="/inbox">Inbox</a>
     </li>
     {% if sys_admin %}
     <li class="sidebar-li">
       <!-- Users -->
-      <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/users" id="users-btn">Users</a>
+      <a class="btn btn-sidebar d-inline-flex justify-content-center" href="/users" id="users-btn">Users</a>
     </li>
     {% endif %}
     <li class="sidebar-li">
       <!-- Data Grid -->
-      <a class="btn btn-secondary btn-sidebar d-inline-flex justify-content-center" href="/datagrid">Data Grid</a>
+      <a class="btn btn-sidebar d-inline-flex justify-content-center" href="/datagrid">Data Grid</a>
     </li>
 
   </ul>
