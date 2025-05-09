@@ -1,27 +1,31 @@
 <!-- Included in home.html -->
 
-<!-- Topics Filter Title -->
-<h5 class="pb-2 border-bottom">Topics</h5>
+<div class="row">
 
-<!-- Topics to Filter By -->
-<div class="overflow-y-scroll m-0 pe-0 ps-1 py-2 text-start" style="height: 15vh;">
-  <div class="form-check">
-    <input class="form-check-input topics-check" type="checkbox" value="" id="all-topics">
-    <label class="form-check-label" for="all-topics">
-      Select All
-    </label>
+  <!-- Topics to Filter By -->
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input topics-check" type="checkbox" value="" id="all-topics">
+      <label class="form-check-label" for="all-topics">
+        <strong>Select All</strong>
+      </label>
+    </div>
   </div>
 
   <!-- Loop through all topics -->
   {% for topic in distinct_topics %}
-  <div class="form-check text-start">
-    <input class="form-check-input  topics-check" type="checkbox" value="{{ topic }}" id="topic-{{ forloop.counter }}">
-    <label class="form-check-label" for="topic-{{ forloop.counter }}">
-      {{ topic }}
-    </label>
-  </div>
+    <div class="col-6">
+      <div class="form-check text-start">
+        <input class="form-check-input topics-check" type="checkbox" value="{{ topic }}" id="topic-{{ forloop.counter }}">
+        <label class="form-check-label" for="topic-{{ forloop.counter }}">
+          {{ topic }}
+        </label>
+      </div>
+    </div>
   {% endfor %}
+
 </div>
+
 
 <script>
   $('#all-topics').on('click', function () {

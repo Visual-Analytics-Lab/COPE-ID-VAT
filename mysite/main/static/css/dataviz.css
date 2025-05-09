@@ -36,6 +36,8 @@
   --myProj-nav-a-padding: 0.375rem !important;
 
   --sub-header-font-size: 17px !important;
+
+  --dashboard-sub-titles: 0.875rem !important;
 }
 
 /* Role Button */
@@ -165,10 +167,29 @@
   height: 3rem;
 }
 
-/* Sidebar Button */
+/* Sidebar Buttons */
 .btn-sidebar {
+  background-color: var(--dataviz-blue);
+  color: var(--dataviz-white);
+  outline: 1px solid var(--dataviz-white);
   width: 7rem;
 }
+
+/* Sidebar Buttons Hover */
+.btn-sidebar:hover {
+  background-color: var(--dataviz-blue-hover);
+  color: var(--dataviz-white);
+  outline: 1px solid var(--dataviz-white);
+  width: 7rem;
+}
+
+.btn-sidebar-disabled {
+  background-color: var(--dataviz-blue-hover);
+  color: var(--dataviz-white);
+  outline: 1px solid var(--dataviz-white);
+  width: 7rem;
+}
+
 
 
 
@@ -264,4 +285,9 @@
 
 .dataviz-sub-header {
   font-size: var(--sub-header-font-size);
+}
+
+.dashboard-sub-title {
+  font-size: var(--dashboard-sub-titles);
+  font-weight: bold;
 }

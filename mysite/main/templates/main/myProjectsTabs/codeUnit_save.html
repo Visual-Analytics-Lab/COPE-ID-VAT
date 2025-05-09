@@ -1,0 +1,137 @@
+{% extends 'main/index.html' %}
+
+
+{% block content %}
+<div class="container-fluid" style="height: 88vh;">
+
+  <!-- Title -->
+  <h2 class="mt-4">Unit ID: {{ doc_id }}</h2>
+  <h3>Platform: {{ doc_source }}</h3>
+
+  <div class="row mb-3 text-center">
+
+    <div class="row">
+
+      <!-- Post Text -->
+      <div class="col-md-6 themed-grid-col">
+        <div class="card" style="width: 100%;">
+          <div class="card-header">Unit</div>
+          <div class="card-body">
+            <p class="card-text user-select-none">{{ doc_text }}</p>
+          </div>
+        </div>
+  
+        <!-- Post JSON -->
+        <div class="accordion" id="accordionPanelsStayOpenExample">
+          <div class="accordion-item">
+            <h2 class="accordion-header">
+              <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="false" aria-controls="panelsStayOpen-collapseTwo">
+                Unit JSON
+              </button>
+            </h2>
+            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse">
+              <div class="accordion-body">
+                <!-- <p class="card-text user-select-none text-break">{{ doc_json }}</p> -->
+                <p class="card-text user-select-none text-break">{{ created_at }}</p>
+              </div>
+            </div>
+          </div>
+    
+        </div>
+  
+  
+      </div>
+
+      <!-- Coding Variables -->
+      <div class="col-md-6 themed-grid-col">
+        <div class="card" style="width: 100%;">
+          <form method="post">
+            {% csrf_token %}
+            <div class="card-header">Variables (Add help menu for details)</div>
+            <div class="card-body mx-auto">
+
+              {% for variable in coding_outputs %}
+                <ul class="list-group list-group-horizontal justify-content-center align-items-center">
+                  <li class="list-group-item" style="width: 125px;">{{ variable.variable_name }}</li>
+                  {% for value in variable.values %}
+                  <li class="list-group-item">
+                    <input class="form-check-input me-1" type="radio" name="{{ variable.variable_name }}" value="{{ value.value }}" id="{{ variable.variable_name }}_{{ value.value }}" {% if value.selected %}checked{% endif %}>
+                    <label class="form-check-label" for="{{ variable.variable_name }}_{{ value.value }}">{{ value.value }}</label>
+                  </li>
+                  {% endfor %}
+                </ul>
+              {% endfor %}
+
+            </div>
+            <div class="card-footer">
+              <div class="d-flex justify-content-between px-3">
+                <button type="submit" class="btn btn-danger w-25">Cancel</button>
+                <button type="submit" class="btn btn-success w-25">Save</button>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="externalLinkModal" tabindex="-1" aria-labelledby="externalLinkModal" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="externalLinkModalLabel"><i class="bi bi-exclamation-circle-fill"></i> Alert!
+        </h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="alert alert-danger">This is an external link and its safety and authenticity can not be confirmed,
+          proceed with caution.</div>
+        <span class="modal-link-clickable"></span>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<script>
+  function linkify(str) {
+    var newStr = str.replace(/(<a href=")?((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)))(">(.*)<\/a>)?/gi, function () {
+      var url = arguments[2];
+      var displayText = arguments[7] || arguments[2];
+      return '<a type="button" class="modal-link" data-bs-toggle="modal" data-bs-target="#externalLinkModal" data-url="' + url + '" data-display-text="' + displayText + '">' + displayText + '</a>';
+    });
+    console.log(newStr)
+    $('div').html(newStr); //fill output area
+  }
+
+  var data = $('div').html(); //get input (content)
+  linkify(data); //run function on content
+
+  $(document).ready(function () {
+    $('.modal-link').on('click', function () {
+      var url = $(this).data('url'); // Fetch URL clicked
+      var displayText = $(this).data('display-text'); // Fetch text stored in modal
+      var linkHtml = '<a href="' + url + '" target="_blank">' + displayText + '</a>'; // Create hyperlink
+      $('#externalLinkModal .modal-link-clickable').html(linkHtml); // Display hyperlink in modal
+    });
+
+    $('.list-group-item').on('click', function () {
+      var input = $(this).find('.form-check-input');  // Fetch form-check-input nested in list-group-item
+      input.prop('checked', true);  // Check input nested within list-group-item
+    })
+  });
+</script>
+
+
+
+{% endblock %}

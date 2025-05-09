@@ -77,7 +77,7 @@ def homepage(request):
 
 
     context = {
-        "tutorials":Tutorial.objects.all,
+        "tutorials": Tutorial.objects.all,
         "distinct_platforms": distinct_platforms,
         "distinct_topics": distinct_topics,
         "sample_data": page_obj,
@@ -999,11 +999,23 @@ def docInfo(request):
 # =============================================================
 
 def test(request):
+    distinct_platforms = sample_data.objects.values_list('doc_source', flat=True).distinct()
+    distinct_topics = bert_main_sample_data.objects.values_list('topic_name', flat=True).distinct()
+    search_query = request.GET.get('search_query')
+    documents = {}
+    if search_query:
+        documents = sample_data.objects.filter(doc_text__icontains=search_query).order_by('id')
+    else:
+        documents = sample_data.objects.all().order_by('id')
+    paginator = Paginator(documents, 5)  # Show 5 docs per page.
+    page_number = request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+
+    favorite_list = favorite_projects_list(request.user)
+    sys_admin = sys_admin_test(request.user)
     test = None
 
     testTexts = test_model.objects.all()    
-
-    print("testTexts", testTexts)
 
     if request.method == 'POST':
         print("POST")
@@ -1020,15 +1032,20 @@ def test(request):
 
         print("newRichText:", newRichText)
 
-
+    documents = sample_data.objects.all()[:10]
 
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
+        "tutorials": Tutorial.objects.all,
+        "distinct_platforms": distinct_platforms,
+        "distinct_topics": distinct_topics,
+        "sample_data": page_obj,
         'test': test,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
         'testTexts':  testTexts,
+        'documents': documents,
     }
     
     return render(request, 'main/test.html', context)

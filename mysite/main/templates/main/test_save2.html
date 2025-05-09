@@ -1,0 +1,206 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+
+<div class="container-fluid" style="height: 50rem;">
+
+  <!-- Row 1 -->
+  <div class="row" style="height: 50rem;">
+
+    <div>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stepOne">
+      Step One
+    </button>
+
+    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#stepTwo">
+      Step Two
+    </button>
+    </div>
+
+
+    <!-- Modal -->
+    <div class="modal fade" id="stepOne" tabindex="-1" aria-labelledby="stepOneLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="stepOneLabel">Sampling Technique Preferences</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+
+            <div class="row border-bottom text-center">
+              <strong>Step 1: Establish Desired Units in the Completed Sample</strong>
+            </div>
+            <div class="row">
+              <!-- Autopopulate # of units in their sample frame -->
+               <!-- add underline to sample frame that when hovered over, it says the definition -->
+              <p>Your current selected sample frame includes: ________ units (<i>N</i>)</p>
+            </div>
+
+            <div class="row">
+              <!-- (text entry with rule that has to be number-based entry + the number can not exceed what the N was calculated at) -->
+              <span><p>How many units of analysis would you like included in your complete sample? <i>n</i> = <input type="numeric" placeholder="1,000"> units</p></span>
+            </div>
+
+          </div>
+          <div class="modal-footer justify-content-between">
+            <!-- Use the maroon for the cancel button -->
+            <button type="button" class="btn btn-danger test-btn" data-bs-dismiss="modal" id="cancel-btn">Cancel</button>
+            <button type="submit" class="btn btn-success test-btn-next">Next</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="stepTwo" tabindex="-1" aria-labelledby="stepTwoLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="stepTwoLabel">Sampling Technique Preferences</h1>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+    
+            <!-- <div class="row border-bottom text-center" style="padding-bottom: 0.25rem; vertical-align: middle;"> -->
+            <div class="row border-bottom text-center">
+    
+              <!-- Fix vertical alignment to be center -->
+              <span style="padding-bottom: 0.5rem;"><strong>Step 2: Select Cluster Sampling Preference</strong></span>
+            </div>
+    
+    
+            <!-- Initial Question -->
+            <div class="row">
+              <span><strong>Would you like your completed sample to be drawn from your established sample frame using a clustering technique?</strong></span>
+            </div>
+    
+            <br>
+    
+            <!-- Choices -->
+            <div class="row">
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="clusterChoice" id="option1Radio">
+                <label class="form-check-label" for="option1Radio">
+                  <strong>No.</strong> I do not want to have my sample drawn using a clustering technique. I only want a true random sample of units.
+                </label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="radio" name="clusterChoice" id="option2Radio">
+                <label class="form-check-label" for="option2Radio">
+                  <strong>Yes.</strong> I want to cluster my drawn sample by platform.
+                </label>
+              </div>
+            </div>
+    
+            <br>
+    
+            <!-- The filler text should be the actual number of units in the sample that they have filtered. For example, in their sample frame,
+            the highest possible number of Twitter posts that they can include in their final drawn sample. In addition, if there are no posts
+            that can be drawn from a platform, not only should the filler default be 0, but there should be some sort of visual que that these
+            documents are not applicable to this current step e.g., gray out + not editable. -->
+
+            <!-- Fix spacing between boxes and inputs -->
+
+            <!-- Set maximum input as units from sample -->
+
+            <div class="row">
+              <label for="platform1" class="col-3 col-form-label col-form-label-sm">4chan <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform1" placeholder="100">
+              </div>
+              <label for="platform2" class="col-3 col-form-label col-form-label-sm">8kun <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform2" placeholder="100">
+              </div>
+            </div>
+    
+            <div class="row">
+              <label for="platform3" class="col-3 col-form-label col-form-label-sm">Flickr <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform3" placeholder="100">
+              </div>
+              <label for="platform4" class="col-3 col-form-label col-form-label-sm">Gab <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform4" placeholder="100">
+              </div>
+            </div>
+    
+            <div class="row">
+              <label for="platform5" class="col-3 col-form-label col-form-label-sm">Mastodon <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform5" placeholder="100">
+              </div>
+              <label for="platform6" class="col-3 col-form-label col-form-label-sm">Parler <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform6" placeholder="100">
+              </div>
+            </div>
+    
+            <div class="row">
+              <label for="platform7" class="col-3 col-form-label col-form-label-sm">Reddit <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform7" placeholder="100">
+              </div>
+              <label for="platform8" class="col-3 col-form-label col-form-label-sm">Tumblr <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform8" placeholder="100">
+              </div>
+            </div>
+    
+            <div class="row">
+              <label for="platform9" class="col-3 col-form-label col-form-label-sm">Twitter <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform9" placeholder="100">
+              </div>
+              <label for="platform10" class="col-3 col-form-label col-form-label-sm">YouTube <i>n</i> =</label>
+              <div class="col-3">
+                <input type="numerical" class="form-control form-control-sm" id="platform10" placeholder="100">
+              </div>
+            </div>
+
+            <br>
+
+            <div class="row">
+              <span><strong>Desired number of units to be drawn from sample frame:</strong></span>
+              <span><i>n</i> = ______ units</span>
+            </div>
+
+            <br>
+
+            <div class="row">
+              <label for="validationServer03" class="col-8 col-form-label col-form-label-sm">Selected number of units clustered by platform:</label>
+              <div class="col-4">
+                <!-- Prefill validation box with desired units -->
+                <input type="numerical" class="form-control form-control-sm is-invalid" id="validationServer03" placeholder="100">
+                <!-- Set error for when the selected units are less than or greater than desired number of units -->
+                <!-- The number of selected units are less than the desired number of units to be drawn. -->
+                <!-- The number of selected units exceeds the desired number of units to be drawn.   -->
+                <!-- Set to green when desired and selected units are equal -->
+                <!-- The number of selected units is equal to the desired number of units to be drawn. -->
+                <div id="validationServer03Feedback" class="invalid-feedback">
+                  Selected units exceed desired units.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+
+    
+          <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-primary" data-bs-dismiss="modal" id="cancel-btn">Previous</button>
+            <!-- Disable next button until a choice has been made -->
+            <button type="submit" class="btn btn-success">Next</button>
+          </div>
+    
+        </div>
+      </div>
+    </div>
+  </div>
+    
+    
+</div>
+
+
+{% endblock %}

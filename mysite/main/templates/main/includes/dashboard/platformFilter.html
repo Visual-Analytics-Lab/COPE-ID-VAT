@@ -1,26 +1,35 @@
 <!-- Included in home.html -->
 
-<!-- Platforms Filter Title -->
-<h5 class="pb-2 border-bottom">Platforms</h5>
+<!-- https://docs.djangoproject.com/en/5.1/ref/templates/builtins/ -->
+<!-- Use cycle for every other row (example of table rows) -->
 
-<div class="overflow-y-scroll m-0 pe-0 ps-1 py-2 text-start" style="height: 15vh;">
-  <div class="form-check">
-    <input class="form-check-input plats-check" type="checkbox" value="" id="all-plats">
-    <label class="form-check-label" for="all-plats">
-      Select All
-    </label>
+<div class="row">
+
+  <!-- Platforms to Filter By -->
+  <div class="col-12">
+    <div class="form-check">
+      <input class="form-check-input plats-check" type="checkbox" value="" id="all-plats">
+      <label class="form-check-label" for="all-plats">
+        <strong>Select All</strong>
+      </label>
+    </div>
   </div>
 
   <!-- Loop through all platforms -->
   {% for platform in distinct_platforms %}
-  <div class="form-check text-start">
-    <input class="form-check-input plats-check" type="checkbox" value="{{ platform }}" id="platform-{{ forloop.counter }}">
-    <label class="form-check-label" for="platform-{{ forloop.counter }}">
-      {{ platform }}
-    </label>
-  </div>
+    <div class="col-6">
+      <div class="form-check text-start">
+        <input class="form-check-input plats-check" type="checkbox" value="{{ platform }}" id="platform-{{ forloop.counter }}">
+        <label class="form-check-label" for="platform-{{ forloop.counter }}">
+          {{ platform }}
+        </label>
+      </div>
+    </div>
   {% endfor %}
+  
 </div>
+
+
 
 <script>
   $('#all-plats').on('click', function () {
