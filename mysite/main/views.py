@@ -66,13 +66,8 @@ def dashboard(request):
 
         org = organization_model.objects.filter(org_users=request.user).first()
 
-        project = project_model(project_name = project_name,
-                        project_org = org,
-                        principal_investigator = request.user,
-                        N = 1000)
+        project = project_model(project_name = project_name, project_org = org, principal_investigator = request.user, N = 1000)
         project.save()
-
-
 
 
 
@@ -389,11 +384,6 @@ def myProjects_codebook(request, project_id):
 
         # Redirect/refresh page after form submission
         return redirect(request.path_info)
-    
-    # Setup place to display this in the codebook
-    count = coding_variables.count()
-
-    print("count:", count)
 
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
