@@ -17,10 +17,10 @@ from collections import defaultdict
 
 
 # =============================================================
-# Homepage
+# Dashboard
 # =============================================================
 
-def homepage(request):
+def dashboard(request):
     distinct_platforms = sample_data.objects.values_list('doc_source', flat=True).distinct()
     distinct_topics = bert_main_sample_data.objects.values_list('topic_name', flat=True).distinct()
     search_query = request.GET.get('search_query')
@@ -85,7 +85,7 @@ def homepage(request):
         'sys_admin': sys_admin,
     }
     
-    return render(request, 'main/home.html', context)
+    return render(request, 'main/dashboard.html', context)
 
 # =============================================================
 # Add Project
@@ -389,6 +389,11 @@ def myProjects_codebook(request, project_id):
 
         # Redirect/refresh page after form submission
         return redirect(request.path_info)
+    
+    # Setup place to display this in the codebook
+    count = coding_variables.count()
+
+    print("count:", count)
 
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)

@@ -8,7 +8,7 @@ urlpatterns = [
   
     # Dashboard
     # =============================================================
-    path("", views.homepage, name="homepage"),
+    path("", views.dashboard, name="dashboard"),
 
     # Add Project (Defunct)
     # =============================================================
