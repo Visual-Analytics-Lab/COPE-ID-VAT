@@ -1,7 +1,7 @@
 {% extends 'main/index.html' %}
 
 {% block content %}
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
     // Select all elements with data-bs-toggle="popover"
@@ -10,18 +10,22 @@
     // Initialize Bootstrap Popovers
     var popoverList = [...popoverTriggerList].map(function (popoverTriggerEl) {
       return new bootstrap.Popover(popoverTriggerEl, {
-        trigger: "focus", // Change to "click" for better interaction
-        placement: "auto", // Automatically positions it
-        html: true // Allows HTML content inside the popover
+        trigger: "focus",
+        placement: "auto",
+        html: true
       });
     });
-  });
 
     // Initialize dismissible popovers
-    var dismissiblePopover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
-    trigger: 'focus'
+    var dismissibleElement = document.querySelector('.popover-dismiss');
+    if (dismissibleElement) {
+      new bootstrap.Popover(dismissibleElement, {
+        trigger: 'focus'
+      });
+    }
   });
 </script>
+
 
 
 <div class="container-fluid" style="height: 50rem;">
@@ -393,14 +397,10 @@
   
         <!-- Row 3 -->
         <div class="row justify-content-end" style="height: 3rem;">
-  
-  
       
           <div class="col-2 text-center mt-2">
             <button type="button" class="btn btn-success px-3" style="font-size: 18px;">Draw Sample</button>
           </div>
-  
-          
   
         </div>
         
@@ -408,54 +408,39 @@
 
   </div>
 
-
-
-
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  var bc = document.getElementById("sentiment-analysis").getContext("2d");
 
-  const data = {
-    labels: [
-      'Red',
-      'Blue',
-      'Yellow'
-    ],
-    datasets: [{
-      label: 'My First Dataset',
-      data: [300, 50, 100],
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)'
-      ],
-      hoverOffset: 4
-    }]
-  };
+<!-- DateTime Info Modal -->
+<div class="modal fade" id="dateTimeInfo" tabindex="-1" aria-labelledby="dateTimeInfoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="dateTimeInfoLabel">Date Time Filter</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Waiting to get the actual text for this from Terri -->
+        <p>Date Time is calculated in 24 hour format UTC.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-  const config = {
-    type: 'doughnut',
-    data: data,
-    options: { // Corrected section
-      plugins: {
-        legend: {
-          position: 'right' // Move legend to the right
-        }
-      },
-      layout: {
-        padding: 0
-      }
-    }
-  };
-
-  // https://www.chartjs.org/docs/latest/general/padding.html
-  // alternatively, check if margin is the issue
-
-  new Chart(bc, config);
-</script>
-
-
+<!-- Keyword's Table Info Modal -->
+<div class="modal fade" id="keywordInfo" tabindex="-1" aria-labelledby="keywordInfoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="keywordInfoLabel">Adding Keywords</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Waiting to get the actual text for this from Terri -->
+        <p>Something something about keywords.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
