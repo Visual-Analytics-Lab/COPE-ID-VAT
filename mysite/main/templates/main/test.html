@@ -6,10 +6,37 @@
 
   <div class="row">
 
+    <table id="myTable">
+      <tr>
+        <td>Row 1</td>
+        <td><button type="button" class="btn btn-secondary" onclick="moveRowUp(this)"><i class="bi bi-arrow-up-circle"></i></button></td>
+      </tr>
+      <tr>
+        <td>Row 2</td>
+        <td><button type="button" class="btn btn-secondary" onclick="moveRowUp(this)"><i class="bi bi-caret-up"></i></button></td>
+        <td><button type="button" class="btn btn-secondary" onclick="moveRowUp(this)"><i class="bi bi-caret-down"></i></button></td>
+      </tr>
+      <tr>
+        <td>Row 3</td>
+        <td><button type="button" class="btn btn-secondary" onclick="moveRowUp(this)"><i class="bi bi-caret-up"></i></button></td>
+      </tr>
+    </table>
 
 
   </div>
 
 </div>
+
+
+  <script>
+  function moveRowUp(button) {
+    const row = button.closest("tr");
+    const previousRow = row.previousElementSibling;
+
+    if (previousRow) {
+      row.parentNode.insertBefore(row, previousRow);
+    }
+  }
+  </script>
 
 {% endblock %}
