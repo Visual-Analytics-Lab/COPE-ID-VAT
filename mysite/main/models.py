@@ -7,7 +7,7 @@ from django.db.models.signals import post_save, m2m_changed
 from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import slugify
-from django.core.validators import int_list_validator
+from django.core.validators import int_list_validator, MinValueValidator, MaxValueValidator
 from django.conf import settings
 import json
 
@@ -240,8 +240,9 @@ def reset_permissions_post_save(sender, instance, **kwargs):
 class coding_variable(models.Model):
     variable_id = models.AutoField(primary_key=True)
     variable_name = models.CharField(max_length=64, null=False, blank=False)
-    variable_description = models.TextField(max_length=128, default='')
+    variable_description = models.TextField(max_length=1024, default='')
     variable_project = models.ForeignKey(project_model, on_delete=models.CASCADE)
+    variable_rank = models.PositiveSmallIntegerField(unique=True, validators=[MinValueValidator(1), MaxValueValidator(100)])
 
     MEASUREMENTS = (
     ('nom', 'Nominal'),
