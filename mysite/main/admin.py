@@ -171,13 +171,13 @@ class user_project_model_admin(admin.ModelAdmin):
 
 class coding_variable_admin(admin.ModelAdmin):
     # Set display columns
-    list_display = ('organization', 'project', 'name')
+    list_display = ('organization', 'project', 'variable_rank', 'name')
 
     # Set filter options
     list_filter = ('variable_project__project_org__org_name', 'variable_project',)
 
     # Set display order
-    ordering = ('variable_project__project_org__org_name', 'variable_project', 'variable_name',)
+    ordering = ('variable_project__project_org__org_name', 'variable_project', 'variable_rank', 'variable_name',)
 
     # Set column names & custom sorting
     def organization(self, obj):
