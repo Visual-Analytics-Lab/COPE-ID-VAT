@@ -1,4 +1,4 @@
-# COPE-ID-VAT
+![Data Analytics Visualization Tool Logo](https://github.com/user-attachments/assets/00782ed1-d72f-4c21-a07e-4bed299a1dce)
 
 ## Description
 
