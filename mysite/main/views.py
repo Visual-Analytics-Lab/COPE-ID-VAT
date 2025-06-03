@@ -357,9 +357,9 @@ def myProjects_codebook(request, project_id):
     coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_id')
 
     # Check if form was submitted
-    if request.method == 'POST':
+    if request.method == 'POST' :
         # Check if variable ID is in form
-        if 'variable-id' in request.POST:
+        if 'variable-id' in request.POST and has_edit_permission:
             # Get variable ID from HTTP POST request
             id = request.POST.get('variable-id')
 
@@ -384,7 +384,7 @@ def myProjects_codebook(request, project_id):
 
         # Redirect/refresh page after form submission
         return redirect(request.path_info)
-
+    
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
@@ -435,12 +435,16 @@ def myProjects_addVariable(request, project_id):
         # Get variable measurement from HTTP POST request
         measurement = request.POST.get('variable-measure')
 
+        # Get variable rank from variable count + 1
+        rank = coding_variable.objects.count() + 1
+
         # Create variable instance
         new_variable = coding_variable(
             variable_name=variable_name,
             variable_description=variable_description,
             variable_project=project,
-            variable_measurement=measurement
+            variable_measurement=measurement,
+            variable_rank=rank
         )
 
         # Save new variable instance
