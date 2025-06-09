@@ -59,22 +59,39 @@
 
         <!-- Row 1 Column 2 Row 3 Column 1-->
         <div class="col-12 px-3">
-
-          <!-- Codebook Protocol -->
-          <blockquote class="blockquote">
-            <p>{{ project.codebook_protocol }} 
-              {% if pi %}
-              <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProtocol">
-                <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
-              </button>
-              {% endif %}
-            </p>
-          </blockquote>
+          <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
+            <!-- Codebook Protocol -->
+            <blockquote class="blockquote overflow-y-auto" style="height: 9rem;">
+              <p>{{ project.codebook_protocol }} 
+                {% if pi %}
+                <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProtocol">
+                  <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
+                </button>
+                {% endif %}
+              </p>
+            </blockquote>
+          </div>
         </div>
 
       </div>
 
-      <!-- Row 1 Column 2 Row 4 -->
+      <!-- Row 1 Column 2 Row 5 -->
+      <div class="row px-4">
+        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+          <!-- Check if Project has Variables -->
+          {% if coding_variables %}
+            {% include 'main/includes/myProjects/codebookTable.html' %}
+          <!-- If no Variables -->
+          {% else %}
+            <blockquote class="blockquote text-center">
+              <p>Start by adding coding variables.</p>
+            </blockquote>
+          {% endif %}
+        </div>
+
+      </div>
+
+      <!-- Row 2 Column 2 Row 4 -->
       <div class="row px-1">
         <!-- Add Variable -->
       
@@ -88,21 +105,6 @@
           {% endif %}
       
         </div>
-      </div>
-
-      <!-- Row 1 Column 2 Row 5 -->
-      <div class="row">
-
-          <!-- Check if Project has Variables -->
-          {% if coding_variables %}
-            {% include 'main/includes/myProjects/codebookTable.html' %}
-          <!-- If no Variables -->
-          {% else %}
-            <blockquote class="blockquote text-center">
-              <p>Start by adding coding variables.</p>
-            </blockquote>
-          {% endif %}
-
       </div>
 
     </div>
