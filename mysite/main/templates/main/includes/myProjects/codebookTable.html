@@ -29,8 +29,8 @@
           {% if has_edit_permission %}
             <td>
               <div class="btn-group" role="group" aria-label="Up and Down">
-                <button type="button" class="btn btn-secondary text-center" onclick="moveRowUp(this)"><i class="bi bi-caret-up"></i></button>
-                <button type="button" class="btn btn-secondary text-center" onclick="moveRowDwn(this)"><i class="bi bi-caret-down"></i></button>
+                <button type="button" class="btn btn-secondary text-center btn-up" onclick="moveRowUp(this)"><i class="bi bi-caret-up"></i></button>
+                <button type="button" class="btn btn-secondary text-center btn-down" onclick="moveRowDwn(this)"><i class="bi bi-caret-down"></i></button>
               </div>
             </td>
             <td>{% include 'main/includes/myProjects/deleteVariableModal.html' %}</td>
@@ -42,23 +42,45 @@
 </div>
 
 <script>
-  // Move Row Up
   function moveRowUp(button) {
     const row = button.closest("tr");
     const previousRow = row.previousElementSibling;
 
     if (previousRow) {
-      previousRow.before(row, previousRow);
+      row.parentNode.insertBefore(row, previousRow);
+      refreshButtons();
     }
   }
 
-  // Move Row Down
   function moveRowDwn(button) {
     const row = button.closest("tr");
     const nextRow = row.nextElementSibling;
 
     if (nextRow) {
-      nextRow.after(row);
+      row.parentNode.insertBefore(nextRow, row);
+      refreshButtons();
     }
   }
+
+  function refreshButtons() {
+    const rows = document.querySelectorAll("tbody tr");
+
+    rows.forEach((row, index) => {
+      const upBtn = row.querySelector(".btn-up");
+      const downBtn = row.querySelector(".btn-down");
+
+      // Enable both by default
+      upBtn.disabled = false;
+      downBtn.disabled = false;
+
+      // Disable Up on first row
+      if (index === 0) upBtn.disabled = true;
+
+      // Disable Down on last row
+      if (index === rows.length - 1) downBtn.disabled = true;
+    });
+  }
+
+  // Call this after the page loads to set correct initial state
+  document.addEventListener("DOMContentLoaded", refreshButtons);
 </script>
