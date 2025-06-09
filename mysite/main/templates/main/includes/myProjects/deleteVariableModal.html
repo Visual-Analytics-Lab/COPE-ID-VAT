@@ -1,9 +1,20 @@
 <!-- Included in myProjectsTabs/editProject.html -->
 
+<style>
+  .icon-link.custom-hover {
+    color: var(--bs-secondary); /* default gray */
+    transition: color 0.2s ease;
+  }
+
+  .icon-link.custom-hover:hover {
+    color: var(--bs-danger); /* red */
+  }
+</style>
+
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-danger p-1" data-bs-toggle="modal" data-bs-target="#deleteVariableModal-{{ variable.variable_id }}" style="width: 4rem;">
-  Delete
-</button>
+<a type="button" class="icon-link custom-hover py-2" data-bs-toggle="modal" data-bs-target="#deleteVariableModal-{{ variable.variable_id }}" href="#">
+    <i class="bi bi-trash3"></i>
+</a>
   
 <!-- Modal -->
 <div class="modal fade" data-bs-backdrop="static" id="deleteVariableModal-{{ variable.variable_id }}" tabindex="-1" aria-labelledby="deleteVariableModalLabel-{{ variable.variable_id }}" aria-hidden="true">
