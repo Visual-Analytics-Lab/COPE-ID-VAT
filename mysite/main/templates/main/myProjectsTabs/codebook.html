@@ -96,11 +96,22 @@
         <!-- Add Variable -->
       
         <div class="d-flex flex-row justify-content-start">
+
+          <form id="reorder-form" method="post" action="{% url 'main:myProjects_codebook' project.project_id %}">
+            {% csrf_token %}
+            <input type="hidden" name="reordered_ids" id="reordered-ids">
+          </form>
       
           <!-- Check if User can Add Variables -->
           {% if has_edit_permission %}
           <div class="px-2" style="max-width: 18rem; min-width: 5rem;">
             <a class="btn btn-success mb-2" id="add-btn" href="{% url 'main:myProjects_addVariable' project.project_id %}"><i class="bi bi-plus-circle"></i> Add Coding Variable</a>
+          </div>
+          {% endif %}
+
+          {% if has_edit_permission %}
+          <div class="px-2" style="max-width: 18rem; min-width: 5rem;">
+            <button type="button" class="btn btn-warning mb-2" id="save-btn" onclick="submitReorder()"><i class="bi bi-floppy"></i> Save Changes</button>
           </div>
           {% endif %}
       
@@ -143,5 +154,26 @@
   </form>
 </div>
 {% endif %}
+
+<script>
+  function submitReorder() {
+  const rows = document.querySelectorAll("tbody tr");
+  const ids = [];
+
+  rows.forEach(row => {
+    const link = row.querySelector("a");
+    if (link) {
+      const href = link.getAttribute("href");
+      const match = href.match(/\/(\d+)\/?$/); // Extract variable_id from URL
+      if (match) {
+        ids.push(match[1]);
+      }
+    }
+  });
+
+  document.getElementById("reordered-ids").value = ids.join(",");
+  document.getElementById("reorder-form").submit();
+}
+</script>
 
 {% endblock %}
