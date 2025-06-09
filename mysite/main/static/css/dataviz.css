@@ -29,7 +29,7 @@
   --myProj-nav-div-width: 100% !important;
   --myProj-nav-div-max-width: 18rem;
   --myProj-nav-div-min-width: 5rem;
-  --myProj-nav-div-padding: 0.5rem !important;
+  --myProj-nav-div-padding: 0.75rem !important;
 
   --myProj-nav-a-width: 100% !important;
   --myProj-nav-a-margin: 0.25rem !important;
@@ -265,6 +265,7 @@
   height: var(--myProj-nav-row-height);
   padding-right: var(--myProj-nav-row-padding);
   padding-left: var(--myProj-nav-row-padding);
+  padding-bottom: 4rem;
 }
 
 .test-btn {
