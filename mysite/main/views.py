@@ -221,7 +221,7 @@ def myProjects_units(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"{project.project_name} Project Units",
+        'page_name': f"{project.project_name}",
         'project': project,
         'units': page_obj,
         'search_query': search_query,
@@ -388,7 +388,7 @@ def myProjects_codebook(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"{project.project_name} Codebook",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'coding_variables': coding_variables,
@@ -470,7 +470,7 @@ def myProjects_addVariable(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"Add Variable to {project.project_name}",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'measurements': measurements,
@@ -586,7 +586,7 @@ def myProjects_editVariable(request, project_id, variable_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"Edit {variable.variable_name} in {project.project_name}",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'variable': variable,
@@ -611,7 +611,7 @@ def myProjects_irr(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"{project.project_name} Inter-Rater Reliability",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
@@ -744,7 +744,7 @@ def myProjects_editProject(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"Edit {project.project_name}",
+        'page_name': f"{project.project_name}",
         'edit_project': True,
         'active_user': active_user,
         'project': project,
@@ -834,7 +834,7 @@ def myProjects_projectProfile(request, project_id, user_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"Edit {user.first_name} {user.last_name} on {project.project_name}",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'user': user,
@@ -859,7 +859,7 @@ def myProjects_sampleResults(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"{project.project_name} Samples & Results",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
