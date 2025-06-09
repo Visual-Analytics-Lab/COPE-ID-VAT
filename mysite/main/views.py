@@ -354,12 +354,23 @@ def myProjects_codebook(request, project_id):
         pi = True
 
     # Fetch project variables from database
-    coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_id')
+    coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_rank')
 
     # Check if form was submitted
     if request.method == 'POST' :
+        if 'reordered_ids' in request.POST:
+            ids = request.POST.get('reordered_ids').split(',')
+            # First pass: assign temporary negative ranks to avoid unique constraint collision
+            for temp_rank, var_id in enumerate(ids, start=1):
+                coding_variable.objects.filter(pk=var_id, variable_project=project).update(variable_rank=-temp_rank)
+
+            # Second pass: assign correct positive ranks
+            for final_rank, var_id in enumerate(ids, start=1):
+                coding_variable.objects.filter(pk=var_id, variable_project=project).update(variable_rank=final_rank)
+
+            return redirect(request.path_info)
         # Check if variable ID is in form
-        if 'variable-id' in request.POST and has_edit_permission:
+        elif 'variable-id' in request.POST and has_edit_permission:
             # Get variable ID from HTTP POST request
             id = request.POST.get('variable-id')
 
@@ -373,6 +384,7 @@ def myProjects_codebook(request, project_id):
             variable.delete()
 
         else:
+            print("NO")
             # Get codebook protocol from HTTP POST request
             new_protocol = request.POST.get('codebook-protocol')
 
