@@ -531,7 +531,6 @@ def myProjects_editVariable(request, project_id, variable_id):
     if request.method == 'POST':
         # Get action from HTTP POST request
         action = request.POST.get("edit-action")
-
         # Check if an action exists
         if not action:
             # Check if action is delete
@@ -547,9 +546,12 @@ def myProjects_editVariable(request, project_id, variable_id):
 
             # Redirect/refresh page after form submission
             return redirect('main:myProjects_codebook', project_id=project.project_id)
-
+        # Check if action is cancel
+        elif action =="cancel":
+            return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=variable_id)
         # Action is save
         else:
+            print("cancel action false")
             # Fetch variable from database
             variable = get_object_or_404(coding_variable, pk=variable_id, variable_project=project_id)
 
