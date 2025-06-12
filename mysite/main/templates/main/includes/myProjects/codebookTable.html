@@ -1,36 +1,92 @@
 <!-- Included in myProjectsTabs/codebook.html -->
+ 
+<style>
+  .test_style {
+    background-color: #6c757d !important;
+  }
+</style>
 
-<div class="table-responsive p-0 m-0">
+<div class="table-responsive overflow-y-scroll p-0 m-0" style="height: 25rem;">
   <table class="table table-striped table-hover mb-0">
   
-      <!-- Variable Table Column Headers -->
-      <thead class="sticky-top">
-        <tr>
-          <th scope="col" style="width: 20%;">Variable</th>
-          <th scope="col" style="width: 20%;">Values</th>
-          <th scope="col" style="width: 50%;">Description</th>
-          {% if has_edit_permission %}
-            <th scope="col" style="width: 5%;">Edit</th>
-            <th scope="col" style="width: 5%;">Delete</th>
-          {% endif %}
-        </tr>
+    <!-- Variable Table Column Headers -->
+    <thead class="sticky-top">
+      <tr>
+        <th class="test_style" scope="col" style="width: 5%"># ({{ coding_variables.count }})</th>
+        <th class="test_style" scope="col" style="width: 20%;">Variable</th>
+        <th class="test_style" scope="col" style="width: 5%;">Values</th>
+        <th class="test_style" scope="col" style="width: 50%;">Description</th>
+        {% if has_edit_permission %}
+          <th class="test_style" scope="col" style="width: 5%;">Up/Down</th>
+          <th class="test_style" scope="col" style="width: 5%;">Delete</th>
+        {% endif %}
+      </tr>
       </thead>
   
-      <!-- Variable Table Rows -->
-      <tbody class="table-group-divider">
-        <!-- Loop through variables -->
-        {% for variable in coding_variables %}
-          <tr>
-            <th scope="row"><a class="link-body-emphasis icon-link link-underline-opacity-25 link-underline-opacity-100-hover" style="width: 20%;" href="{% url 'main:myProjects_editVariable' project.project_id variable.variable_id %}"><i class="bi-pencil-square"></i>{{ variable.variable_name }}</a></th>
-            <!-- <th scope="row" style="width: 20%;">{/{ variable.variable_name }/}</th> -->
-            <td style="width: 20%;">{{ variable.get_values_comma }}</td>
-            <td style="width: 50%;">{{ variable.variable_description }}</td>
-            {% if has_edit_permission %}
-              <td style="width: 5%;"><a type="button" class="btn btn-primary p-1" style="width: 4rem;" href="{% url 'main:myProjects_editVariable' project.project_id variable.variable_id %}">Edit</a></td>
-              <td style="width: 5%;">{% include 'main/includes/myProjects/deleteVariableModal.html' %}</td>
-            {% endif %}
-          </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-  </div>
+    <!-- Variable Table Rows -->
+    <tbody class="table-group-divider">
+      <!-- Loop through variables -->
+      {% for variable in coding_variables %}
+        <tr>
+          <td style="width: 5%;">{{ forloop.counter }}</td>
+          <th scope="row"><a class="link-body-emphasis icon-link link-underline-opacity-25 link-underline-opacity-100-hover" style="width: 20%;" href="{% url 'main:myProjects_editVariable' project.project_id variable.variable_id %}"><i class="bi-pencil-square"></i>{{ variable.variable_name }}</a></th>
+          <td style="width: 10%;">{{ variable.get_values_comma }}</td>
+          <td style="width: 50%;">{{ variable.variable_description|truncatechars:240 }}</td>
+          {% if has_edit_permission %}
+            <td>
+              <div class="btn-group" role="group" aria-label="Up and Down">
+                <button type="button" class="btn btn-secondary text-center btn-up" onclick="moveRowUp(this)"><i class="bi bi-caret-up"></i></button>
+                <button type="button" class="btn btn-secondary text-center btn-down" onclick="moveRowDwn(this)"><i class="bi bi-caret-down"></i></button>
+              </div>
+            </td>
+            <td>{% include 'main/includes/myProjects/deleteVariableModal.html' %}</td>
+          {% endif %}
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+
+<script>
+  function moveRowUp(button) {
+    const row = button.closest("tr");
+    const previousRow = row.previousElementSibling;
+
+    if (previousRow) {
+      row.parentNode.insertBefore(row, previousRow);
+      refreshButtons();
+    }
+  }
+
+  function moveRowDwn(button) {
+    const row = button.closest("tr");
+    const nextRow = row.nextElementSibling;
+
+    if (nextRow) {
+      row.parentNode.insertBefore(nextRow, row);
+      refreshButtons();
+    }
+  }
+
+  function refreshButtons() {
+    const rows = document.querySelectorAll("tbody tr");
+
+    rows.forEach((row, index) => {
+      const upBtn = row.querySelector(".btn-up");
+      const downBtn = row.querySelector(".btn-down");
+
+      // Enable both by default
+      upBtn.disabled = false;
+      downBtn.disabled = false;
+
+      // Disable Up on first row
+      if (index === 0) upBtn.disabled = true;
+
+      // Disable Down on last row
+      if (index === rows.length - 1) downBtn.disabled = true;
+    });
+  }
+
+  // Call this after the page loads to set correct initial state
+  document.addEventListener("DOMContentLoaded", refreshButtons);
+</script>

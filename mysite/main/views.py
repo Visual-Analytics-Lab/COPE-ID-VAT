@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.cache import cache
-from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch
+from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch, Max
 from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, role_model, \
     permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, test_model, unit_coding
 from .utils import favorite_projects_list
@@ -66,13 +66,8 @@ def dashboard(request):
 
         org = organization_model.objects.filter(org_users=request.user).first()
 
-        project = project_model(project_name = project_name,
-                        project_org = org,
-                        principal_investigator = request.user,
-                        N = 1000)
+        project = project_model(project_name = project_name, project_org = org, principal_investigator = request.user, N = 1000)
         project.save()
-
-
 
 
 
@@ -226,7 +221,7 @@ def myProjects_units(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"{project.project_name} Project Units",
+        'page_name': f"{project.project_name}",
         'project': project,
         'units': page_obj,
         'search_query': search_query,
@@ -359,12 +354,25 @@ def myProjects_codebook(request, project_id):
         pi = True
 
     # Fetch project variables from database
-    coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_id')
+    coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_rank')
 
     # Check if form was submitted
-    if request.method == 'POST':
+    if request.method == 'POST' :
+        if 'reordered_ids' in request.POST:
+            ids = request.POST.get('reordered_ids').split(',')
+            # First pass: assign temporary negative ranks to avoid unique constraint collision
+            for temp_rank, var_id in enumerate(ids, start=1):
+                print(f'temp_rank: {temp_rank}, var_id: {var_id}')
+                coding_variable.objects.filter(pk=var_id, variable_project=project).update(variable_rank=-temp_rank)
+
+            # Second pass: assign correct positive ranks
+            for final_rank, var_id in enumerate(ids, start=1):
+                print(f'final_rank: {final_rank}, var_id: {var_id}')
+                coding_variable.objects.filter(pk=var_id, variable_project=project).update(variable_rank=final_rank)
+
+            return redirect(request.path_info)
         # Check if variable ID is in form
-        if 'variable-id' in request.POST:
+        elif 'variable-id' in request.POST and has_edit_permission:
             # Get variable ID from HTTP POST request
             id = request.POST.get('variable-id')
 
@@ -390,15 +398,10 @@ def myProjects_codebook(request, project_id):
         # Redirect/refresh page after form submission
         return redirect(request.path_info)
     
-    # Setup place to display this in the codebook
-    count = coding_variables.count()
-
-    print("count:", count)
-
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"{project.project_name} Codebook",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'coding_variables': coding_variables,
@@ -430,6 +433,8 @@ def myProjects_addVariable(request, project_id):
         # Get action from HTTP POST request
         action = request.POST.get("edit-action")
 
+        print("action:", action)
+
         # Get variable description from HTTP POST request
         variable_description = request.POST.get('variable-description')
 
@@ -445,12 +450,16 @@ def myProjects_addVariable(request, project_id):
         # Get variable measurement from HTTP POST request
         measurement = request.POST.get('variable-measure')
 
+        # Get highest variable rank in project + 1
+        rank = coding_variable.objects.filter(variable_project=project).aggregate(Max('variable_rank'))['variable_rank__max'] + 1
+
         # Create variable instance
         new_variable = coding_variable(
             variable_name=variable_name,
             variable_description=variable_description,
             variable_project=project,
-            variable_measurement=measurement
+            variable_measurement=measurement,
+            variable_rank=rank
         )
 
         # Save new variable instance
@@ -466,8 +475,9 @@ def myProjects_addVariable(request, project_id):
             )
             new_value.save()
         
-        if action == "continue":
+        if action == "add":
             # Redirect/refresh page after form submission
+            print("continue")
             return redirect('main:myProjects_addVariable', project_id=project.project_id)
         else:
             # Redirect/refresh page after form submission
@@ -476,7 +486,7 @@ def myProjects_addVariable(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"Add Variable to {project.project_name}",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'measurements': measurements,
@@ -525,7 +535,6 @@ def myProjects_editVariable(request, project_id, variable_id):
     if request.method == 'POST':
         # Get action from HTTP POST request
         action = request.POST.get("edit-action")
-
         # Check if an action exists
         if not action:
             # Check if action is delete
@@ -541,9 +550,12 @@ def myProjects_editVariable(request, project_id, variable_id):
 
             # Redirect/refresh page after form submission
             return redirect('main:myProjects_codebook', project_id=project.project_id)
-
+        # Check if action is cancel
+        elif action =="cancel":
+            return redirect('main:myProjects_editVariable', project_id=project.project_id, variable_id=variable_id)
         # Action is save
         else:
+            print("cancel action false")
             # Fetch variable from database
             variable = get_object_or_404(coding_variable, pk=variable_id, variable_project=project_id)
 
@@ -592,7 +604,7 @@ def myProjects_editVariable(request, project_id, variable_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"Edit {variable.variable_name} in {project.project_name}",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'variable': variable,
@@ -617,7 +629,7 @@ def myProjects_irr(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"{project.project_name} Inter-Rater Reliability",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
@@ -750,7 +762,7 @@ def myProjects_editProject(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"Edit {project.project_name}",
+        'page_name': f"{project.project_name}",
         'edit_project': True,
         'active_user': active_user,
         'project': project,
@@ -840,7 +852,7 @@ def myProjects_projectProfile(request, project_id, user_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"Edit {user.first_name} {user.last_name} on {project.project_name}",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'user': user,
@@ -865,7 +877,7 @@ def myProjects_sampleResults(request, project_id):
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
-        'page_name': f"{project.project_name} Samples & Results",
+        'page_name': f"{project.project_name}",
         'project': project,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,

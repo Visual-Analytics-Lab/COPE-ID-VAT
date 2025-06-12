@@ -57,42 +57,27 @@
       <!-- Row 1 Column 2 Row 3 -->
       <div class="row mb-2 px-2">
 
-        <!-- Row 1 Column 2 Row 3 Column 1-->
+        <!-- Row 1 Column 2 Row 3 Column 1 -->
         <div class="col-12 px-3">
-
-          <!-- Codebook Protocol -->
-          <blockquote class="blockquote">
-            <p>{{ project.codebook_protocol }} 
-              {% if pi %}
-              <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProtocol">
-                <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
-              </button>
-              {% endif %}
-            </p>
-          </blockquote>
-        </div>
-
-      </div>
-
-      <!-- Row 1 Column 2 Row 4 -->
-      <div class="row px-1">
-        <!-- Add Variable -->
-      
-        <div class="d-flex flex-row justify-content-start">
-      
-          <!-- Check if User can Add Variables -->
-          {% if has_edit_permission %}
-          <div class="px-2" style="max-width: 18rem; min-width: 5rem;">
-            <a class="btn btn-success mb-2" id="add-btn" href="{% url 'main:myProjects_addVariable' project.project_id %}"><i class="bi bi-plus-circle"></i> Add Coding Variable</a>
+          <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
+            <!-- Codebook Protocol -->
+            <blockquote class="blockquote overflow-y-auto" style="height: 9rem;">
+              <p>{{ project.codebook_protocol }} 
+                {% if pi %}
+                <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProtocol">
+                  <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
+                </button>
+                {% endif %}
+              </p>
+            </blockquote>
           </div>
-          {% endif %}
-      
         </div>
+
       </div>
 
       <!-- Row 1 Column 2 Row 5 -->
-      <div class="row">
-
+      <div class="row px-4">
+        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
           <!-- Check if Project has Variables -->
           {% if coding_variables %}
             {% include 'main/includes/myProjects/codebookTable.html' %}
@@ -102,7 +87,35 @@
               <p>Start by adding coding variables.</p>
             </blockquote>
           {% endif %}
+        </div>
 
+      </div>
+
+      <!-- Row 2 Column 2 Row 4 -->
+      <div class="row px-1">
+        <!-- Add Variable -->
+      
+        <div class="d-flex flex-row justify-content-start">
+
+          <form id="reorder-form" method="post" action="{% url 'main:myProjects_codebook' project.project_id %}">
+            {% csrf_token %}
+            <input type="hidden" name="reordered_ids" id="reordered-ids">
+          </form>
+      
+          <!-- Check if User can Add Variables -->
+          {% if has_edit_permission %}
+          <div class="px-2" style="max-width: 18rem; min-width: 5rem;">
+            <a class="btn btn-success mb-2" id="add-btn" href="{% url 'main:myProjects_addVariable' project.project_id %}"><i class="bi bi-plus-circle"></i> Add Coding Variable</a>
+          </div>
+          {% endif %}
+
+          {% if has_edit_permission %}
+          <div class="px-2" style="max-width: 18rem; min-width: 5rem;">
+            <button type="button" class="btn btn-warning mb-2" id="save-btn" onclick="submitReorder()"><i class="bi bi-floppy"></i> Save Changes</button>
+          </div>
+          {% endif %}
+      
+        </div>
       </div>
 
     </div>
@@ -141,5 +154,26 @@
   </form>
 </div>
 {% endif %}
+
+<script>
+  function submitReorder() {
+  const rows = document.querySelectorAll("tbody tr");
+  const ids = [];
+
+  rows.forEach(row => {
+    const link = row.querySelector("a");
+    if (link) {
+      const href = link.getAttribute("href");
+      const match = href.match(/\/(\d+)\/?$/); // Extract variable_id from URL
+      if (match) {
+        ids.push(match[1]);
+      }
+    }
+  });
+
+  document.getElementById("reordered-ids").value = ids.join(",");
+  document.getElementById("reorder-form").submit();
+}
+</script>
 
 {% endblock %}

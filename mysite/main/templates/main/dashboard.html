@@ -1,27 +1,31 @@
 {% extends 'main/index.html' %}
 
 {% block content %}
-
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script>
-  document.addEventListener("DOMContentLoaded", function() {
+  document.addEventListener("DOMContentLoaded", function () {
     // Select all elements with data-bs-toggle="popover"
     var popoverTriggerList = document.querySelectorAll('[data-bs-toggle="popover"]');
 
     // Initialize Bootstrap Popovers
     var popoverList = [...popoverTriggerList].map(function (popoverTriggerEl) {
       return new bootstrap.Popover(popoverTriggerEl, {
-        trigger: "focus", // Change to "click" for better interaction
-        placement: "auto", // Automatically positions it
-        html: true // Allows HTML content inside the popover
+        trigger: "focus",
+        placement: "auto",
+        html: true
       });
     });
-  });
 
     // Initialize dismissible popovers
-    var dismissiblePopover = new bootstrap.Popover(document.querySelector('.popover-dismiss'), {
-    trigger: 'focus'
+    var dismissibleElement = document.querySelector('.popover-dismiss');
+    if (dismissibleElement) {
+      new bootstrap.Popover(dismissibleElement, {
+        trigger: 'focus'
+      });
+    }
   });
 </script>
+
 
 
 <div class="container-fluid" style="height: 50rem;">
@@ -32,17 +36,17 @@
       {% include 'main/includes/sidebar.html' %}
     </div>
 
-    <div class="col content w-auto"> 
+    <div class="col content w-auto">
       <!-- Row 1 -->
       <div class="row" style="height: 27rem;">
-  
+
         <!-- Filter Options -->
         <div class="col-5">
-  
+
           <div class="row" style="height: 23rem;">
-  
+
             <div class="col">
-              
+
               <!-- <span>NOTE FOR US LATER: Accordion style menu since font size is already so small. Accordion contains Platforms, TM Alg, and Topics, with only one being displayed at a time.</span> -->
               <!-- <span>NOTE TO SELF: title colors are inversed in the accordion vs the card with the visualizations.</span> -->
 
@@ -59,7 +63,6 @@
                     <div id="accordionST" class="accordion-collapse collapse show" data-bs-parent="#accordionExample">
                       <div class="accordion-body overflow-y-auto" style="max-height: 9rem;">
                         <input type="text" class="form-control mb-2" name="search_query" value="{{ request.GET.search_query }}" placeholder="Add Keywords...">
-
                         {% include 'main/includes/dashboard/wordTable.html' %}
                       </div>
                     </div>
@@ -83,7 +86,8 @@
                   <div class="accordion-item">
                     <h2 class="accordion-header" style="height: 2.25rem;">
                       <button class="accordion-button dashboard-sub-title collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#accordionTMA" aria-expanded="false" aria-controls="accordionTMA" style="height: 2.25rem;">
-                        Select Topic Modeling Algorithm <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank"><i class="bi bi-info-circle text-info"></i></a>
+                        Select Topic Modeling Algorithm
+                        <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank"><i class="bi bi-info-circle text-info"></i></a>
                       </button>
                     </h2>
                     <div id="accordionTMA" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
@@ -92,28 +96,33 @@
                         <div class="form-check">
                           <input class="form-check-input" type="radio" name="radioDefault" id="bertopicRadio" checked>
                           <label class="form-check-label" for="bertopicRadio">
-                            BERTopic <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank"><i class="bi bi-info-circle text-info"></i></a>
+                            BERTopic
+                            <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank">
+                              <i class="bi bi-info-circle text-info"></i>
+                            </a>
                           </label>
                         </div>
                         <div class="form-check">
                           <input class="form-check-input" type="radio" name="radioDefault" id="ldaRadio">
                           <label class="form-check-label" for="ldaRadio">
-                            LDA <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank"><i class="bi bi-info-circle text-info"></i></a>
+                            LDA
+                            <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank"><i class="bi bi-info-circle text-info"></i>
+                            </a>
                           </label>
                         </div>
                         <div class="form-check">
                           <input class="form-check-input" type="radio" name="radioDefault" id="lsaRadio">
-                          <label class="form-check-label" for="lsaRadio">
-                            LSA <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank"><i class="bi bi-info-circle text-info"></i></a>
+                          <label class="form-check-label" for="lsaRadio">LSA
+                            <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank"><i class="bi bi-info-circle text-info"></i></a>
                           </label>
                         </div>
                         <div class="form-check">
                           <input class="form-check-input" type="radio" name="radioDefault" id="nmfRadio">
                           <label class="form-check-label" for="nmfRadio">
-                            NMF <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank"><i class="bi bi-info-circle text-info"></i></a>
+                            NMF
+                            <a class="btn px-1 py-0" href="https://copeid.ssrc.msstate.edu/dataviz-knowledge-base/" target="_blank"><i class="bi bi-info-circle text-info"></i></a>
                           </label>
                         </div>
-
                       </div>
                     </div>
                   </div>
@@ -127,7 +136,9 @@
                     </h2>
                     <div id="accordionTC" class="accordion-collapse collapse" data-bs-parent="#accordionExample">
                       <div class="accordion-body overflow-y-auto" style="max-height: 9rem;">
+
                         {% include 'main/includes/dashboard/topicFilter.html' %}
+
                       </div>
                     </div>
                   </div>
@@ -151,75 +162,87 @@
               </div>
 
             </div>
-  
+
           </div>
-  
+
           <div class="row justify-content-end" style="height: 4rem;">
 
             <div class="col-auto mt-2">
               <button type="button" class="btn btn-success px-3" style="font-size: 18px;"><i class="bi bi-funnel-fill"></i> Filter</button>
             </div>
-  
+
           </div>
-  
+
         </div>
-  
+
         <!-- Visualizations -->
         <div class="col-7">
-          
+
           <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
             <div class="card" style="width: 100%; height: 24rem;">
               <div class="card-header">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link active dashboard-sub-title" id="wc-tab" data-bs-toggle="tab" data-bs-target="#wc-tab-pane" type="button" role="tab" aria-controls="wc-tab-pane" aria-selected="true">Word Cloud</button>
+                    <button class="nav-link active dashboard-sub-title" id="wc-tab" data-bs-toggle="tab" data-bs-target="#wc-tab-pane" type="button" role="tab" aria-controls="wc-tab-pane" aria-selected="true">
+                      Word Cloud
+                    </button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link dashboard-sub-title" id="swp-tab" data-bs-toggle="tab" data-bs-target="#swp-tab-pane" type="button" role="tab" aria-controls="swp-tab-pane" aria-selected="false">Salient Words by Platform</button>
+                    <button class="nav-link dashboard-sub-title" id="swp-tab" data-bs-toggle="tab" data-bs-target="#swp-tab-pane" type="button" role="tab" aria-controls="swp-tab-pane" aria-selected="false">
+                      Salient Words by Platform
+                    </button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link dashboard-sub-title" id="wpat-tab" data-bs-toggle="tab" data-bs-target="#wpat-tab-pane" type="button" role="tab" aria-controls="wpat-tab-pane" aria-selected="false">Word Prevalence Aross Time</button>
+                    <button class="nav-link dashboard-sub-title" id="wpat-tab" data-bs-toggle="tab" data-bs-target="#wpat-tab-pane" type="button" role="tab" aria-controls="wpat-tab-pane" aria-selected="false">
+                      Word Prevalence Aross Time
+                    </button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link dashboard-sub-title" id="sa-tab" data-bs-toggle="tab" data-bs-target="#sa-tab-pane" type="button" role="tab" aria-controls="sa-tab-pane" aria-selected="false">Sentiment Analysis</button>
+                    <button class="nav-link dashboard-sub-title" id="sa-tab" data-bs-toggle="tab" data-bs-target="#sa-tab-pane" type="button" role="tab" aria-controls="sa-tab-pane" aria-selected="false">
+                      Sentiment Analysis
+                    </button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link dashboard-sub-title" id="tcm-tab" data-bs-toggle="tab" data-bs-target="#tcm-tab-pane" type="button" role="tab" aria-controls="tcm-tab-pane" aria-selected="false">Topic Modeling Cluster Map</button>
+                    <button class="nav-link dashboard-sub-title" id="tcm-tab" data-bs-toggle="tab"
+                      data-bs-target="#tcm-tab-pane" type="button" role="tab" aria-controls="tcm-tab-pane"
+                      aria-selected="false">Topic Modeling Cluster Map</button>
                   </li>
                 </ul>
               </div>
               <div class="card-body">
                 <div class="tab-content" id="myTabContent">
-  
-  
-  
+
+
+
                   <!-- Word Cloud -->
-  
-                  <div class="tab-pane fade show active" id="wc-tab-pane" role="tabpanel" aria-labelledby="wc-tab" tabindex="0">
-  
+
+                  <div class="tab-pane fade show active" id="wc-tab-pane" role="tabpanel" aria-labelledby="wc-tab"
+                    tabindex="0">
+
                     {% include 'main/includes/dashboard/wordcloud.html' %}
-  
+
                   </div>
-  
+
                   <!-- Salient Words by Platform -->
-                
+
                   <div class="tab-pane fade" id="swp-tab-pane" role="tabpanel" aria-labelledby="twp-tab" tabindex="0">
-  
+
                     {% include 'main/includes/dashboard/salientByPlatform.html' %}
-  
+
                   </div>
-  
+
                   <!-- Top Words Across Time -->
-  
+
                   <div class="tab-pane fade" id="wpat-tab-pane" role="tabpanel" aria-labelledby="wpat-tab" tabindex="0">
-  
+
                     {% include 'main/includes/dashboard/wordPrevAcrossTime.html' %}
-  
+
                   </div>
-  
+
                   <!-- Sentiment Analysis -->
-  
-                  <div class="tab-pane fade justify-content-center" id="sa-tab-pane" role="tabpanel" aria-labelledby="sa-tab" tabindex="0">
+
+                  <div class="tab-pane fade justify-content-center" id="sa-tab-pane" role="tabpanel"
+                    aria-labelledby="sa-tab" tabindex="0">
 
 
 
@@ -229,32 +252,33 @@
                       <canvas id="sentiment-analysis"></canvas>
                     </div>
 
-  
+
                   </div>
-  
+
                   <!-- Topic Modeling Cluster Map -->
-  
-                  <div class="tab-pane fade" style="width: 800px;" id="tcm-tab-pane" role="tabpanel" aria-labelledby="tcm-tab" tabindex="0">
-  
+
+                  <div class="tab-pane fade" style="width: 800px;" id="tcm-tab-pane" role="tabpanel"
+                    aria-labelledby="tcm-tab" tabindex="0">
+
                     <!-- <h5>Topic Modeling Cluster Map Here</h5> -->
 
                     <div id="container" style="width: 800px; height: 600px;"></div>
 
-  
+
                   </div>
-  
+
                 </div>
               </div>
             </div>
           </div>
-  
-        </div>    
-  
+
+        </div>
+
       </div>
-        
+
       <!-- Row 2 -->
       <div class="row" style="height: 20rem;">
-  
+
         <!-- Metadata of Selected Units & Search Units Selected -->
         <div class="col-6" style="height: 20rem;">
 
@@ -263,30 +287,35 @@
               <div class="card-header">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link active dashboard-sub-title" id="msu-tab" data-bs-toggle="tab" data-bs-target="#msu-tab-pane" type="button" role="tab" aria-controls="msu-tab-pane" aria-selected="true">Metadata of Selected Units</button>
+                    <button class="nav-link active dashboard-sub-title" id="msu-tab" data-bs-toggle="tab"
+                      data-bs-target="#msu-tab-pane" type="button" role="tab" aria-controls="msu-tab-pane"
+                      aria-selected="true">Metadata of Selected Units</button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link dashboard-sub-title" id="sus-tab" data-bs-toggle="tab" data-bs-target="#sus-tab-pane" type="button" role="tab" aria-controls="sus-tab-pane" aria-selected="false">Search Units Selected</button>
+                    <button class="nav-link dashboard-sub-title" id="sus-tab" data-bs-toggle="tab"
+                      data-bs-target="#sus-tab-pane" type="button" role="tab" aria-controls="sus-tab-pane"
+                      aria-selected="false">Search Units Selected</button>
                   </li>
                 </ul>
               </div>
               <div class="card-body overflow-auto">
                 <div class="tab-content" id="myTabContent">
-  
-  
-  
+
+
+
                   <!-- Metadata of Selected Units -->
-  
-                  <div class="tab-pane fade show active" id="msu-tab-pane" role="tabpanel" aria-labelledby="msu-tab" tabindex="0">
-  
+
+                  <div class="tab-pane fade show active" id="msu-tab-pane" role="tabpanel" aria-labelledby="msu-tab"
+                    tabindex="0">
+
                     <h5>Metadata of Selected Units Here</h5>
-  
+
                   </div>
-  
-  
-  
+
+
+
                   <!-- Search Units Selected -->
-                
+
                   <div class="tab-pane fade" id="sus-tab-pane" role="tabpanel" aria-labelledby="sus-tab" tabindex="0">
 
                     <div class="row justify-content-center">
@@ -297,11 +326,13 @@
                         <form method="get">
                           <div class="input-group">
                             {% if query %}
-                              <!-- Populate Search Input if Search -->
-                              <input type="text" class="form-control" name="search" id="searchBar" placeholder="Search..." value="{{ query }}">
+                            <!-- Populate Search Input if Search -->
+                            <input type="text" class="form-control" name="search" id="searchBar" placeholder="Search..."
+                              value="{{ query }}">
                             {% else %}
-                              <!-- Empty Search Input -->
-                              <input type="text" class="form-control" name="search" id="searchBar" placeholder="Search...">
+                            <!-- Empty Search Input -->
+                            <input type="text" class="form-control" name="search" id="searchBar"
+                              placeholder="Search...">
                             {% endif %}
                             <!-- Submit Button -->
                             <button type="submit" class="btn btn-success">Search</button>
@@ -322,10 +353,12 @@
                             </thead>
                             <tbody>
                               {% for doc in documents %}
-                                <tr>
-                                  <td><a tabindex="0" class="btn popover-dismiss" role="button" data-bs-toggle="popover" data-bs-trigger="focus" data-bs-content="{{ doc.doc_text }}">{{ doc.doc_text|truncatewords:15 }}</a></td>
-                                  <td>{{ doc.doc_source }}</td>
-                                </tr>
+                              <tr>
+                                <td><a tabindex="0" class="btn popover-dismiss" role="button" data-bs-toggle="popover"
+                                    data-bs-trigger="focus" data-bs-content="{{ doc.doc_text }}">{{
+                                    doc.doc_text|truncatewords:15 }}</a></td>
+                                <td>{{ doc.doc_source }}</td>
+                              </tr>
                               {% endfor %}
                             </tbody>
                           </table>
@@ -334,124 +367,114 @@
                       </div>
 
                     </div>
-  
+
 
                   </div>
                 </div>
               </div>
             </div>
           </div>
-  
+
         </div>
-  
+
         <!-- TM Keyword Clusters in Topics Selected & TM Topic Selected WC? -->
         <div class="col-6" style="height: 20rem;">
-  
+
           <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
             <div class="card" style="width: 100%; height: 18rem;">
               <div class="card-header">
                 <ul class="nav nav-tabs" id="myTab" role="tablist">
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link active dashboard-sub-title" id="tkcts-tab" data-bs-toggle="tab" data-bs-target="#tkcts-tab-pane" type="button" role="tab" aria-controls="tkcts-tab-pane" aria-selected="true">Topic Modeling Keyword Clusters in Topics Selected</button>
+                    <button class="nav-link active dashboard-sub-title" id="tkcts-tab" data-bs-toggle="tab"
+                      data-bs-target="#tkcts-tab-pane" type="button" role="tab" aria-controls="tkcts-tab-pane"
+                      aria-selected="true">Topic Modeling Keyword Clusters in Topics Selected</button>
                   </li>
                   <li class="nav-item" role="presentation">
-                    <button class="nav-link dashboard-sub-title" id="ttsw-tab" data-bs-toggle="tab" data-bs-target="#ttsw-tab-pane" type="button" role="tab" aria-controls="ttsw-tab-pane" aria-selected="false">Topic Modeling Selected Topic Word Cloud</button>
+                    <button class="nav-link dashboard-sub-title" id="ttsw-tab" data-bs-toggle="tab"
+                      data-bs-target="#ttsw-tab-pane" type="button" role="tab" aria-controls="ttsw-tab-pane"
+                      aria-selected="false">Topic Modeling Selected Topic Word Cloud</button>
                   </li>
                 </ul>
               </div>
               <div class="card-body">
                 <div class="tab-content" id="myTabContent">
-  
-  
-  
+
+
+
                   <!-- Topic Modeling Keyword Clusters in Topics Selected -->
-  
-                  <div class="tab-pane fade show active" id="tkcts-tab-pane" role="tabpanel" aria-labelledby="tkcts-tab" tabindex="0">
-  
+
+                  <div class="tab-pane fade show active" id="tkcts-tab-pane" role="tabpanel" aria-labelledby="tkcts-tab"
+                    tabindex="0">
+
                     <h5>Topic Modeling Keyword Clusters in Topics Selected Here</h5>
-  
+
                   </div>
-  
-  
-  
+
+
+
                   <!-- Topic Modeling Selected Topic Word Cloud -->
-                
+
                   <div class="tab-pane fade" id="ttsw-tab-pane" role="tabpanel" aria-labelledby="ttsw-tab" tabindex="0">
-  
+
                     <h5>Topic Modeling Selected Topic Word Cloud Here</h5>
-  
+
                   </div>
-  
+
                 </div>
               </div>
             </div>
           </div>
-  
+
         </div>
-  
+
       </div>
-  
-        <!-- Row 3 -->
-        <div class="row justify-content-end" style="height: 3rem;">
-  
-          <div class="col-2 mt-2">
-            <button type="button" class="btn btn-success px-3" style="font-size: 18px;">Draw Sample</button>
-          </div>          
-  
+
+      <!-- Row 3 -->
+      <div class="row justify-content-end" style="height: 3rem;">
+
+        <div class="col-2 text-center mt-2">
+          <button type="button" class="btn btn-success px-3" style="font-size: 18px;">Draw Sample</button>
         </div>
-        
+
+      </div>
+
     </div>
 
   </div>
 
-
-
-
 </div>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  var bc = document.getElementById("sentiment-analysis").getContext("2d");
 
-  const data = {
-    labels: [
-      'Red',
-      'Blue',
-      'Yellow'
-    ],
-    datasets: [{
-      label: 'My First Dataset',
-      data: [300, 50, 100],
-      backgroundColor: [
-        'rgb(255, 99, 132)',
-        'rgb(54, 162, 235)',
-        'rgb(255, 205, 86)'
-      ],
-      hoverOffset: 4
-    }]
-  };
+<!-- DateTime Info Modal -->
+<div class="modal fade" id="dateTimeInfo" tabindex="-1" aria-labelledby="dateTimeInfoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="dateTimeInfoLabel">Date Time Filter</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Waiting to get the actual text for this from Terri -->
+        <p>Date Time is calculated in 24 hour format UTC.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
-  const config = {
-    type: 'doughnut',
-    data: data,
-    options: { // Corrected section
-      plugins: {
-        legend: {
-          position: 'right' // Move legend to the right
-        }
-      },
-      layout: {
-        padding: 0
-      }
-    }
-  };
-
-  // https://www.chartjs.org/docs/latest/general/padding.html
-  // alternatively, check if margin is the issue
-
-  new Chart(bc, config);
-</script>
-
-
+<!-- Keyword's Table Info Modal -->
+<div class="modal fade" id="keywordInfo" tabindex="-1" aria-labelledby="keywordInfoLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="keywordInfoLabel">Adding Keywords</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Waiting to get the actual text for this from Terri -->
+        <p>Something something about keywords.</p>
+      </div>
+    </div>
+  </div>
+</div>
 
 {% endblock %}

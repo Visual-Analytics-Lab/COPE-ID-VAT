@@ -5,7 +5,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import logout, authenticate, login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-from django.contrib.auth.models import User, Group, Permission
+from django.contrib.auth.models import Group, Permission
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.contenttypes.models import ContentType
 from django import forms
@@ -16,8 +16,10 @@ from .models import my_profile_model
 from .forms import NewUserForm, CreateGroupForm, AccountUpdateForm, PasswordChangeForm
 from .utils import sys_admin_test
 from main.utils import favorite_projects_list
-from main.models import User, organization_model, project_list_model, user_project_model
+from main.models import organization_model, project_list_model, user_project_model
 from django.contrib.auth.models import Group
+from django.contrib.auth import get_user_model
+User = get_user_model()
 
 # =============================================================
 # Register
@@ -31,7 +33,7 @@ def register(request):
             username = form.cleaned_data.get('username')
             messages.success(request, f"New account created: {username}")
             login(request, user)
-            return redirect("main:homepage")
+            return redirect("main:dashboard")
 
         else:
             for msg in form.error_messages:
@@ -53,7 +55,7 @@ def register(request):
 def logout_request(request):
     logout(request)
     messages.info(request, "Logged out successfully")
-    return redirect("main:homepage")
+    return redirect("main:dashboard")
 
 # =============================================================
 # Login
@@ -170,7 +172,7 @@ class PasswordUpdateForm(PasswordChangeForm):
 
 def manage_users(request):
     if not request.user.is_staff:
-        return redirect('home')  # Redirect unauthorized users
+        return redirect('dashboard')  # Redirect unauthorized users
 
     users = User.objects.all()
     groups = Group.objects.all()

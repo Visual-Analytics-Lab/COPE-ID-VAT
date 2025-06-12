@@ -15,10 +15,12 @@
     </button>
 
     <div class="collapse navbar-collapse d-lg-flex" id="datavizNavbar">
-      <a class="navbar-brand col-lg-3 me-0" href="/">
-        {% load static %}
-        <img type="image/png" width="200" height="85" src="{% static 'images/DataViz_logo.png' %}"/>
-      </a>
+      <div class="col-lg-3" width="200">
+        <a class="navbar-brand me-0" href="/" width="200">
+          {% load static %}
+          <img type="image/png" width="200" height="85" src="{% static 'images/DataViz_HZ.png' %}"/>
+        </a>
+      </div>
       <ul class="navbar-nav col-md-6 justify-content-md-center">
         <h2 class="h1-page-title" style="z-index: 1050;">{{ page_name }}{% if edit_project and pi %} <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProjectName"><i class="bi bi-pencil text-white"></i></button>{% endif %}</h2>
       </ul>
