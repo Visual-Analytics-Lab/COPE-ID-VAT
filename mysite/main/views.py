@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.cache import cache
-from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch
+from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch, Max
 from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, role_model, \
     permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, test_model, unit_coding
 from .utils import favorite_projects_list
@@ -362,10 +362,12 @@ def myProjects_codebook(request, project_id):
             ids = request.POST.get('reordered_ids').split(',')
             # First pass: assign temporary negative ranks to avoid unique constraint collision
             for temp_rank, var_id in enumerate(ids, start=1):
+                print(f'temp_rank: {temp_rank}, var_id: {var_id}')
                 coding_variable.objects.filter(pk=var_id, variable_project=project).update(variable_rank=-temp_rank)
 
             # Second pass: assign correct positive ranks
             for final_rank, var_id in enumerate(ids, start=1):
+                print(f'final_rank: {final_rank}, var_id: {var_id}')
                 coding_variable.objects.filter(pk=var_id, variable_project=project).update(variable_rank=final_rank)
 
             return redirect(request.path_info)
@@ -384,7 +386,6 @@ def myProjects_codebook(request, project_id):
             variable.delete()
 
         else:
-            print("NO")
             # Get codebook protocol from HTTP POST request
             new_protocol = request.POST.get('codebook-protocol')
 
@@ -432,6 +433,8 @@ def myProjects_addVariable(request, project_id):
         # Get action from HTTP POST request
         action = request.POST.get("edit-action")
 
+        print("action:", action)
+
         # Get variable description from HTTP POST request
         variable_description = request.POST.get('variable-description')
 
@@ -447,8 +450,8 @@ def myProjects_addVariable(request, project_id):
         # Get variable measurement from HTTP POST request
         measurement = request.POST.get('variable-measure')
 
-        # Get variable rank from variable count + 1
-        rank = coding_variable.objects.count() + 1
+        # Get highest variable rank in project + 1
+        rank = coding_variable.objects.filter(variable_project=project).aggregate(Max('variable_rank'))['variable_rank__max'] + 1
 
         # Create variable instance
         new_variable = coding_variable(
@@ -472,8 +475,9 @@ def myProjects_addVariable(request, project_id):
             )
             new_value.save()
         
-        if action == "continue":
+        if action == "add":
             # Redirect/refresh page after form submission
+            print("continue")
             return redirect('main:myProjects_addVariable', project_id=project.project_id)
         else:
             # Redirect/refresh page after form submission
