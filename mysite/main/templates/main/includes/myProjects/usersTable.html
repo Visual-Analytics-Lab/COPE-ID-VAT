@@ -1,12 +1,6 @@
 <!-- Included in myProjectsTabs/editProject.html -->
 
-<style>
-  .test_style {
-    background-color: #6c757d !important;
-  }
-</style>
-
-<div class="table-responsive overflow-y-scroll p-0 m-0" style="max-height: 25rem;">
+<div class="table-responsive overflow-y-scroll myProjects-t myProjects-t-25">
 
   <!-- Users Table -->
   <table class="table table-striped table-hover mb-0">
@@ -14,18 +8,18 @@
     <!-- Users Table Column Headers -->
     <thead class="sticky-top">
       <tr>
-        <th class="test_style" scope="col" style="width: 5%">Name</th>
-        <th class="test_style" scope="col" style="width: 5%">Role</th>
+        <th class="myProjects-th" scope="col" style="width: 5%">Name</th>
+        <th class="myProjects-th" scope="col" style="width: 5%">Role</th>
         {% if has_addedit_permission %}
-          <th class="test_style" scope="col" style="width: 5%">View Unit Source</th>
+          <th class="myProjects-th" scope="col" style="width: 5%">View Unit Source</th>
         {% endif %}
-        <th class="test_style" scope="col" style="width: 5%">Units Assigned <em>(n)</em></th>
-        <th class="test_style" scope="col" style="width: 5%">Completed Assignments</th>
-        <th class="test_style" scope="col" style="width: 5%">In-Progress Assignments</th>
-        <th class="test_style" scope="col" style="width: 5%">Last Activity</th>
-        <th class="test_style" scope="col" style="width: 5%">Email</th>
+        <th class="myProjects-th" scope="col" style="width: 5%">Units Assigned <em>(n)</em></th>
+        <th class="myProjects-th" scope="col" style="width: 5%">Completed Assignments</th>
+        <th class="myProjects-th" scope="col" style="width: 5%">In-Progress Assignments</th>
+        <th class="myProjects-th" scope="col" style="width: 5%">Last Activity</th>
+        <th class="myProjects-th" scope="col" style="width: 5%">Email</th>
         {% if has_addedit_permission %}
-          <th class="test_style" scope="col" style="width: 5%">Action</th>
+          <th class="myProjects-th" scope="col" style="width: 5%">Action</th>
         {% endif %}
       </tr>
     </thead>
