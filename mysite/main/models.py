@@ -242,7 +242,8 @@ class coding_variable(models.Model):
     variable_name = models.CharField(max_length=64, null=False, blank=False)
     variable_description = models.TextField(max_length=1024, default='')
     variable_project = models.ForeignKey(project_model, on_delete=models.CASCADE)
-    variable_rank = models.SmallIntegerField(unique=True, validators=[MinValueValidator(-100), MaxValueValidator(100)])
+    # variable_rank = models.SmallIntegerField(unique=True, validators=[MinValueValidator(-100), MaxValueValidator(100)])
+    variable_rank = models.SmallIntegerField(null=True, blank=True, validators=[MinValueValidator(-100), MaxValueValidator(100)])
 
     MEASUREMENTS = (
     ('nom', 'Nominal'),
