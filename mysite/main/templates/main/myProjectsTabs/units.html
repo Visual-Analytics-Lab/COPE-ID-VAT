@@ -20,13 +20,13 @@
     <div class="col">
       <!-- Main Content -->
 
-      <!-- Row 1 Column 2 Row 2 -->
-
+      <!-- Row 1 Column 2 Row 1 -->
+      <div class="row myProjects-nav-row">
         <!-- Navigation Buttons -->
 
-        <div class="d-flex flex-row justify-content-start myProjects-nav-row" style="padding-left: 0rem !important;">
+        <div class="d-flex flex-row justify-content-start">
           <!-- Units of Analysis -->
-          <div class="myProjects-nav-div" style="padding-left: 0 !important">
+          <div class="myProjects-nav-div">
             <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Units of Analysis</a>
           </div>
   
@@ -51,6 +51,8 @@
           </div>
   
         </div>
+
+      </div>
 
 
 
@@ -107,58 +109,17 @@
       </div>
 
       <!-- Row 1 Column 2 Row 4 -->
-      <div class="row" style="padding-left: 0 !important;">
-        
-        <!-- Units Table -->
-        <div class="table-responsive py-0 pe-0 m-0">
-          <table class="table table-striped table-hover mb-0">
-
-            <!-- Units Table Column Headers -->
-            <thead>
-              <tr>
-                <th>Unit ID</th>
-                <th>Unit</th>
-                <th>Source</th>
-                <th>Assigned</th>
-                <th>Status</th>
-                <th>Last Modified</th>
-                <th>Last modified by</th>
-              </tr>
-            </thead>
-
-            <!-- Units Table Rows -->
-            <tbody class="table-group-divider">
-
-              {% for unit in units %}
-              <!-- Loop through Post -->
-              <tr>
-                <!-- Unit ID -->
-                <td><a class="btn btn-secondary" href="{% url 'main:myProjects_codeUnit' project.project_id unit.id %}">{{ unit.id }}</a></td>
-
-                <!-- Source -->
-                <td>{{ unit.doc_text|truncatechars:50 }}</td>
-
-                <!-- Source -->
-                <td>{{ unit.doc_source }}</td>
-
-                <!-- Assigned -->
-                <td>User</td>
-
-                <!-- Status -->
-                <td><i class="bi bi-circle text-danger"></i></td>
-
-                <!-- Last Modified -->
-                <td>{{ unit.created_at }}</td>
-
-                <!-- Last Modified -->
-                <td>User</td>
-                
-              </tr>
-
-              {% endfor %}
-
-            </tbody>
-          </table>
+      <div class="row px-4">
+        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+          <!-- Check if Project has Variables -->
+          {% if units %}
+            {% include 'main/includes/myProjects/unitTable.html' %}
+          <!-- If no Variables -->
+          {% else %}
+            <blockquote class="blockquote text-center">
+              <p>No units currently assigned.</p>
+            </blockquote>
+          {% endif %}
         </div>
 
       </div>
@@ -168,12 +129,5 @@
   </div>
 
 </div>
-
-
-<!-- Status Icons -->
-<!-- <td><i class="bi bi-circle text-danger"></i></td> -->
-<!-- <td><i class="bi bi-circle-half text-warning"></i></td> -->
-<!-- <td><i class="bi bi-circle-fill text-success"></i></td> -->
-<!-- Don't forget to add info button -->
 
 {% endblock %}
