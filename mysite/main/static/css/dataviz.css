@@ -7,6 +7,9 @@
 
   --btn-trash-hover-color: red;    /* Hover color for trash icon */
 
+  --no-padding: 0 !important;
+  --no-margin: 0 !important;
+
   /* Star Button Unselected */
   --btn-color-light: black;  /* Outline color for light mode */
   --btn-color-dark: white;   /* Outline color for dark mode */
@@ -23,6 +26,7 @@
   --btn-star-fav-hover-outline-color-light: black; /* Hover outline color */
   --btn-star-fav-hover-outline-color-dark: white;
 
+  /* My Projects Navbar */
   --myProj-nav-row-height: 3rem;
   --myProj-nav-row-padding: 0.25rem !important;
 
@@ -35,9 +39,17 @@
   --myProj-nav-a-margin: 0.25rem !important;
   --myProj-nav-a-padding: 0.375rem !important;
 
+  /* My Projects Tables */
+  --myProjects-t-min-height: 6.25rem;
+  --myProjects-t-max-height: 20rem;
+
+  --myProj-th-background-color: #6c757d;
+
   --sub-header-font-size: 17px !important;
 
   --dashboard-sub-titles: 0.875rem !important;
+
+
 }
 
 /* Role Button */
@@ -266,6 +278,37 @@
   padding-right: var(--myProj-nav-row-padding);
   padding-left: var(--myProj-nav-row-padding);
   padding-bottom: 4rem;
+}
+
+/* My Projects Table */
+.myProjects-t {
+  padding: var(--no-padding);
+  margin: var(--no-margin);
+  min-height: var(--myProjects-t-min-height);
+  max-height: var(--myProjects-t-max-height);
+}
+
+.myProjects-t-25 {
+  max-height: 25rem;
+}
+
+.myProjects-t-35 {
+  max-height: 35rem;
+}
+
+/* My Projects Table Header */
+.myProjects-th {
+  background-color: var(--myProj-th-background-color) !important;
+}
+
+/* Trash Can Button */
+.icon-link.trash-hover {
+  color: var(--bs-secondary);
+  transition: color 0.2s ease;
+}
+
+.icon-link.trash-hover:hover {
+  color: var(--bs-danger);
 }
 
 .test-btn {
