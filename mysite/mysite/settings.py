@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/4.2/ref/settings/
 from pathlib import Path
 import os
 import yaml
+import django_plotly_dash
+import dpd_static_support
+import dash
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +49,9 @@ INSTALLED_APPS = [
     'crispy_bootstrap4',
     'main.apps.MainConfig',
     'user_management',
+    'django_plotly_dash.apps.DjangoPlotlyDashConfig', # plotly-dash
+    'dpd_static_support', # plotly-dash
+    'channels', # plotly-dash
 ]
 
 MIDDLEWARE = [
@@ -56,6 +62,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware', # plotly-dash
+    'django_plotly_dash.middleware.BaseMiddleware', # plotly-dash
 ]
 
 ROOT_URLCONF = 'mysite.urls'
@@ -132,6 +140,17 @@ USE_I18N = True
 
 USE_TZ = True
 
+# plotly-dash: (optional)
+# ASGI_APPLICATION = "mysite.routing.application"
+# CHANNEL_LAYERS = {
+#     'default': {
+#         'BACKEND': 'channels_redis.core.RedisChannelLayer',
+#         'CONFIG': {
+#             'hosts': [('127.0.0.1', 6379),],
+#         },
+#     },
+# }
+
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
@@ -157,3 +176,5 @@ CRISPY_TEMPLATE_PACK = "bootstrap4"
 
 
 LOGIN_URL = '/login/' # Login URL to redirect users
+
+X_FRAME_OPTIONS = 'SAMEORIGIN' # plotly-dash
