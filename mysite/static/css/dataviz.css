@@ -1,0 +1,337 @@
+:root {
+  --dataviz-maroon: #5D1725;
+  --dataviz-blue: #4A7B9D;
+  --dataviz-blue-hover: #253D4F;
+  --dataviz-peach: #E58F65;
+  --dataviz-white: #FFFFFF;
+
+  --btn-trash-hover-color: red;    /* Hover color for trash icon */
+
+  --no-padding: 0 !important;
+  --no-margin: 0 !important;
+
+  /* Star Button Unselected */
+  --btn-color-light: black;  /* Outline color for light mode */
+  --btn-color-dark: white;   /* Outline color for dark mode */
+  --btn-star-fill-color-light: white; /* Fill color for light mode */
+  --btn-star-fill-color-dark: black; /* Fill color for dark mode */
+  --btn-star-hover-color: #ffc107; /* Hover fill color */
+  --btn-star-hover-outline-color: #ffc107; /* Hover outline color */
+
+  /* Star Button Selected */
+  --btn-color-fav: #ffc107;  /* Outline color for light mode */
+  --btn-star-fav-fill-color: #ffc107; /* Fill color for light mode */
+  --btn-star-fav-hover-color-light: white; /* Hover fill color */
+  --btn-star-fav-hover-color-dark: black;
+  --btn-star-fav-hover-outline-color-light: black; /* Hover outline color */
+  --btn-star-fav-hover-outline-color-dark: white;
+
+  /* My Projects Navbar */
+  --myProj-nav-row-height: 3rem;
+  --myProj-nav-row-padding: 0.25rem !important;
+
+  --myProj-nav-div-width: 100% !important;
+  --myProj-nav-div-max-width: 18rem;
+  --myProj-nav-div-min-width: 5rem;
+  --myProj-nav-div-padding: 0.75rem !important;
+
+  --myProj-nav-a-width: 100% !important;
+  --myProj-nav-a-margin: 0.25rem !important;
+  --myProj-nav-a-padding: 0.375rem !important;
+
+  /* My Projects Tables */
+  --myProjects-t-min-height: 6.25rem;
+  --myProjects-t-max-height: 20rem;
+
+  --myProj-th-background-color: #6c757d;
+
+  --sub-header-font-size: 17px !important;
+
+  --dashboard-sub-titles: 0.875rem !important;
+
+
+}
+
+/* Role Button */
+.btn-role {
+  --bs-btn-color: #fff;
+  --bs-btn-bg: cornflowerblue;
+  --bs-btn-border-color: cornflowerblue;
+  --bs-btn-hover-color: #fff;
+  --bs-btn-hover-bg: #3a69a0; /* Roughly shade-color(cornflowerblue, 10%) */
+  --bs-btn-hover-border-color: #3a69a0; /* Roughly shade-color(cornflowerblue, 10%) */
+  --bs-btn-focus-shadow-rgb: 100, 149, 237; /* RGB for cornflowerblue */
+  --bs-btn-active-color: #fff;
+  --bs-btn-active-bg: #335d8e; /* Roughly shade-color(cornflowerblue, 20%) */
+  --bs-btn-active-border-color: #335d8e; /* Roughly shade-color(cornflowerblue, 20%) */
+  --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+  --bs-btn-disabled-color: #fff;
+  --bs-btn-disabled-bg: cornflowerblue;
+  --bs-btn-disabled-border-color: cornflowerblue;
+}
+
+.role {
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  display: inline-block;
+}
+
+/* Base styles for the trash button */
+.btn-trash {
+  padding: 0 !important;
+}
+
+/* Default color and transition for the trash icon */
+.btn-trash i.bi-trash {
+  color: var(--btn-color-light); /* Light color by default */
+  transition: color 0.3s; /* Smooth transition */
+  padding: 0 !important;
+}
+
+/* Hover state for the trash icon */
+.btn-trash:hover i.bi-trash {
+  color: var(--btn-trash-hover-color) !important; /* Red hover color */
+}
+
+/* Light mode styles for the trash icon */
+[data-bs-theme="light"] .btn-trash i.bi-trash {
+  color: var(--btn-color-light); /* Color in light mode */
+}
+
+/* Dark mode styles for the trash icon */
+[data-bs-theme="dark"] .btn-trash i.bi-trash {
+  color: var(--btn-color-dark); /* Color in dark mode */
+}
+
+
+
+/* Base styles for the star button */
+.btn-star {
+  padding: 0 !important;
+}
+
+.btn-star svg {
+  fill: var(--btn-star-fill-color-light); /* Light fill color by default */
+  stroke: var(--btn-color-light); /* Light outline color by default */
+  stroke-width: 1px; /* Outline width */
+  transition: fill 0.3s, stroke 0.3s; /* Smooth transition */
+}
+
+.btn-star:hover svg {
+  fill: var(--btn-star-hover-color) !important; /* Fill color on hover */
+  stroke: var(--btn-star-hover-outline-color) !important; /* Outline color on hover */
+}
+
+[data-bs-theme="light"] .btn-star svg {
+  fill: var(--btn-star-fill-color-light); /* Fill color in light mode */
+  stroke: var(--btn-color-light); /* Outline color in light mode */
+}
+
+[data-bs-theme="dark"] .btn-star svg {
+  fill: var(--btn-star-fill-color-dark); /* Fill color in dark mode */
+  stroke: var(--btn-color-dark); /* Outline color in dark mode */
+}
+
+.role {
+  background-color: cornflowerblue;
+  color: white;
+  border-radius: 0.375rem;
+  padding: 0.375rem 0.75rem;
+  display: inline-block;
+}
+
+
+/* Base styles for the favorite star button */
+.btn-star-fav {
+  padding: 0 !important;
+}
+
+.btn-star-fav svg {
+  fill: var(--btn-star-fav-fill-color); /* Use light fill color by default */
+  stroke: var(--btn-color-fav); /* Use light outline color by default */
+  stroke-width: 1px; /* Outline width */
+  transition: fill 0.3s, stroke 0.3s; /* Smooth transition */
+}
+
+[data-bs-theme="light"] .btn-star-fav:hover svg {
+  fill: var(--btn-star-fav-hover-color-light); /* Fill color in light mode on hover */
+  stroke: var(--btn-star-fav-hover-outline-color-light); /* Outline color in light mode on hover */
+}
+
+[data-bs-theme="dark"] .btn-star-fav:hover svg {
+  fill: var(--btn-star-fav-hover-color-dark); /* Fill color in dark mode on hover */
+  stroke: var(--btn-star-fav-hover-outline-color-dark); /* Outline color in dark mode on hover */
+}
+
+
+
+.sidebar-style {
+  text-align: center !important;
+  width: 8rem;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Sidebar List Item */
+.sidebar-li {
+  height: 3rem;
+}
+
+/* Sidebar Buttons */
+.btn-sidebar {
+  background-color: var(--dataviz-blue);
+  color: var(--dataviz-white);
+  outline: 1px solid var(--dataviz-white);
+  width: 7rem;
+}
+
+/* Sidebar Buttons Hover */
+.btn-sidebar:hover {
+  background-color: var(--dataviz-blue-hover);
+  color: var(--dataviz-white);
+  outline: 1px solid var(--dataviz-white);
+  width: 7rem;
+}
+
+.btn-sidebar-disabled {
+  background-color: var(--dataviz-blue-hover);
+  color: var(--dataviz-white);
+  outline: 1px solid var(--dataviz-white);
+  width: 7rem;
+}
+
+
+
+
+/* Navbar Main Buttons */
+.btn-navbar-main {
+  background-color: var(--dataviz-blue);
+  color: var(--dataviz-white);
+  outline: 1px solid var(--dataviz-white);
+  margin-top: 0.625rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  width: 7rem;
+}
+
+.btn-navbar-main:hover {
+  background-color: var(--dataviz-blue-hover);
+  color: var(--dataviz-white);
+  outline: 1px solid var(--dataviz-white);
+  margin-top: 0.625rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  width: 7rem;
+}
+
+/* Navbar Button */
+.btn-navbar-nav {
+  margin-top: 0.25rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  width: 7rem;
+}
+
+/* Navbar Border */
+.hr-navbar-border {
+  border-color: var(--dataviz-blue) !important;
+  border-width: 5px !important;
+  opacity: 1 !important;
+}
+
+/* Page Title Div */
+.div-page-title {
+  /* background-color: var(--dataviz-maroon); */
+  color: var(--dataviz-white);
+  height: 3rem;
+  text-align: center !important;
+  padding-bottom: 1rem !important;
+}
+
+/* Page Title Text Style */
+.h1-page-title {
+  font-weight: 500;
+  font-family: 'Roboto', sans-serif;
+  z-index: 1040;
+  color: var(--dataviz-white);
+}
+
+/* My Projects Navbar Buttons 272x48 */
+.myProjects-nav-div {
+  width: var(--myProj-nav-div-width) !important;
+  max-width: var(--myProj-nav-div-max-width);
+  min-width: var(--myProj-nav-div-min-width);
+  padding-right: var(--myProj-nav-div-padding);
+  padding-left: var(--myProj-nav-div-padding);
+}
+
+.myProjects-nav-a {
+  width: var(--myProj-nav-a-width) !important;
+  margin-top: var(--myProj-nav-a-margin);
+  margin-bottom: var(--myProj-nav-a-margin);
+}
+
+.myProjects-nav-row {
+  height: var(--myProj-nav-row-height);
+  padding-right: var(--myProj-nav-row-padding);
+  padding-left: var(--myProj-nav-row-padding);
+  padding-bottom: 4rem;
+}
+
+/* My Projects Table */
+.myProjects-t {
+  padding: var(--no-padding);
+  margin: var(--no-margin);
+  min-height: var(--myProjects-t-min-height);
+  max-height: var(--myProjects-t-max-height);
+}
+
+.myProjects-t-25 {
+  max-height: 25rem;
+}
+
+.myProjects-t-35 {
+  max-height: 35rem;
+}
+
+/* My Projects Table Header */
+.myProjects-th {
+  background-color: var(--myProj-th-background-color) !important;
+}
+
+/* Trash Can Button */
+.icon-link.trash-hover {
+  color: var(--bs-secondary);
+  transition: color 0.2s ease;
+}
+
+.icon-link.trash-hover:hover {
+  color: var(--bs-danger);
+}
+
+.test-btn {
+  background-color: #93253B;
+  outline: var(--dataviz-maroon);
+  border: #4A121E;
+}
+
+.test-btn:hover {
+  background-color: #4A121E;
+}
+
+.test-btn-next {
+  background-color: #A6D49F;
+  border: #A6D49F;
+}
+
+
+.dataviz-sub-header {
+  font-size: var(--sub-header-font-size);
+}
+
+.dashboard-sub-title {
+  font-size: var(--dashboard-sub-titles);
+  font-weight: bold;
+}
