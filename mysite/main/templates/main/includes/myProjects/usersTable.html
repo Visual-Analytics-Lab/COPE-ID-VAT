@@ -14,8 +14,8 @@
           <th class="myProjects-th" scope="col" style="width: 5%">View Unit Source</th>
         {% endif %}
         <th class="myProjects-th" scope="col" style="width: 5%">Units Assigned <em>(n)</em></th>
-        <th class="myProjects-th" scope="col" style="width: 5%">Completed Assignments</th>
-        <th class="myProjects-th" scope="col" style="width: 5%">In-Progress Assignments</th>
+        <th class="myProjects-th" scope="col" style="width: 15%">Completed Assignments</th>
+        <th class="myProjects-th" scope="col" style="width: 10%">In-Progress Assignments</th>
         <th class="myProjects-th" scope="col" style="width: 5%">Last Activity</th>
         <th class="myProjects-th" scope="col" style="width: 5%">Email</th>
         {% if has_addedit_permission %}
@@ -57,7 +57,7 @@
               <td style="width: 10%;">{{ user.n }}</td>
 
               <!-- Completed Assignments -->
-              <td style="width: 10%;">0%</td>
+              <td style="width: 15%;">0%</td>
 
               <!-- In-Progress Assignments -->
               <td style="width: 10%;">0%</td>
