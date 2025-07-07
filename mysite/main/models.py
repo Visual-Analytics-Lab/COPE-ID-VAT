@@ -243,6 +243,7 @@ class coding_variable(models.Model):
     variable_description = models.TextField(max_length=4096, blank=True, default='')
     variable_project = models.ForeignKey(project_model, on_delete=models.CASCADE)
     variable_rank = models.SmallIntegerField(unique=True, validators=[MinValueValidator(-100), MaxValueValidator(100)])
+    timestamp = models.DateTimeField(auto_now=True)
 
     MEASUREMENTS = (
     ('nom', 'Nominal'),
