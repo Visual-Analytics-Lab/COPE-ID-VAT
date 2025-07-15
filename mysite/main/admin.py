@@ -1,5 +1,6 @@
 from django.contrib import admin
-from .models import Tutorial, sample_data, organization_model, project_model, role_model, permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, unit_coding
+from .models import Tutorial, sample_data, organization_model, project_model, project_list_model, role_model, \
+    permission_model, user_project_model, coding_variable, coding_value, unit_coding, unit_assignment, inbox_model
 
 # =============================================================
 # Tutorial Admin
@@ -221,6 +222,14 @@ class coding_value_admin(admin.ModelAdmin):
     project.admin_order_field = 'variable__variable_project'
 
 # =============================================================
+# Unit Assignment Model Admin
+# =============================================================
+
+class unit_assignment_admin(admin.ModelAdmin):
+    # Set display columns
+    list_display = ('project', 'unit', 'coder')
+
+# =============================================================
 # Inbox Model Admin
 # =============================================================
 
@@ -255,11 +264,12 @@ admin.site.register(Tutorial, TutorialAdmin)
 admin.site.register(sample_data, DataGridAdmin)
 admin.site.register(organization_model, organization_model_admin)
 admin.site.register(project_model, project_model_admin)
+admin.site.register(project_list_model)
 admin.site.register(role_model, role_model_admin)
 admin.site.register(permission_model, permission_model_admin)
 admin.site.register(user_project_model, user_project_model_admin)
 admin.site.register(coding_variable, coding_variable_admin)
 admin.site.register(coding_value, coding_value_admin)
-admin.site.register(inbox_model, inbox_model_admin)
-admin.site.register(project_list_model)
 admin.site.register(unit_coding)
+admin.site.register(unit_assignment, unit_assignment_admin)
+admin.site.register(inbox_model, inbox_model_admin)
