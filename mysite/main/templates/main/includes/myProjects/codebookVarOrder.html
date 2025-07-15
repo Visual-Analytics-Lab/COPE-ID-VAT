@@ -23,7 +23,7 @@
     <!-- Variable Table Rows -->
     <tbody class="table-group-divider">
       <!-- Loop through variables -->
-      {% for variable in coding_variables %}
+      {% for variable in variables_by_rank %}
         <tr data-variable-id="{{ variable.variable_id }}">
           <td style="width: 10%;">{{ variable.variable_rank}}</td>
           <td style="width: 20%;">{{ variable.variable_name }}</th>
