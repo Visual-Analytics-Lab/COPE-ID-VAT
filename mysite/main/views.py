@@ -1,14 +1,14 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponseNotFound
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.cache import cache
 from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch, Max
-from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, role_model, \
-    permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, test_model, unit_coding
+from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, project_list_model, role_model, \
+    permission_model, user_project_model, coding_variable, coding_value, unit_coding, unit_assignment, inbox_model, test_model
+from .forms  import UnitAssignmentForm
 from .utils import favorite_projects_list, variable_reorder
 from user_management.utils import sys_admin_test
 from user_management.models import my_profile_model
@@ -356,6 +356,9 @@ def myProjects_codebook(request, project_id):
     # Fetch project variables from database
     coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_rank')
 
+    # Save instance of coding variables ordered by rank
+    variables_by_rank = coding_variables
+
     # Check if form was submitted
     if request.method == 'POST' :
         if 'reordered_ids' in request.POST:
@@ -408,6 +411,7 @@ def myProjects_codebook(request, project_id):
         'project': project,
         'favorite_list': favorite_list,
         'coding_variables': coding_variables,
+        'variables_by_rank': variables_by_rank,
         'has_edit_permission': has_edit_permission,
         'pi': pi,
         'sys_admin': sys_admin,
@@ -1044,7 +1048,7 @@ def test(request):
 
     if request.method == 'POST':
         print("POST")
-        richText = request.POST.get('content-textarea')
+        richText = request.POST.get('content-input')
 
         print("richText:", richText)
 
@@ -1075,3 +1079,47 @@ def test(request):
     
     return render(request, 'main/test.html', context)
 
+
+# =============================================================
+# Testing and Debugging - Assign Test
+# =============================================================
+
+@login_required
+def myProjects_assignTest(request, project_id):
+    # Get active user from request
+    active_user = request.user
+
+    # Fetch project from database
+    project = get_object_or_404(project_model, project_id=project_id)
+
+    # Fetch project users from database
+    coders = user_project_model.objects.filter(project=project).select_related('user')
+
+
+    if request.method == "POST":
+        print("POST")
+
+        if 'coder' in request.POST:
+            coder = request.POST.get('coder')
+            print("coder:", coder)
+        else:
+            print("No coder")
+
+        if 'numUnits' in request.POST:
+            num_units = request.POST.get('numUnits')
+            print("num_units:", num_units)
+        else:
+            print("No num units")
+
+    
+    favorite_list = favorite_projects_list(request.user)
+    sys_admin = sys_admin_test(request.user)
+    context = {
+        'page_name': f"{project.project_name}",
+        'active_user': active_user,
+        'project': project,
+        'coders': coders,
+        'favorite_list': favorite_list,
+        'sys_admin': sys_admin,
+    }
+    return render(request, 'main/myProjectsTabs/assign_test.html', context)
