@@ -131,11 +131,12 @@ def myProfile_update(request):
         password_form = PasswordChangeForm(request.user)
 
     favorite_list = favorite_projects_list(request.user)
-
+    authorized_user = Group.objects.filter(name="Authorized Tool User", user=request.user).exists()
     context = {
         'favorite_list': favorite_list,
         'account_form': account_form,
-        'password_form': password_form
+        'password_form': password_form,
+        'authorized_user': authorized_user
     }
     return render(request, 'user_management/myProfile.html', context)
 
