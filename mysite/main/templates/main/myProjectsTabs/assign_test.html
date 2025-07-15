@@ -1,0 +1,93 @@
+{% extends 'main/index.html' %}
+
+{% block content %}
+
+<!-- Page Content -->
+<div class="container-fluid" style="height: 50rem;">
+  
+  <!-- Row 1 -->
+  <div class="row">
+
+    <!-- Row 1 Column 1 -->
+    <div class="col col-auto d-none d-sm-block sidebar-style">
+      <!-- Sidebar -->
+      {% include 'main/includes/sidebar.html' %}
+    </div>
+
+    <!-- Row 1 Column 2 -->
+    <div class="col">
+      <!-- Main Content -->
+
+      <!-- Row 1 Column 2 Row 2 -->
+      <div class="row myProjects-nav-row">
+        <!-- Navigation Buttons -->
+
+        <div class="d-flex flex-row justify-content-start">
+          <!-- Units of Analysis -->
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
+          </div>
+  
+          <!-- Codebook -->
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
+          </div>
+  
+          <!-- Inter-Rater Reliability -->
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
+          </div>
+  
+          <!-- Sample & Results -->
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
+          </div>
+  
+          <!-- Edit Project -->
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
+          </div>
+  
+        </div>
+
+      </div>
+
+
+      <div class="row px-1">
+        <div class="d-flex flex-row justify-content-between">
+
+          <form method="post">
+            {% csrf_token %}
+
+            <!-- Select Coder -->
+            <div class="input-group mb-3">
+                <select class="form-select" aria-label="Default select example" name="coder">
+                  <option selected>Select Coder</option>
+                  {% for coder in coders %}
+                    <option value="{{ coder }}">{{ coder.user.first_name }} {{ coder.user.last_name }}</option>
+                  {% endfor %}
+                </select>
+            </div>
+            
+            <!-- Number of Units -->
+            <div class="input-group mb-3">
+              <span class="input-group-text">n =</span>
+              <input type="text" class="form-control" aria-label="Number of Units" name="numUnits">
+            </div>
+
+            <div class="input-group mb-3">
+              <button type="submit" class="btn btn-primary">Submit</button>
+            </div>
+
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+  
+</div>
+
+{% endblock %}
