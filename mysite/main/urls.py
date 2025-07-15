@@ -48,4 +48,5 @@ urlpatterns = [
     # Testing
     # =============================================================
     path('test/', views.test, name='test'),
+    path("my_projects/assign_test/<uuid:project_id>/", views.myProjects_assignTest, name="myProjects_assignTest"),
 ]
