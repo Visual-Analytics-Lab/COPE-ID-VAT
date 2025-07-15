@@ -35,7 +35,7 @@
   
           <!-- Inter-Rater Reliability -->
           <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Coding Progress & IRR</a>
           </div>
   
           <!-- Sample & Results -->
@@ -45,7 +45,12 @@
   
           <!-- Edit Project -->
           <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Edit Project</a>
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Edit Project & Users</a>
+          </div>
+
+          <!-- DELETE LATER Assign Units -->
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_assignTest' project.project_id %}">Assign Units</a>
           </div>
   
         </div>

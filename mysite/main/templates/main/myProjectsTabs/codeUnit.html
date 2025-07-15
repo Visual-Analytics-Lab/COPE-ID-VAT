@@ -1,7 +1,15 @@
 {% extends 'main/index.html' %}
 
-
 {% block content %}
+
+<link href="/styles.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
+
 <div class="container-fluid" style="height: 88vh;">
 
   <!-- Title -->
@@ -21,7 +29,8 @@
       <!-- Post Text -->
       <div class="col-md-6 themed-grid-col">
 
-        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+        <!-- Unit, MetaData & JSON -->
+        <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
           <div class="card" style="width: 100%;">
             <div class="card-header">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -36,7 +45,7 @@
                 </li>
               </ul>
             </div>
-            <div class="card-body">
+            <div class="card-body" style="min-height: 15rem !important; max-height: 15rem !important; overflow-y: auto;">
               <div class="tab-content" id="myTabContent">
                 <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ doc_text }}</p></div>
                 <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ created_at }}</p></div>
@@ -46,8 +55,73 @@
           </div>
         </div>
 
+        <!-- Text Input -->
+        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+          <div class="card" style="width: 100%;">
+            <div class="card-header">
+              General Comment on Unit
+            </div>
+            <div class="card-body" style="min-height: 15rem !important; max-height: 15rem !important; overflow-y: auto;">
+              <div id="toolbar-container"  style="background-color: white;">
+                <span class="ql-formats">
+                  <select class="ql-font"></select>
+                  <select class="ql-size"></select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-bold"></button>
+                  <button class="ql-italic"></button>
+                  <button class="ql-underline"></button>
+                  <button class="ql-strike"></button>
+                </span>
+                <span class="ql-formats">
+                  <select class="ql-color"></select>
+                  <select class="ql-background"></select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-script" value="sub"></button>
+                  <button class="ql-script" value="super"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-header" value="1"></button>
+                  <button class="ql-header" value="2"></button>
+                  <button class="ql-blockquote"></button>
+                  <button class="ql-code-block"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-list" value="ordered"></button>
+                  <button class="ql-list" value="bullet"></button>
+                  <button class="ql-indent" value="-1"></button>
+                  <button class="ql-indent" value="+1"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-direction" value="rtl"></button>
+                  <select class="ql-align"></select>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-link"></button>
+                  <button class="ql-image"></button>
+                  <button class="ql-video"></button>
+                  <button class="ql-formula"></button>
+                </span>
+                <span class="ql-formats">
+                  <button class="ql-clean"></button>
+                </span>
+              </div>
 
-  
+              <div id="editor" style="height: 30rem;">
+              </div>
+              <form method="post">
+                {% csrf_token %}
+
+                <textarea name="content-input" id="content-textarea" style="display: none;"></textarea>
+
+                <button type="submit" class="btn btn-primary">Submit</button>
+              </form>
+
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Coding Variables -->
@@ -81,7 +155,7 @@
                           <i class="bi bi-info-circle text-info"></i>
                         </button>
                       </div>
-                      <div class="card-body mx-auto">
+                      <div class="card-body mx-auto" style="max-height: 25rem !important; overflow-y: auto;">
         
                       <!-- Create a tuple of the variable name and value within the views.py function in order to output both in the nested for loop -->
         
@@ -118,7 +192,7 @@
               
                 <div class="tab-pane fade" id="codebook-tab-pane" role="tabpanel" aria-labelledby="codebook-tab" tabindex="0">
 
-                  <div class="accordion" id="accordion-codebook">
+                  <div class="accordion" id="accordion-codebook" style="max-height: 25rem !important; overflow-y: auto;">
 
                     {% for variable in coding_outputs %}
 
@@ -210,7 +284,7 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        <p>Protocol</p>
+        <p>{{ project.codebook_protocol }}</p>
       </div>
     </div>
   </div>
@@ -218,7 +292,22 @@
 
 
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+<!-- Initialize Quill editor -->
+<script>
+  const quill = new Quill('#editor', {
+    modules: {
+      syntax: true,
+      toolbar: '#toolbar-container',
+    },
+    theme: 'snow',
+  });
+
+  // Update the hidden textarea on every change
+  quill.on('text-change', function () {
+    document.getElementById('content-textarea').value = quill.root.innerHTML;
+  });
+</script>
 
 <script>
   function linkify(str) {
