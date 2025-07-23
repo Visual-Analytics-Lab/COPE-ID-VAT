@@ -3,6 +3,13 @@
 {% block content %}
 
 <!-- Set div containing buttons to have 0 !important padding top and bottom to align with sidebar -->
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <!-- Page Content -->
 <div class="container-fluid" style="height: 50rem;">
@@ -62,13 +69,16 @@
           <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
             <!-- Codebook Protocol -->
             <blockquote class="blockquote overflow-y-auto" style="height: 6rem;">
-              <p>{{ project.codebook_protocol }} 
-                {% if pi %}
-                <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProtocol">
-                  <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
-                </button>
-                {% endif %}
-              </p>
+              {% if protocol %}
+                <span>{{ protocol|safe }}</span>
+              {% else %}
+                <span>
+                  Start by clicking the pencil icon to add a codebook protocol. The codebook protocol can be viewed by all team members.
+                  <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProtocol">
+                    <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
+                  </button>
+                </span>
+              {% endif %}
             </blockquote>
           </div>
         </div>
@@ -79,7 +89,7 @@
       <div class="row px-1">
         <!-- Sort -->
 
-        <div class="d-flex flex-row justify-content-end">
+        <div class="d-flex flex-row justify-content-between">
       
           <!-- Sort -->
           <div class="p-2" style="max-width:25rem; min-width: auto;">
@@ -97,6 +107,12 @@
               </div>
             </form>
           </div>
+
+          {% if pi %}
+          <div class="p-2" style="max-width:25rem; min-width: auto;">
+            <button class="btn btn-secondary" type="button" data-bs-toggle="modal" data-bs-target="#editProtocol">Edit Protocol <i class="bi bi-pencil pencil-edit" fill="currentColor"></i></button>
+          </div>
+          {% endif %}
 
         </div>
 
@@ -159,7 +175,38 @@
         </div>
         <div class="modal-body">
           <!-- Input -->
-          <textarea class="form-control border-0" name="codebook-protocol" id="codebook-protocol" rows="3">{{ project.codebook_protocol }}</textarea>
+            <div id="toolbar-container"  style="background-color: white;">
+            <span class="ql-formats">
+              <select class="ql-font"></select>
+              <select class="ql-size"></select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-bold"></button>
+              <button class="ql-italic"></button>
+              <button class="ql-underline"></button>
+              <button class="ql-strike"></button>
+            </span>
+            <span class="ql-formats">
+              <select class="ql-color"></select>
+              <select class="ql-background"></select>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-list" value="ordered"></button>
+              <button class="ql-list" value="bullet"></button>
+              <button class="ql-indent" value="-1"></button>
+              <button class="ql-indent" value="+1"></button>
+            </span>
+            <span class="ql-formats">
+              <button class="ql-direction" value="rtl"></button>
+              <select class="ql-align"></select>
+              <button class="ql-link"></button>
+              <button class="ql-clean"></button>
+            </span>
+          </div>
+
+          <div id="editor" style="height: 30rem;">
+          </div>
+          <textarea name="codebook-protocol" id="codebook-protocol" style="display: none;">{{ protocol }}</textarea>
         </div>
         <div class="modal-footer">
           <!-- Cancel & Save Buttons -->
@@ -200,6 +247,32 @@
 </div>
 {% endif %}
 
+{{ protocol|default:""|json_script:"initial-protocol" }}
+
+
+<!-- Initialize Quill editor -->
+<script>
+  const initialProtocol = JSON.parse(document.getElementById('initial-protocol').textContent);
+
+  const quill = new Quill('#editor', {
+    modules: {
+      syntax: true,
+      toolbar: '#toolbar-container',
+    },
+    theme: 'snow',
+  });
+
+  if (initialProtocol.trim()) {
+    quill.root.innerHTML = initialProtocol;
+  }
+
+  quill.on('text-change', function () {
+    document.getElementById('codebook-protocol').value = quill.root.innerHTML;
+  });
+
+  // Initial sync on page load
+  document.getElementById('codebook-protocol').value = quill.root.innerHTML;
+</script>
 
 
 <script>
