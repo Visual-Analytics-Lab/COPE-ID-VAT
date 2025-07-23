@@ -344,7 +344,8 @@ class unit_assignment(models.Model):
     project = models.ForeignKey(project_model, on_delete=models.CASCADE, related_name="unit_assignments")
     unit = models.ForeignKey(sample_data,  on_delete=models.CASCADE, related_name="assignments")
     coder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="unit_assignments")
-    
+    general_comment = models.TextField(max_length=2084, blank=True)
+
     # Bookkeeping
     assigned_by   = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="assignments_made")
     assigned_at   = models.DateTimeField(auto_now_add=True)
