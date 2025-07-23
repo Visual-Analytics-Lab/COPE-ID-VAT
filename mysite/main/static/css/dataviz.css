@@ -52,6 +52,11 @@
 
 }
 
+/* Pencil Edit Button */
+.pencil-edit {
+  color: white;
+}
+
 /* Role Button */
 .btn-role {
   --bs-btn-color: #fff;
