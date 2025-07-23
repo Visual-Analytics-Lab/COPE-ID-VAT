@@ -246,6 +246,9 @@ def myProjects_codeUnit(request, project_id, unit_id):
     cache_key = f"coding_variables_{project_id}"
     coding_variables = cache.get(cache_key)
 
+    # Default to None
+    general_comment = None
+
     # Check if cached variables and values exist
     if not coding_variables:
         # Fetch variables and values in database
@@ -253,14 +256,14 @@ def myProjects_codeUnit(request, project_id, unit_id):
         # Set time to keep them in cache
         cache.set(cache_key, coding_variables, 60*15)
 
-    print("project:", project)
-    print("project.project_id", project.project_id)
-
     # Check if previous coded values exist
     coding_exists = unit_coding.objects.filter(project=project, unit=unit, user=request.user).exists()
     
     # If previous values exist
     if coding_exists:
+        # Check if previous general comment exists
+        comment_exists = unit_assignment.objects.filter(project=project, unit=unit, coder=request.user).exclude(general_comment__exact="").first()
+
         selected_values = {}
         # Fetch previously coded values from database
         existing_codings = unit_coding.objects.filter(project=project, unit=unit, user=request.user)
@@ -285,6 +288,10 @@ def myProjects_codeUnit(request, project_id, unit_id):
                 ]
             }
             coding_outputs.append(variable_dict)
+
+        if comment_exists:
+            general_comment = comment_exists.general_comment
+
     # If previous values don't exist
     else:
         # Format project's variables and values for output
@@ -303,7 +310,6 @@ def myProjects_codeUnit(request, project_id, unit_id):
             }
             for variable in coding_variables
         ]
-    
 
     if request.method == 'POST':
         user = request.user  # Get the currently logged-in user
@@ -319,11 +325,24 @@ def myProjects_codeUnit(request, project_id, unit_id):
                     defaults={'value': value_obj}
                 )
 
+        # Get general comment from coder
+        new_general_comment = request.POST.get('general_comment_in')
+
+        # Check if general comment exists
+        if new_general_comment:
+            # Get assignment from database
+            unit_comment = get_object_or_404(unit_assignment, project=project, unit=unit, coder=user)
+            # Set/update general comment
+            unit_comment.general_comment = new_general_comment
+            # Save new general comment
+            unit_comment.save()
+
     created_at = unit.created_at
 
     context = {
         'project': project,
         'coding_variables': coding_variables,
+        'general_comment': general_comment,
         'coding_outputs': coding_outputs,
         'doc_id': unit_id,
         'doc_text': unit.doc_text,
@@ -341,7 +360,9 @@ def myProjects_codeUnit(request, project_id, unit_id):
 
 @login_required
 def myProjects_codebook(request, project_id):
-    pi = False 
+    pi = False
+    protocol = None
+    rte_none = "<p><br></p>"
 
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
@@ -404,11 +425,15 @@ def myProjects_codebook(request, project_id):
 
         coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by(sort_by)
         
+    if project.codebook_protocol != rte_none:
+        protocol = project.codebook_protocol
+
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'page_name': f"{project.project_name}",
         'project': project,
+        'protocol': protocol,
         'favorite_list': favorite_list,
         'coding_variables': coding_variables,
         'variables_by_rank': variables_by_rank,
