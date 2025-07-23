@@ -122,6 +122,77 @@
           {% endif %}
         </div>
 
+        <div class="row">
+
+          <!-- Pagination -->
+          <nav aria-label="pagination">
+            <ul class="pagination justify-content-center">
+
+              <!-- Check if Previous -->
+              {% if units.has_previous %}
+
+                <!-- First Page -->
+                <li class="page-item">
+                  <a class="page-link" href="?page=1&search_query={{ request.GET.search_query }}" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+
+                <!-- Previous Page -->
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ units.previous_page_number }}&search_query={{ request.GET.search_query }}">Prev</a>
+                </li>
+              {% else %}
+
+                <!-- Disable Previous Button -->
+                <li class="page-item disabled"><a class="page-link">Prev</a></li>
+              {% endif %}
+
+              <!-- Iterate +/- 5 Pages -->
+              {% for current_page in units.paginator.page_range %}
+                {% if current_page <= units.number|add:5 and current_page >= units.number|add:-5 %}
+
+                  <!-- Check if Counter == Current Page -->
+                  {% if forloop.counter == units.number %}
+
+                    <!-- Disable Button for Current Page -->
+                    <li class="page-item disabled"><a class="page-link" href="#">{{forloop.counter}}</a></li>
+
+                  {% else %}
+
+                    <!-- Button for Page Navigation -->
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{forloop.counter}}&search_query={{ request.GET.search_query }}">{{forloop.counter}}</a>
+                    </li>
+                  {% endif %}
+
+                {% endif %}
+              {% endfor %}
+
+              <!-- Check if Next -->
+              {% if units.has_next %}
+
+                <!-- Next Page -->
+                <li class="page-item"><a class="page-link" href="?page={{ units.next_page_number }}&search_query={{ request.GET.search_query }}">Next</a>
+                </li>
+
+                <!-- Last Page -->
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ units.paginator.num_pages }}&search_query={{ request.GET.search_query }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                {% else %}
+
+                <!-- Disable Next Button -->
+                <li class="page-item disabled"><a class="page-link">Next</a></li>
+              {% endif %}
+
+            </ul>
+          </nav>
+
+        </div>
+
       </div>
 
     </div>
