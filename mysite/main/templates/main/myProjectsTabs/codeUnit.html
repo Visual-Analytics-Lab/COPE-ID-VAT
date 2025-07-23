@@ -2,23 +2,21 @@
 
 {% block content %}
 
-<link href="/styles.css" rel="stylesheet" />
+<!-- <link href="/styles.css" rel="stylesheet" /> -->
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
 <div class="container-fluid" style="height: 88vh;">
 
   <!-- Title -->
   <div class="row ps-3">
     <div class="col">
-
-      <h2 class="mt-4">Unit ID: {{ doc_id }}</h2>
       <h3>Platform: {{ doc_source }}</h3>
-
     </div>
   </div>
 
@@ -78,16 +76,6 @@
                   <select class="ql-background"></select>
                 </span>
                 <span class="ql-formats">
-                  <button class="ql-script" value="sub"></button>
-                  <button class="ql-script" value="super"></button>
-                </span>
-                <span class="ql-formats">
-                  <button class="ql-header" value="1"></button>
-                  <button class="ql-header" value="2"></button>
-                  <button class="ql-blockquote"></button>
-                  <button class="ql-code-block"></button>
-                </span>
-                <span class="ql-formats">
                   <button class="ql-list" value="ordered"></button>
                   <button class="ql-list" value="bullet"></button>
                   <button class="ql-indent" value="-1"></button>
@@ -96,14 +84,7 @@
                 <span class="ql-formats">
                   <button class="ql-direction" value="rtl"></button>
                   <select class="ql-align"></select>
-                </span>
-                <span class="ql-formats">
                   <button class="ql-link"></button>
-                  <button class="ql-image"></button>
-                  <button class="ql-video"></button>
-                  <button class="ql-formula"></button>
-                </span>
-                <span class="ql-formats">
                   <button class="ql-clean"></button>
                 </span>
               </div>
@@ -112,10 +93,8 @@
               </div>
               <form method="post">
                 {% csrf_token %}
-
-                <textarea name="content-input" id="content-textarea" style="display: none;"></textarea>
-
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <!-- Hidden field synced to Quill -->
+                <textarea name="general_comment_in" id="content-textarea" style="display: none;"></textarea>
               </form>
 
             </div>
@@ -127,7 +106,7 @@
       <!-- Coding Variables -->
       <div class="col-md-6 themed-grid-col">
 
-        <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+        <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
           <div class="card" style="width: 100%;">
             <div class="card-header">
               <ul class="nav nav-tabs" id="myTab" role="tablist">
@@ -242,14 +221,22 @@
         </div>
 
 
-        <!-- <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
+        <!-- Navigation Buttons -->
+        <div class="row justify-content-between">
 
+          <div class="d-grid gap-2 d-md-flex justify-content-between">
+            <button class="btn btn-secondary ms-3" type="button">Previous</button>
+            <button class="btn btn-secondary me-5" type="button">Next</button>
+          </div>
 
-        </div> -->
+        </div>
 
       </div>
 
   </div>
+
+
+
 </div>
 
 
@@ -293,8 +280,13 @@
 
 
 
+{{ general_comment|default:""|json_script:"initial-comment" }}
+
+
 <!-- Initialize Quill editor -->
 <script>
+  const initialComment = JSON.parse(document.getElementById('initial-comment').textContent);
+
   const quill = new Quill('#editor', {
     modules: {
       syntax: true,
@@ -303,55 +295,59 @@
     theme: 'snow',
   });
 
-  // Update the hidden textarea on every change
+  if (initialComment.trim()) {
+    quill.root.innerHTML = initialComment;
+  }
+
   quill.on('text-change', function () {
     document.getElementById('content-textarea').value = quill.root.innerHTML;
   });
+
+  // Initial sync on page load
+  document.getElementById('content-textarea').value = quill.root.innerHTML;
 </script>
 
+
 <script>
+  // Converts plain URLs to modal-triggering anchor tags
   function linkify(str) {
-    // https://t.co/xsaNSh4Ag1 does not get picked up by script
-    var newStr = str.replace(/(<a href=")?((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)))(">(.*)<\/a>)?/gi, function () {
+    return str.replace(/(<a href=")?((https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)))(">(.*)<\/a>)?/gi, function () {
       var url = arguments[2];
       var displayText = arguments[7] || arguments[2];
       return '<a type="button" class="modal-link" data-bs-toggle="modal" data-bs-target="#externalLinkModal" data-url="' + url + '" data-display-text="' + displayText + '">' + displayText + '</a>';
     });
-    console.log(newStr)
-    $('div').html(newStr); //fill output area
   }
 
-  var data = $('div').html(); //get input (content)
-  linkify(data); //run function on content
-
   $(document).ready(function () {
+    // Only apply linkify to user-facing tab content, not all divs
+    var targetDiv = $('#home-tab-pane');
+    var data = targetDiv.html();
+    var linkedContent = linkify(data);
+    targetDiv.html(linkedContent);
+
+    // Modal behavior for external links
     $('.modal-link').on('click', function () {
-      var url = $(this).data('url'); // Fetch URL clicked
-      var displayText = $(this).data('display-text'); // Fetch text stored in modal
-      var linkHtml = '<a href="' + url + '" target="_blank">' + displayText + '</a>'; // Create hyperlink
-      $('#externalLinkModal .modal-link-clickable').html(linkHtml); // Display hyperlink in modal
+      var url = $(this).data('url');
+      var displayText = $(this).data('display-text');
+      var linkHtml = '<a href="' + url + '" target="_blank">' + displayText + '</a>';
+      $('#externalLinkModal .modal-link-clickable').html(linkHtml);
     });
 
+    // Auto-select radio input when its parent list item is clicked
     $('.list-group-item').on('click', function () {
-      var input = $(this).find('.form-check-input');  // Fetch form-check-input nested in list-group-item
-      input.prop('checked', true);  // Check input nested within list-group-item
-    })
+      var input = $(this).find('.form-check-input');
+      input.prop('checked', true);
+    });
+
+    // (Optional) Debug for tab change
+    // const tabEl = document.querySelector('button[data-bs-toggle="tab"]');
+    // tabEl?.addEventListener('shown.bs.tab', event => {
+    //   console.log('Activated tab:', event.target);
+    //   console.log('Previous tab:', event.relatedTarget);
+    // });
   });
-
-
-  // Update tab colors to be more distinct from background when selected
-  // Make selected tab bold
-
-//   const tabEl = document.querySelector('button[data-bs-toggle="tab"]')
-//   tabEl.addEventListener('shown.bs.tab', event => {
-//     console.log(event);
-//     event.target // newly activated tab
-//     console.log(event.target);
-//     event.relatedTarget // previous active tab
-//     console.log(event.relatedTarget);
-// })
-
 </script>
+
 
 
 <!-- <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
