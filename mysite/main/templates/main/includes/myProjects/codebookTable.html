@@ -40,7 +40,7 @@
            <td style="width: 5%;">{{ variable.variable_rank }}</td>
           <td style="width: 10%;">{{ variable.variable_name }}</td>
           <td style="width: 10%;">{{ variable.get_values_comma }}</td>
-          <td style="width: 50%;">{{ variable.variable_description|truncatechars:240 }}</td>
+          <td style="width: 50%;">{{ variable.variable_description|truncatechars:240|safe }}</td>
           <td style="width: 5%;" onclick="showHideRow('hidden_row{{ forloop.counter }}');"><button type="button" class="btn text-center"><i class="bi bi-arrows-angle-expand"></i></button></td>
           {% if has_edit_permission %}
             <td style="width: 5%;"><a type="button" class="btn text-center" href="{% url 'main:myProjects_editVariable' project.project_id variable.variable_id %}"><i class="bi-pencil-square"></i></a></td>
@@ -70,7 +70,7 @@
                 {% endwith %}
                 <tfoot>
                   <td colspan="12">
-                    <strong>Variable Description: </strong>{{ variable.variable_description }}
+                    <strong>Variable Description: </strong>{{ variable.variable_description|safe }}
                   </td>
                 </tfoot>
               </tbody>
