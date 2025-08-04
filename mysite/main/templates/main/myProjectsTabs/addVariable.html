@@ -2,6 +2,17 @@
 
 {% block content %}
 
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css"/>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{% load static %}
+<link href="{% static 'css/dataviz-quill.css' %}" rel="stylesheet">
+
 <!-- Page Content -->
 <div class="container-fluid" style="height: 50rem;">
 
@@ -18,7 +29,7 @@
     <div class="col">
       <!-- Main Content -->
        
-      <form method="post" class="needs-validation" novalidate>
+      <form id="quill-form" method="post" class="needs-validation" novalidate>
         {% csrf_token %}
 
         <!-- Store Edit Action -->
@@ -66,7 +77,11 @@
             <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
               <!-- Variable Name -->
               <div class="input-group flex-nowrap">
-                <span class="input-group-text bg-secondary text-white" id="variable-wrapping">Variable Name</span>
+                <span class="input-group-text bg-secondary text-white" id="variable-wrapping">Variable Name
+                  <button type="button" class="btn p-0 ps-1" data-bs-toggle="modal" data-bs-target="#variableNameModal">
+                    <i class="bi bi-info-circle text-info"></i>
+                  </button>
+                </span>
                 <input type="text" class="form-control validate-field" name="variable-name" id="variable-name" placeholder="Name" aria-label="Variable Name" aria-describedby="variable-wrapping">
               </div>
             </div>
@@ -83,7 +98,9 @@
               <!-- Variable Description -->
               <div class="input-group">
                 <span class="input-group-text bg-secondary text-white">Variable Description</span>
-                <textarea class="form-control" name="variable-description" id="variable-description" placeholder="Description" aria-label="Variable Description" aria-describedby="variable-wrapping" style="max-height: 12vh;"></textarea>
+                <div name="quill-container">
+                  <div id="editor" style="height: 5rem; width: 50rem;"></div>
+                </div>
               </div>
             </div>
           </div>
@@ -119,17 +136,43 @@
 
           <!-- Row 1 Column 2 Row 7 Column 1 -->
           <div class="d-flex flex-row px-3 justify-content-center">
-            <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
-              <!-- Level of Measurement -->
-              <div class="input-group flex-nowrap">
-                <label class="input-group-text bg-secondary text-white" for="variable-measure">Level of Measurement</label>
-                <select class="form-select" name="variable-measure" id="variable-measure">
-                  {% for measure in measurements %}
-                    <option value="{{ measure }}">{{ measure }}</option>
-                  {% endfor %}
-                </select>
+
+            <div class="d-flex flex-column px-3">
+              <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
+                <!-- Level of Measurement -->
+                <div class="input-group flex-nowrap">
+                  <label class="input-group-text bg-secondary text-white" for="variable-measure">Level of Measurement
+                    <button type="button" class="btn p-0 ps-1" data-bs-toggle="modal" data-bs-target="#variableMeasureModal">
+                      <i class="bi bi-info-circle text-info"></i>
+                    </button>
+                  </label>
+                  <select class="form-select" name="variable-measure" id="variable-measure">
+                    {% for measure in measurements %}
+                      <option value="{{ measure }}">{{ measure }}</option>
+                    {% endfor %}
+                  </select>
+                </div>
               </div>
             </div>
+
+            <!-- Row 1 Column 2 Row 8 Column 1 -->
+            <div class="d-flex flex-column px-3">
+              <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
+                <!-- Variable Comment -->
+                <div class="input-group flex-nowrap">
+                  <label class="input-group-text bg-secondary text-white" for="variable-comment">Variable Comment
+                    <button type="button" class="btn p-0 ps-1" data-bs-toggle="modal" data-bs-target="#variableCommentModal">
+                      <i class="bi bi-info-circle text-info"></i>
+                    </button>
+                  </label>
+                  <select class="form-select" name="variable-comment" id="variable-comment">
+                      <option value="variable-comment-yes">Yes</option>
+                      <option value="variable-comment-no">No</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
           </div>
 
         </div>
@@ -141,172 +184,14 @@
 
 </div>
 
+<!-- Load Info Modals -->
+{% include 'main/includes/myProjects/addEditModals.html' %}
 
+{% load static %}
+<script src="{% static 'js/dataviz-quill.js' %}"></script>
 
-<!-- Value Info Modal -->
-<div class="modal fade" id="variableInfoModal" tabindex="-1" aria-labelledby="variableInfoModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h1 class="modal-title fs-5" id="variableInfoModalLabel">Values, Labels, & Examples</h1>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <figure>
-          <blockquote class="blockquote">
-            <p>Value labels are useful primarily for categorical (i.e., nominal or ordinal) variables, especially if they have been recorded as codes (e.g., 1, 2, 3). It is <strong>strongly</strong> suggested that you give each value a label so that you (and anyone looking at your data or results) understands what each value represent.</p>
-            <p class="text-break">Example: In the sample dataset, the variable Rank represents the student's class rank. The values 1, 2, 3, 4 represent the categories Freshman, Sophomore, Junior, and Senior, respectively.</p>
-          </blockquote>
-          <figcaption class="blockquote-footer">
-            Clippy
-          </figcaption>
-        </figure>
-
-      </div>
-    </div>
-  </div>
-</div>
-
-
-
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script>
-  $(document).ready(function() {
-    const pattern = /^[a-zA-Z@][a-zA-Z0-9@#\$,._]*[a-zA-Z0-9@#\$,._]?$/;
-    const reservedKeywords = new Set(["ALL", "AND", "BY", "EQ", "GE", "GT", "LE", "LT", "NE", "NOT", "OR", "TO", "WITH",
-                                     "S1", "E1", "C1", "NET", "SUB", "TN", "CALC"]);
-    let currentInput = null;
-    // let currentVal = 1; // Increment row count each time
-
-    // Listen for add button click
-    $('#add-btn').on('click', function () {
-      console.log("clicked")
-      // Populate html for new row
-      const newValue =
-        `<tr>
-          <td style="width: 5%;"><input type="number" class="form-control validate-field" name="value[]" placeholder="Value" aria-label="Variable value input"></td>
-          <td style="width: 20;"><input type="text" class="form-control"name="label[]" type="text" placeholder="Label" aria-label="Variable label input"></td>
-          <td style="width: 10%;"><input type="text" class="form-control" name="eg[]" placeholder="Example" aria-label="Variable example input"></td>
-          <td>
-            <div class="btn-group" role="group" aria-label="Up and Down">
-              <button type="button" class="btn btn-secondary text-center btn-up" onclick="moveRowUp(this)"><i class="bi bi-caret-up"></i></button>
-              <button type="button" class="btn btn-secondary text-center btn-down" onclick="moveRowDwn(this)"><i class="bi bi-caret-down"></i></button>
-            </div>
-          </td>
-          <td><a type="button" class="icon-link trash-hover py-2" id="delete-btn"><i class="bi bi-trash3"></i></a></td>
-        </div>`;
-      // Add new row to bottom of rows
-      $('#value-rows').append(newValue);
-      refreshButtons();
-    });
-
-    // Listen for delete button click
-    $('#value-rows').on('click', '#delete-btn', function () {
-      // Fetch nearest row and delete
-      console.log("delete clicked")
-      $(this).closest('tr').remove();
-      refreshButtons();
-    });
-
-    // Listen for cancel button click
-    $('#cancel-btn').on('click', function () {
-      // Clear all inputs fields in the first row
-      $('#value-rows ul:first-child input').val('');
-
-      // Remove all rows except the first one
-      $('#value-rows ul:not(:first-child)').remove();
-    });
-
-    // Listen for return button click
-    $('#return-btn').on('click', function () {
-      console.log("return");
-      $('#edit-action').val('return');
-    });
-
-    // Listen for save button click
-    $('#save-variable').on('click', function () {
-      console.log("save");
-      $('#edit-action').val('save');
-    });
-
-    // Listen for add button click
-    $('#add-variable').on('click', function () {
-      console.log("add");
-      $('#edit-action').val('add');
-    });
-
-    // Listen for cancel button click
-    $('#cancel-variable').on('click', function () {
-      console.log("cancel");
-      $('#edit-action').val('cancel');
-    });
-
-    // Listen for delete button click
-    $('#delete-variable').on('click', function () {
-      console.log("delete");
-      $('#edit-action').val('delete');
-    });
-
-    // Listen for previous button click
-    $('#prev-btn').on('click', function () {
-      console.log("previous");
-      $('#edit-action').val('previous');
-    });
-
-    // Listen for next button click
-    $('#next-btn').on('click', function () {
-      console.log("next");
-      $('#edit-action').val('next');
-    });
-
-    function validateInput(input) {
-      if (input.type === 'text') {
-        const value = input.value.toUpperCase();
-        if (!pattern.test(value) || reservedKeywords.has(value)) {
-          input.setCustomValidity("Invalid input or reserved keyword.");
-          input.classList.add('is-invalid');
-          // input.classList.remove('is-valid');
-        } else {
-          input.setCustomValidity("");
-          // input.classList.add('is-valid');
-          input.classList.remove('is-invalid');
-        }
-      } else if (input.type === 'number') {
-        if (isNaN(input.value) || input.value.trim() === '') {
-          input.setCustomValidity("Please enter a valid number.");
-          // input.classList.add('is-invalid');
-          input.classList.remove('is-valid');
-        } else {
-          input.setCustomValidity("");
-          // input.classList.add('is-valid');
-          input.classList.remove('is-invalid');
-        }
-      }
-    }
-
-    $('.needs-validation').on('submit', function(event) {
-      const form = this;
-      let isValid = true;
-
-      $('.validate-field').each(function() {
-        validateInput(this);
-        if (!this.checkValidity()) {
-          isValid = false;
-        }
-      });
-
-      if (!isValid) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-
-      $(this).addClass('was-validated');
-    });
-
-    $('.validate-field').on('input', function() {
-      validateInput(this);
-    });
-  });
-</script>
+<!-- Load addEditVariable JS -->
+{% load static %}
+<script src="{% static 'js/addEditVariable.js' %}"></script>
 
 {% endblock %}
