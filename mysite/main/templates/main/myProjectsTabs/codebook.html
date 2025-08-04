@@ -11,6 +11,9 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
+{% load static %}
+<link href="{% static 'css/dataviz-quill.css' %}" rel="stylesheet">
+
 <!-- Page Content -->
 <div class="container-fluid" style="height: 50rem;">
 
@@ -73,10 +76,16 @@
                 <span>{{ protocol|safe }}</span>
               {% else %}
                 <span>
-                  Start by clicking the pencil icon to add a codebook protocol. The codebook protocol can be viewed by all team members.
+                  <p>Start by clicking the pencil icon to add coding procedures and guidelines to your codebook protocol documentation. <strong>The codebook protocol can be viewed by all team members.</strong>
                   <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editProtocol">
                     <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
                   </button>
+                  </p>
+                  A <strong>codebook protocol summary</strong> outlines the rules and procedures governing the coding process. These instructions should outline for coders how to assess the units of analysis, establish the
+                  project's codification standards, and provide general guidelines on interpreting and applying codes to units. These details help eliminate coding errors and ensure that coders analyze units
+                  consistently, thereby improving intercoder reliability. For more information related to codebook protocol summaries, please see 
+                  <a target="_blank" href="https://www.routledge.com/Analyzing-Media-Messages-Using-Quantitative-Content-Analysis-in-Research/Riffe-Lacy-Watson-Lovejoy/p/book/9781032264677?source=shoppingads&locale=en-USD">Riffe and colleagues (2024)</a> 
+                  textbook on analyzing media messages.
                 </span>
               {% endif %}
             </blockquote>
@@ -149,6 +158,10 @@
           <div class="px-2" style="max-width: 18rem; min-width: 5rem;">
             <button type="button" class="btn btn-primary mb-2" data-bs-toggle="modal" data-bs-target="#editVarOrder"><i class="bi bi-list-ol"></i> Edit Variable Order</button>
           </div>
+
+          <div class="px-2" style="max-width: 18rem; min-width: 5rem;">
+            <button type="button" class="btn btn-secondary"><i class="bi bi-download"></i> Export Codebook</button>
+          </div>
           {% endif %}
       
         </div>
@@ -164,9 +177,9 @@
 {% if pi %}
 <!-- Edit Codebook Protocol Modal -->
 <div class="modal fade" id="editProtocol" tabindex="-1" aria-labelledby="editProtocolLabel" aria-hidden="true">
-  <form method="post">
+  <form id="quill-form" method="post">
     {% csrf_token %}
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <!-- Title -->
@@ -175,38 +188,8 @@
         </div>
         <div class="modal-body">
           <!-- Input -->
-            <div id="toolbar-container"  style="background-color: white;">
-            <span class="ql-formats">
-              <select class="ql-font"></select>
-              <select class="ql-size"></select>
-            </span>
-            <span class="ql-formats">
-              <button class="ql-bold"></button>
-              <button class="ql-italic"></button>
-              <button class="ql-underline"></button>
-              <button class="ql-strike"></button>
-            </span>
-            <span class="ql-formats">
-              <select class="ql-color"></select>
-              <select class="ql-background"></select>
-            </span>
-            <span class="ql-formats">
-              <button class="ql-list" value="ordered"></button>
-              <button class="ql-list" value="bullet"></button>
-              <button class="ql-indent" value="-1"></button>
-              <button class="ql-indent" value="+1"></button>
-            </span>
-            <span class="ql-formats">
-              <button class="ql-direction" value="rtl"></button>
-              <select class="ql-align"></select>
-              <button class="ql-link"></button>
-              <button class="ql-clean"></button>
-            </span>
-          </div>
-
           <div id="editor" style="height: 30rem;">
           </div>
-          <textarea name="codebook-protocol" id="codebook-protocol" style="display: none;">{{ protocol }}</textarea>
         </div>
         <div class="modal-footer">
           <!-- Cancel & Save Buttons -->
@@ -247,33 +230,11 @@
 </div>
 {% endif %}
 
-{{ protocol|default:""|json_script:"initial-protocol" }}
 
 
-<!-- Initialize Quill editor -->
-<script>
-  const initialProtocol = JSON.parse(document.getElementById('initial-protocol').textContent);
-
-  const quill = new Quill('#editor', {
-    modules: {
-      syntax: true,
-      toolbar: '#toolbar-container',
-    },
-    theme: 'snow',
-  });
-
-  if (initialProtocol.trim()) {
-    quill.root.innerHTML = initialProtocol;
-  }
-
-  quill.on('text-change', function () {
-    document.getElementById('codebook-protocol').value = quill.root.innerHTML;
-  });
-
-  // Initial sync on page load
-  document.getElementById('codebook-protocol').value = quill.root.innerHTML;
-</script>
-
+{{ protocol|default:""|json_script:"initial-data" }}
+{% load static %}
+<script src="{% static 'js/dataviz-quill.js' %}"></script>
 
 <script>
   function submitReorder() {

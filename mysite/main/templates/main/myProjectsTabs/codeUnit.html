@@ -1,7 +1,6 @@
 {% extends 'main/index.html' %}
 
 {% block content %}
-
 <!-- <link href="/styles.css" rel="stylesheet" /> -->
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
@@ -10,6 +9,9 @@
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.js"></script>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/katex.min.css"/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{% load static %}
+<link href="{% static 'css/dataviz-quill.css' %}" rel="stylesheet">
 
 <div class="container-fluid" style="height: 88vh;">
 
@@ -53,50 +55,18 @@
           </div>
         </div>
 
-        <!-- Text Input -->
+        <!-- General Comment on Unit -->
         <div class="shadow-sm p-3 mb-5 bg-body-tertiary rounded">
           <div class="card" style="width: 100%;">
             <div class="card-header">
               General Comment on Unit
             </div>
-            <div class="card-body" style="min-height: 15rem !important; max-height: 15rem !important; overflow-y: auto;">
-              <div id="toolbar-container"  style="background-color: white;">
-                <span class="ql-formats">
-                  <select class="ql-font"></select>
-                  <select class="ql-size"></select>
-                </span>
-                <span class="ql-formats">
-                  <button class="ql-bold"></button>
-                  <button class="ql-italic"></button>
-                  <button class="ql-underline"></button>
-                  <button class="ql-strike"></button>
-                </span>
-                <span class="ql-formats">
-                  <select class="ql-color"></select>
-                  <select class="ql-background"></select>
-                </span>
-                <span class="ql-formats">
-                  <button class="ql-list" value="ordered"></button>
-                  <button class="ql-list" value="bullet"></button>
-                  <button class="ql-indent" value="-1"></button>
-                  <button class="ql-indent" value="+1"></button>
-                </span>
-                <span class="ql-formats">
-                  <button class="ql-direction" value="rtl"></button>
-                  <select class="ql-align"></select>
-                  <button class="ql-link"></button>
-                  <button class="ql-clean"></button>
-                </span>
-              </div>
-
-              <div id="editor" style="height: 30rem;">
-              </div>
-              <form method="post">
+            <div class="card-body p-0" style="height: 15rem !important;">
+              <form id="quill-form" method="post">
                 {% csrf_token %}
-                <!-- Hidden field synced to Quill -->
-                <textarea name="general_comment_in" id="content-textarea" style="display: none;"></textarea>
+                <div id="editor" style="height: 12rem;">
+                </div>
               </form>
-
             </div>
           </div>
         </div>
@@ -279,33 +249,10 @@
 
 
 
+{{ general_comment|default:""|json_script:"initial-data" }}
+{% load static %}
+<script src="{% static 'js/dataviz-quill.lite.js' %}"></script>
 
-{{ general_comment|default:""|json_script:"initial-comment" }}
-
-
-<!-- Initialize Quill editor -->
-<script>
-  const initialComment = JSON.parse(document.getElementById('initial-comment').textContent);
-
-  const quill = new Quill('#editor', {
-    modules: {
-      syntax: true,
-      toolbar: '#toolbar-container',
-    },
-    theme: 'snow',
-  });
-
-  if (initialComment.trim()) {
-    quill.root.innerHTML = initialComment;
-  }
-
-  quill.on('text-change', function () {
-    document.getElementById('content-textarea').value = quill.root.innerHTML;
-  });
-
-  // Initial sync on page load
-  document.getElementById('content-textarea').value = quill.root.innerHTML;
-</script>
 
 
 <script>
@@ -347,32 +294,5 @@
     // });
   });
 </script>
-
-
-
-<!-- <div class="shadow-lg p-3 mb-5 bg-body-tertiary rounded">
-  <div class="card" style="width: 100%;">
-    <div class="card-header">
-      <ul class="nav nav-tabs" id="myTab" role="tablist">
-        <li class="nav-item" role="presentation">
-          <button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home-tab-pane" type="button" role="tab" aria-controls="home-tab-pane" aria-selected="true">Unit</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile-tab-pane" type="button" role="tab" aria-controls="profile-tab-pane" aria-selected="false">Metadata</button>
-        </li>
-        <li class="nav-item" role="presentation">
-          <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact-tab-pane" type="button" role="tab" aria-controls="contact-tab-pane" aria-selected="false">JSON</button>
-        </li>
-      </ul>
-    </div>
-    <div class="card-body">
-      <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="home-tab-pane" role="tabpanel" aria-labelledby="home-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ doc_text }}</p></div>
-        <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ created_at }}</p></div>
-        <div class="tab-pane fade" id="contact-tab-pane" role="tabpanel" aria-labelledby="contact-tab" tabindex="0"><p class="card-text user-select-none text-start text-break">{{ doc_json }}</p></div>
-      </div>
-    </div>
-  </div>
-</div> -->
 
 {% endblock %}
