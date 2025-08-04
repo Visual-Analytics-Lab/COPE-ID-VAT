@@ -1,0 +1,115 @@
+<!-- 
+    Included in addVariable.html & editVariable.html
+
+    Info modals for:
+    * Variable Name
+    * Variable Measurement
+    * Variable Comment
+    * Values
+    * Delete Variable 
+-->
+
+<!-- Variable Name Modal -->
+<div class="modal fade" id="variableNameModal" tabindex="-1" aria-labelledby="variableNameLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="variableNameLabel">Variable Name Rules</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Waiting to get the actual text for this from Terri -->
+        <p>Information about naming variables here.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Variable Measurement Modal -->
+<div class="modal fade" id="variableMeasureModal" tabindex="-1" aria-labelledby="variableMeasureLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="variableMeasureLabel">Variable Measurement Info</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Waiting to get the actual text for this from Terri -->
+        <p>Information about variable measurements.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Variable Comment Modal -->
+<div class="modal fade" id="variableCommentModal" tabindex="-1" aria-labelledby="variableCommentLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="variableCommentLabel">Variable Comment</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <!-- Waiting to get the actual text for this from Terri -->
+        <p>Information about variable comment.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Value Info Modal -->
+<div class="modal fade" id="variableInfoModal" tabindex="-1" aria-labelledby="variableInfoModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="variableInfoModalLabel">Values, Labels, & Examples</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <figure>
+          <blockquote class="blockquote">
+            <p>Value labels are useful primarily for categorical (i.e., nominal or ordinal) variables, especially if they have been recorded as codes (e.g., 1, 2, 3). It is <strong>strongly</strong> suggested that you give each value a label so that you (and anyone looking at your data or results) understands what each value represent.</p>
+            <p class="text-break">Example: In the sample dataset, the variable Rank represents the student's class rank. The values 1, 2, 3, 4 represent the categories Freshman, Sophomore, Junior, and Senior, respectively.</p>
+          </blockquote>
+          <figcaption class="blockquote-footer">
+            Clippy
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Delete Variable Modal -->
+<div class="modal fade" data-bs-backdrop="static" id="deleteVariableModal" tabindex="-1" aria-labelledby="deleteVariableModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <!-- Delete Variable Confirmation Title -->
+                <h1 class="modal-title fs-5" id="deleteVariableModalLabel"><i class="bi bi-exclamation-circle-fill"></i> Alert! Confirmation Needed.</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+
+            <!-- Warning Message -->
+            <div class="modal-body text-center">
+                <p>You are about to delete the coding variable:<br>
+                <strong>{{ variable.variable_name }}</strong><br>
+                Note: Once deleted, a variable <u><em>cannot be restored</em></u>!<br>
+                Do you wish to proceed?</p>
+            </div>
+
+            <!-- Confirmation Form --> 
+            <form method="post">
+                {% csrf_token %}
+                <!-- Cancel and Confirm Buttons -->
+                <div class="modal-footer justify-content-between">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal">No, Cancel.</button>
+                    <input type="text" class="form-control d-none" name="variable-id" value="{{ variable.variable_id }}">
+                    <input type="text" class="form-control d-none" name="project-id" value="{{ project.project_id }}">
+                    <button type="submit" class="btn btn-warning" id="delete-variable">Yes, Delete!</button>
+                </div>
+                <input type="text" class="form-control d-none" name="delete-action" id="delete-action" value="">
+            </form>
+        </div>
+    </div>
+</div>
