@@ -67,22 +67,23 @@
             <form method="get">
               <div class="input-group">
                 <!-- Filter Dropdown 1 -->
-                <label class="input-group-text" for="inputGroupSelect01">Filter</label>
-                <select class="form-select" id="inputGroupSelect01">
+                <label class="input-group-text" for="filter-units">Filter</label>
+                <select class="form-select" id="filter-units" name="filter-units">
                   <!-- Filter Options -->
-                  <option selected>All Units</option>
-                  <option value="1">My Assigned Units</option>
-                  <option value="2">Assignments by Coder</option>
+                  <option value="all" selected>All Units</option>
+                  <option value="assigned">My Assigned Units</option>
+                  <option value="coder">Assignments by Coder</option>
                 </select>
                 <!-- Filter Dropdown 2 -->
-                <label class="input-group-text" for="inputGroupSelect01">by</label>
-                <select class="form-select" id="inputGroupSelect01">
+                <label class="input-group-text" for="filterBy">by</label>
+                <select class="form-select" id="filter-by" name="filter-by">
                   <!-- Filter Options -->
-                  <option selected>All Units</option>
-                  <option value="1">Incomplete Units</option>
-                  <option value="2">In-Progress Units</option>
-                  <option value="3">Complete Units</option>
+                  <option value="all" selected>All Units</option>
+                  <option value="incomplete">Incomplete Units</option>
+                  <option value="inprogress">In-Progress Units</option>
+                  <option value="complete">Complete Units</option>
                 </select>
+                <button type="submit" class="btn btn-secondary">Filter</button>
               </div>
             </form>
           </div>
