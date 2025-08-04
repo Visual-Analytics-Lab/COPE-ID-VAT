@@ -35,7 +35,7 @@
   
           <!-- Inter-Rater Reliability -->
           <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Coding Progress & IRR</a>
           </div>
   
           <!-- Sample & Results -->
@@ -45,7 +45,12 @@
   
           <!-- Edit Project -->
           <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Edit Project</a>
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Edit Project & Users</a>
+          </div>
+
+          <!-- DELETE LATER Assign Units -->
+          <div class="myProjects-nav-div">
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_assignTest' project.project_id %}">Assign Units</a>
           </div>
   
         </div>
@@ -60,13 +65,13 @@
           <div class="shadow-sm p-3 mb-2 bg-body-tertiary rounded">
             <!-- Codebook Protocol -->
             <blockquote class="blockquote overflow-y-auto" style="max-height: 9rem;">
-              <p>{{ project.project_description }} 
+              <span>{{ project.project_description|safe }} 
                 {% if pi %}
                 <button type="button" class="btn p-0 m-0 b-0" data-bs-toggle="modal" data-bs-target="#editDescription">
                   <i class="bi bi-pencil text-secondary" fill="currentColor"></i>
                 </button>
                 {% endif %}
-              </p>
+              </span>
             </blockquote>
           </div>
         </div>

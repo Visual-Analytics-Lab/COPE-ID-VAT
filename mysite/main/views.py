@@ -1,15 +1,15 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import JsonResponse, HttpResponseNotFound
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import logout, authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.core.paginator import Paginator
 from django.core.cache import cache
 from django.db.models import Q, OuterRef, Subquery, Exists, Prefetch, Max
-from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, role_model, \
-    permission_model, user_project_model, coding_variable, coding_value, inbox_model, project_list_model, test_model, unit_coding
-from .utils import favorite_projects_list
+from .models import Tutorial, sample_data, bert_main_sample_data, organization_model, project_model, project_list_model, role_model, \
+    permission_model, user_project_model, coding_variable, coding_value, unit_coding, unit_assignment, inbox_model, test_model
+from .forms  import UnitAssignmentForm
+from .utils import favorite_projects_list, variable_reorder
 from user_management.utils import sys_admin_test
 from user_management.models import my_profile_model
 from collections import defaultdict
@@ -246,6 +246,9 @@ def myProjects_codeUnit(request, project_id, unit_id):
     cache_key = f"coding_variables_{project_id}"
     coding_variables = cache.get(cache_key)
 
+    # Default to None
+    general_comment = None
+
     # Check if cached variables and values exist
     if not coding_variables:
         # Fetch variables and values in database
@@ -253,14 +256,14 @@ def myProjects_codeUnit(request, project_id, unit_id):
         # Set time to keep them in cache
         cache.set(cache_key, coding_variables, 60*15)
 
-    print("project:", project)
-    print("project.project_id", project.project_id)
-
     # Check if previous coded values exist
     coding_exists = unit_coding.objects.filter(project=project, unit=unit, user=request.user).exists()
     
     # If previous values exist
     if coding_exists:
+        # Check if previous general comment exists
+        comment_exists = unit_assignment.objects.filter(project=project, unit=unit, coder=request.user).exclude(general_comment__exact="").first()
+
         selected_values = {}
         # Fetch previously coded values from database
         existing_codings = unit_coding.objects.filter(project=project, unit=unit, user=request.user)
@@ -285,6 +288,10 @@ def myProjects_codeUnit(request, project_id, unit_id):
                 ]
             }
             coding_outputs.append(variable_dict)
+
+        if comment_exists:
+            general_comment = comment_exists.general_comment
+
     # If previous values don't exist
     else:
         # Format project's variables and values for output
@@ -303,9 +310,8 @@ def myProjects_codeUnit(request, project_id, unit_id):
             }
             for variable in coding_variables
         ]
-    
 
-    if request.method == "POST":
+    if request.method == 'POST':
         user = request.user  # Get the currently logged-in user
         for variable in coding_variables:
             selected_value = request.POST.get(f"{variable.variable_name}")
@@ -319,11 +325,24 @@ def myProjects_codeUnit(request, project_id, unit_id):
                     defaults={'value': value_obj}
                 )
 
+        # Get general comment from coder
+        new_general_comment = request.POST.get('general_comment_in')
+
+        # Check if general comment exists
+        if new_general_comment:
+            # Get assignment from database
+            unit_comment = get_object_or_404(unit_assignment, project=project, unit=unit, coder=user)
+            # Set/update general comment
+            unit_comment.general_comment = new_general_comment
+            # Save new general comment
+            unit_comment.save()
+
     created_at = unit.created_at
 
     context = {
         'project': project,
         'coding_variables': coding_variables,
+        'general_comment': general_comment,
         'coding_outputs': coding_outputs,
         'doc_id': unit_id,
         'doc_text': unit.doc_text,
@@ -341,7 +360,9 @@ def myProjects_codeUnit(request, project_id, unit_id):
 
 @login_required
 def myProjects_codebook(request, project_id):
-    pi = False 
+    pi = False
+    protocol = None
+    rte_none = "<p><br></p>"
 
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
@@ -356,19 +377,15 @@ def myProjects_codebook(request, project_id):
     # Fetch project variables from database
     coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by('variable_rank')
 
+    # Save instance of coding variables ordered by rank
+    variables_by_rank = coding_variables
+
     # Check if form was submitted
     if request.method == 'POST' :
         if 'reordered_ids' in request.POST:
-            ids = request.POST.get('reordered_ids').split(',')
-            # First pass: assign temporary negative ranks to avoid unique constraint collision
-            for temp_rank, var_id in enumerate(ids, start=1):
-                print(f'temp_rank: {temp_rank}, var_id: {var_id}')
-                coding_variable.objects.filter(pk=var_id, variable_project=project).update(variable_rank=-temp_rank)
+            ids = request.POST.get("reordered_ids", "").split(",")
 
-            # Second pass: assign correct positive ranks
-            for final_rank, var_id in enumerate(ids, start=1):
-                print(f'final_rank: {final_rank}, var_id: {var_id}')
-                coding_variable.objects.filter(pk=var_id, variable_project=project).update(variable_rank=final_rank)
+            variable_reorder(project, ids)
 
             return redirect(request.path_info)
         # Check if variable ID is in form
@@ -385,6 +402,9 @@ def myProjects_codebook(request, project_id):
             # Delete the variable
             variable.delete()
 
+            # Reorder variable rank
+            variable_reorder(project)
+
         else:
             # Get codebook protocol from HTTP POST request
             new_protocol = request.POST.get('codebook-protocol')
@@ -398,13 +418,25 @@ def myProjects_codebook(request, project_id):
         # Redirect/refresh page after form submission
         return redirect(request.path_info)
     
+    elif request.method == 'GET':
+        sort_by = request.GET.get("sort", "variable_rank")
+        if sort_by not in {"variable_rank", "-variable_rank", "variable_name", "-variable_name", "timestamp", "-timestamp"}:
+            sort_by = "variable_rank"
+
+        coding_variables = coding_variable.objects.filter(variable_project=project).prefetch_related('values').order_by(sort_by)
+        
+    if project.codebook_protocol != rte_none:
+        protocol = project.codebook_protocol
+
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
     context = {
         'page_name': f"{project.project_name}",
         'project': project,
+        'protocol': protocol,
         'favorite_list': favorite_list,
         'coding_variables': coding_variables,
+        'variables_by_rank': variables_by_rank,
         'has_edit_permission': has_edit_permission,
         'pi': pi,
         'sys_admin': sys_admin,
@@ -453,6 +485,8 @@ def myProjects_addVariable(request, project_id):
         # Get highest variable rank in project + 1
         rank = coding_variable.objects.filter(variable_project=project).aggregate(Max('variable_rank'))['variable_rank__max'] + 1
 
+        print("rank:", rank)
+
         # Create variable instance
         new_variable = coding_variable(
             variable_name=variable_name,
@@ -474,7 +508,10 @@ def myProjects_addVariable(request, project_id):
                 example=example
             )
             new_value.save()
-        
+
+        # Reorder variable rank
+        variable_reorder(project)
+
         if action == "add":
             # Redirect/refresh page after form submission
             print("continue")
@@ -1036,7 +1073,7 @@ def test(request):
 
     if request.method == 'POST':
         print("POST")
-        richText = request.POST.get('content-textarea')
+        richText = request.POST.get('content-input')
 
         print("richText:", richText)
 
@@ -1067,3 +1104,47 @@ def test(request):
     
     return render(request, 'main/test.html', context)
 
+
+# =============================================================
+# Testing and Debugging - Assign Test
+# =============================================================
+
+@login_required
+def myProjects_assignTest(request, project_id):
+    # Get active user from request
+    active_user = request.user
+
+    # Fetch project from database
+    project = get_object_or_404(project_model, project_id=project_id)
+
+    # Fetch project users from database
+    coders = user_project_model.objects.filter(project=project).select_related('user')
+
+
+    if request.method == "POST":
+        print("POST")
+
+        if 'coder' in request.POST:
+            coder = request.POST.get('coder')
+            print("coder:", coder)
+        else:
+            print("No coder")
+
+        if 'numUnits' in request.POST:
+            num_units = request.POST.get('numUnits')
+            print("num_units:", num_units)
+        else:
+            print("No num units")
+
+    
+    favorite_list = favorite_projects_list(request.user)
+    sys_admin = sys_admin_test(request.user)
+    context = {
+        'page_name': f"{project.project_name}",
+        'active_user': active_user,
+        'project': project,
+        'coders': coders,
+        'favorite_list': favorite_list,
+        'sys_admin': sys_admin,
+    }
+    return render(request, 'main/myProjectsTabs/assign_test.html', context)

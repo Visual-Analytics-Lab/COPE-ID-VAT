@@ -8,16 +8,16 @@
   <!-- {\% include 'main/includes/pageTitle.html' %\} -->
 
   <!-- Row 1 -->
-  <div class="row">
+  <div class="d-flex flex-nowrap" style="width: 100%;">
 
     <!-- Row 1 Column 1 -->
-    <div class="col col-auto d-none d-sm-block sidebar-style">
+    <div class="d-none d-sm-block sidebar-style" style="flex: 0 0 auto;">
       <!-- Sidebar -->
       {% include 'main/includes/sidebar.html' %}
     </div>
 
     <!-- Row 1 Column 2 -->
-    <div class="col">
+    <div class="flex-grow-1 d-flex flex-column" style="min-width: 0;">
       <!-- Main Content -->
 
       <!-- Row 1 Column 2 Row 1 -->
@@ -37,7 +37,7 @@
   
           <!-- Inter-Rater Reliability -->
           <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Inter-Rater Reliability</a>
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Coding Progress & IRR</a>
           </div>
   
           <!-- Sample & Results -->
@@ -47,7 +47,7 @@
   
           <!-- Edit Project -->
           <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project</a>
+            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project & Users</a>
           </div>
   
         </div>
@@ -67,22 +67,23 @@
             <form method="get">
               <div class="input-group">
                 <!-- Filter Dropdown 1 -->
-                <label class="input-group-text" for="inputGroupSelect01">Filter</label>
-                <select class="form-select" id="inputGroupSelect01">
+                <label class="input-group-text" for="filter-units">Filter</label>
+                <select class="form-select" id="filter-units" name="filter-units">
                   <!-- Filter Options -->
-                  <option selected>All Units</option>
-                  <option value="1">My Assigned Units</option>
-                  <option value="2">Assignments by Coder</option>
+                  <option value="all" selected>All Units</option>
+                  <option value="assigned">My Assigned Units</option>
+                  <option value="coder">Assignments by Coder</option>
                 </select>
                 <!-- Filter Dropdown 2 -->
-                <label class="input-group-text" for="inputGroupSelect01">by</label>
-                <select class="form-select" id="inputGroupSelect01">
+                <label class="input-group-text" for="filterBy">by</label>
+                <select class="form-select" id="filter-by" name="filter-by">
                   <!-- Filter Options -->
-                  <option selected>All Units</option>
-                  <option value="1">Incomplete Units</option>
-                  <option value="2">In-Progress Units</option>
-                  <option value="3">Complete Units</option>
+                  <option value="all" selected>All Units</option>
+                  <option value="incomplete">Incomplete Units</option>
+                  <option value="inprogress">In-Progress Units</option>
+                  <option value="complete">Complete Units</option>
                 </select>
+                <button type="submit" class="btn btn-secondary">Filter</button>
               </div>
             </form>
           </div>
@@ -120,6 +121,77 @@
               <p>No units currently assigned.</p>
             </blockquote>
           {% endif %}
+        </div>
+
+        <div class="row">
+
+          <!-- Pagination -->
+          <nav aria-label="pagination">
+            <ul class="pagination justify-content-center">
+
+              <!-- Check if Previous -->
+              {% if units.has_previous %}
+
+                <!-- First Page -->
+                <li class="page-item">
+                  <a class="page-link" href="?page=1&search_query={{ request.GET.search_query }}" aria-label="First">
+                    <span aria-hidden="true">&laquo;</span>
+                  </a>
+                </li>
+
+                <!-- Previous Page -->
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ units.previous_page_number }}&search_query={{ request.GET.search_query }}">Prev</a>
+                </li>
+              {% else %}
+
+                <!-- Disable Previous Button -->
+                <li class="page-item disabled"><a class="page-link">Prev</a></li>
+              {% endif %}
+
+              <!-- Iterate +/- 5 Pages -->
+              {% for current_page in units.paginator.page_range %}
+                {% if current_page <= units.number|add:5 and current_page >= units.number|add:-5 %}
+
+                  <!-- Check if Counter == Current Page -->
+                  {% if forloop.counter == units.number %}
+
+                    <!-- Disable Button for Current Page -->
+                    <li class="page-item disabled"><a class="page-link" href="#">{{forloop.counter}}</a></li>
+
+                  {% else %}
+
+                    <!-- Button for Page Navigation -->
+                    <li class="page-item">
+                      <a class="page-link" href="?page={{forloop.counter}}&search_query={{ request.GET.search_query }}">{{forloop.counter}}</a>
+                    </li>
+                  {% endif %}
+
+                {% endif %}
+              {% endfor %}
+
+              <!-- Check if Next -->
+              {% if units.has_next %}
+
+                <!-- Next Page -->
+                <li class="page-item"><a class="page-link" href="?page={{ units.next_page_number }}&search_query={{ request.GET.search_query }}">Next</a>
+                </li>
+
+                <!-- Last Page -->
+                <li class="page-item">
+                  <a class="page-link" href="?page={{ units.paginator.num_pages }}&search_query={{ request.GET.search_query }}" aria-label="Last">
+                    <span aria-hidden="true">&raquo;</span>
+                  </a>
+                </li>
+                {% else %}
+
+                <!-- Disable Next Button -->
+                <li class="page-item disabled"><a class="page-link">Next</a></li>
+              {% endif %}
+
+            </ul>
+          </nav>
+
         </div>
 
       </div>

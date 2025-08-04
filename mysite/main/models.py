@@ -8,6 +8,7 @@ from django.dispatch import receiver
 from django.utils import timezone
 from django.utils.text import slugify
 from django.core.validators import int_list_validator, MinValueValidator, MaxValueValidator
+from django.core.exceptions import ValidationError
 from django.conf import settings
 import json
 
@@ -40,7 +41,7 @@ class sample_data(models.Model):
     def __str__(self):
         return self.doc_json
 
-    # tweetLanguage, tweetMentions, tweetHashtags, tweetAnnotations, tweetURLs, retweetCount, replyCount, likeCunt, and createdAt
+    # tweetLanguage, tweetMentions, tweetHashtags, tweetAnnotations, tweetURLs, retweetCount, replyCount, likeCount, and createdAt
 
     @property
     def created_at(self):
@@ -241,8 +242,10 @@ class coding_variable(models.Model):
     variable_id = models.AutoField(primary_key=True)
     variable_name = models.CharField(max_length=64, null=False, blank=False)
     variable_description = models.TextField(max_length=4096, blank=True, default='')
+    variable_comment = models.TextField(max_length=4096, blank=True, default='')
     variable_project = models.ForeignKey(project_model, on_delete=models.CASCADE)
     variable_rank = models.SmallIntegerField(unique=True, validators=[MinValueValidator(-100), MaxValueValidator(100)])
+    timestamp = models.DateTimeField(auto_now=True)
 
     MEASUREMENTS = (
     ('nom', 'Nominal'),
@@ -306,7 +309,7 @@ class coding_value(models.Model):
         ]
 
 # =============================================================
-# Post Coding
+# Unit Coding
 # =============================================================
 
 class unit_coding(models.Model):
@@ -333,6 +336,62 @@ class unit_coding(models.Model):
             ],
             'value': self.value.value  # This can be used to show the selected value
         }
+    
+# =============================================================
+# Unit Assignment
+# =============================================================
+
+class unit_assignment(models.Model):
+    project = models.ForeignKey(project_model, on_delete=models.CASCADE, related_name="unit_assignments")
+    unit = models.ForeignKey(sample_data,  on_delete=models.CASCADE, related_name="assignments")
+    coder = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name="unit_assignments")
+    general_comment = models.TextField(max_length=2084, blank=True)
+
+    # Bookkeeping
+    assigned_by   = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, on_delete=models.SET_NULL, related_name="assignments_made")
+    assigned_at   = models.DateTimeField(auto_now_add=True)
+    started_at    = models.DateTimeField(null=True, blank=True)
+    completed_at  = models.DateTimeField(null=True, blank=True)
+
+    STATUS = (
+        ("assigned",   "Assigned"),
+        ("in_progress","In progress"),
+        ("completed",  "Completed"),
+    )
+    status = models.CharField(max_length=12, choices=STATUS, default="assigned")
+
+    class Meta:
+        unique_together = ("project", "unit", "coder")  # same unit can go to many coders, but only once per coder
+        indexes = [
+            models.Index(fields=["project", "coder"]),
+            models.Index(fields=["unit"]),
+        ]
+        constraints = [
+            models.CheckConstraint(
+                name="unit_in_project",
+                check=models.Q(unit__projects=models.F("project")),
+            ),
+        ]
+
+    def __str__(self):
+        return f"{self.unit} → {self.coder} ({self.project})"
+    
+
+    # ---- validation -------------------------------------------------
+    def clean(self):
+        """
+        Ensure the selected unit is one of project.units.
+        This runs automatically when you save via a ModelForm
+        or when you call instance.full_clean().
+        """
+        if not self.project.units.filter(pk=self.unit_id).exists():
+            raise ValidationError(
+                {"unit": "Selected unit is not part of the chosen project."}
+            )
+    
+    class Meta:
+        verbose_name = "Unit Assignment"
+        verbose_name_plural = "Unit Assigments"
     
 # =============================================================
 # Inbox Model

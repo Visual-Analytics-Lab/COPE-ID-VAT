@@ -1,0 +1,265 @@
+/* ===========================================
+   Quill + Bootstrap (light/dark + hover chips)
+   =========================================== */
+
+/* Remove default borders on both; avoid double line from container */
+.ql-toolbar,
+.ql-container {
+    border: none !important;
+}
+
+.ql-container {
+    border-top: 0 !important;
+}
+
+/* Toolbar bottom border + solid bg (sticky-safe) */
+.ql-toolbar {
+    border-bottom: 1px solid var(--bs-border-color, #dee2e6) !important;
+    background-color: var(--bs-body-bg, #fff);
+}
+
+[data-bs-theme="dark"] .ql-toolbar {
+    border-bottom-color: #495057 !important;
+    background-color: var(--bs-body-bg, #212529);
+}
+
+/* Compact, clickable hit areas */
+.ql-toolbar button,
+.ql-toolbar .ql-picker-label {
+    border-radius: var(--bs-border-radius, .375rem);
+    transition: background-color .15s ease-in-out, box-shadow .15s ease-in-out;
+    padding: .25rem;
+}
+
+/* --------------------------
+   Icon colors (default)
+   -------------------------- */
+.ql-toolbar button:not(.ql-color):not(.ql-background) .ql-stroke,
+.ql-toolbar .ql-picker-label .ql-stroke,
+.ql-toolbar .ql-picker-item .ql-stroke {
+    stroke: var(--bs-secondary-color, #6c757d);
+}
+
+.ql-toolbar button:not(.ql-color):not(.ql-background) .ql-fill,
+.ql-toolbar .ql-picker-label .ql-fill,
+.ql-toolbar .ql-picker-item .ql-fill {
+    fill: var(--bs-secondary-color, #6c757d);
+}
+
+/* Dark theme base icon color */
+[data-bs-theme="dark"] .ql-toolbar button:not(.ql-color):not(.ql-background) .ql-stroke,
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-label .ql-stroke,
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-item .ql-stroke {
+    stroke: #dee2e6;
+}
+
+[data-bs-theme="dark"] .ql-toolbar button:not(.ql-color):not(.ql-background) .ql-fill,
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-label .ql-fill,
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-item .ql-fill {
+    fill: #dee2e6;
+}
+
+/* --------------------------------------------------------
+   Bootstrap-like hover/active backgrounds (chip treatment)
+   -------------------------------------------------------- */
+.ql-toolbar button:hover,
+.ql-toolbar button.ql-active,
+.ql-toolbar .ql-picker-label:hover,
+.ql-toolbar .ql-picker-label.ql-expanded {
+    background-color: var(--bs-gray-200, #e9ecef);
+}
+
+[data-bs-theme="dark"] .ql-toolbar button:hover,
+[data-bs-theme="dark"] .ql-toolbar button.ql-active,
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-label:hover,
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-label.ql-expanded {
+    background-color: var(--bs-gray-800, #343a40);
+}
+
+/* Don’t paint the color/background swatch controls */
+.ql-toolbar button.ql-color:hover,
+.ql-toolbar button.ql-background:hover,
+.ql-toolbar .ql-color .ql-picker-label:hover,
+.ql-toolbar .ql-background .ql-picker-label:hover {
+    background-color: transparent;
+}
+
+/* ----------------------------
+   Dropdown menu item hover
+   ---------------------------- */
+.ql-toolbar .ql-picker-options .ql-picker-item {
+    border-radius: var(--bs-border-radius-sm, .25rem);
+}
+
+.ql-toolbar .ql-picker-options .ql-picker-item:hover {
+    background-color: var(--bs-gray-200, #e9ecef);
+}
+
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-options .ql-picker-item:hover {
+    background-color: var(--bs-gray-800, #343a40);
+}
+
+/* ----------------------------
+   Focus-visible for accessibility
+   ---------------------------- */
+.ql-toolbar button:focus-visible,
+.ql-toolbar .ql-picker-label:focus-visible {
+    outline: 0;
+    box-shadow: 0 0 0 .25rem var(--bs-focus-ring-color, rgba(13, 110, 253, .25));
+}
+
+/* ----------------------------------------------
+   (Optional) size/height tweaks for Snow theme
+   ---------------------------------------------- */
+.ql-toolbar.ql-snow {
+    min-height: 2.75rem;
+    /* keeps toolbar compact */
+}
+
+.ql-toolbar.ql-snow .ql-formats {
+    margin-right: .25rem;
+}
+
+/* -------------------------------------------------
+   (Optional) CSS-only: reflect selected swatch color
+   on the color-picker label using :has() (modern)
+   ------------------------------------------------- */
+/*
+.ql-color.ql-picker:has(.ql-picker-item[aria-selected="true"][data-value="#e03131"]) 
+  .ql-picker-label .ql-stroke { stroke: #e03131; }
+.ql-background.ql-picker:has(.ql-picker-item[aria-selected="true"][data-value="#ffd43b"]) 
+  .ql-picker-label .ql-fill { fill: #ffd43b; }
+*/
+
+/* --- Ensure hover/active tint always wins (covers buttons + pickers) --- */
+.ql-toolbar button:not(.ql-color):not(.ql-background):hover .ql-stroke,
+.ql-toolbar button:not(.ql-color):not(.ql-background).ql-active .ql-stroke,
+.ql-toolbar .ql-picker-label:hover .ql-stroke,
+.ql-toolbar .ql-picker-label.ql-expanded .ql-stroke {
+    stroke: var(--bs-primary, #0d6efd) !important;
+}
+
+.ql-toolbar button:not(.ql-color):not(.ql-background):hover .ql-fill,
+.ql-toolbar button:not(.ql-color):not(.ql-background).ql-active .ql-fill,
+.ql-toolbar .ql-picker-label:hover .ql-fill,
+.ql-toolbar .ql-picker-label.ql-expanded .ql-fill {
+    fill: var(--bs-primary, #0d6efd) !important;
+}
+
+/* Default text color for picker labels (Font, Size) + hover */
+.ql-toolbar .ql-picker-label {
+    color: var(--bs-body-color, #212529);
+}
+
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-label {
+    color: #dee2e6;
+}
+
+.ql-toolbar .ql-picker-label:hover,
+.ql-toolbar .ql-picker-label.ql-expanded {
+    color: var(--bs-primary, #0d6efd);
+}
+
+/* ===== Picker dropdown panel & items ===== */
+
+/* Panel background, border, radius, shadow */
+.ql-toolbar .ql-picker-options {
+    background-color: var(--bs-body-bg, #fff);
+    border: 1px solid var(--bs-border-color, #dee2e6);
+    border-radius: var(--bs-border-radius, .375rem);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .15);
+    padding: .25rem;
+}
+
+/* Dark theme panel */
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-options {
+    background-color: var(--bs-dropdown-bg, #212529);
+    border-color: var(--bs-border-color, #495057);
+    box-shadow: 0 .5rem 1rem rgba(0, 0, 0, .5);
+}
+
+/* Item text color + spacing (light + dark combined here) */
+.ql-toolbar .ql-picker-options .ql-picker-item {
+    color: var(--bs-body-color, #212529);
+    padding: .25rem .5rem;
+    border-radius: var(--bs-border-radius-sm, .25rem);
+}
+
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-options .ql-picker-item {
+    color: #dee2e6;
+}
+
+/* Hover state (keeps existing) */
+.ql-toolbar .ql-picker-options .ql-picker-item:hover {
+    background-color: var(--bs-gray-200, #e9ecef);
+}
+
+[data-bs-theme="dark"] .ql-toolbar .ql-picker-options .ql-picker-item:hover {
+    background-color: var(--bs-gray-800, #343a40);
+}
+
+/* Selected item (keeps your blue highlight) */
+.ql-toolbar .ql-picker-options .ql-picker-item[aria-selected="true"] {
+    background-color: var(--bs-primary, #0d6efd);
+    color: #fff;
+}
+
+/* Make unformatted editor text use Bootstrap’s body text */
+#editor .ql-editor {
+    font-family: var(--bs-body-font-family,
+            system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+            Arial, "Noto Sans", "Liberation Sans",
+            "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji",
+            sans-serif);
+    font-size: var(--bs-body-font-size, 1rem);
+    line-height: var(--bs-body-line-height, 1.5);
+    color: var(--bs-body-color, #212529);
+    background: var(--bs-body-bg, #fff);
+    caret-color: var(--bs-body-color, #212529);
+}
+
+/* Explicit options (if a user chooses a font) */
+.ql-font-bootstrap-sans {
+    font-family: var(--bs-body-font-family,
+            system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue",
+            Arial, "Noto Sans", "Liberation Sans",
+            "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji",
+            sans-serif);
+}
+
+.ql-font-serif {
+    font-family: Georgia, "Times New Roman", Times, serif;
+}
+
+.ql-font-monospace {
+    font-family: var(--bs-font-monospace,
+            ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+            "Liberation Mono", "Courier New", monospace);
+}
+
+/* Snow theme labels (so the UI says “Default / Sans Serif / …”) */
+.ql-snow .ql-picker.ql-font .ql-picker-item:not([data-value])::before,
+.ql-snow .ql-picker.ql-font .ql-picker-label:not([data-value])::before {
+    content: "Default";
+    font-family: var(--bs-body-font-family, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif);
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="bootstrap-sans"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="bootstrap-sans"]::before {
+    content: "Sans Serif";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="serif"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="serif"]::before {
+    content: "Serif";
+}
+
+.ql-snow .ql-picker.ql-font .ql-picker-item[data-value="monospace"]::before,
+.ql-snow .ql-picker.ql-font .ql-picker-label[data-value="monospace"]::before {
+    content: "Monospace";
+}
+
+/* Optional: paragraph spacing to feel like Bootstrap prose */
+#editor .ql-editor p {
+    margin-bottom: 1rem;
+}

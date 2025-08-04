@@ -1,6 +1,6 @@
 <!-- Included in myProjectsTabs/codebook.html -->
  
-<div class="table-responsive overflow-y-scroll myProjects-t">
+<div class="table-responsive overflow-y-scroll myProjects-t" id="val-table">
   <table class="table table-striped table-hover mb-0">
   
     <!-- Variable Table Column Headers -->
@@ -33,6 +33,9 @@
     </tbody>
   </table>
 </div>
+<div id="no-vals" style="display: none;">
+  <p>Something something about a lack of values and an open ended response.</p>
+</div>
 
 <!-- Modal -->
 <div class="modal fade" id="variableInfoModal" tabindex="-1" aria-labelledby="variableInfoModalLabel" aria-hidden="true">
@@ -57,47 +60,3 @@
     </div>
   </div>
 </div>
-
-<script>
-  function moveRowUp(button) {
-    const row = button.closest("tr");
-    const previousRow = row.previousElementSibling;
-
-    if (previousRow) {
-      row.parentNode.insertBefore(row, previousRow);
-      refreshButtons();
-    }
-  }
-
-  function moveRowDwn(button) {
-    const row = button.closest("tr");
-    const nextRow = row.nextElementSibling;
-
-    if (nextRow) {
-      row.parentNode.insertBefore(nextRow, row);
-      refreshButtons();
-    }
-  }
-
-  function refreshButtons() {
-    const rows = document.querySelectorAll("tbody tr");
-
-    rows.forEach((row, index) => {
-      const upBtn = row.querySelector(".btn-up");
-      const downBtn = row.querySelector(".btn-down");
-
-      // Enable both by default
-      upBtn.disabled = false;
-      downBtn.disabled = false;
-
-      // Disable Up on first row
-      if (index === 0) upBtn.disabled = true;
-
-      // Disable Down on last row
-      if (index === rows.length - 1) downBtn.disabled = true;
-    });
-  }
-
-  // Call this after the page loads to set correct initial state
-  document.addEventListener("DOMContentLoaded", refreshButtons);
-</script>
