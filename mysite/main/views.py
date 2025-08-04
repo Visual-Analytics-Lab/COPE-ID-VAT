@@ -13,6 +13,7 @@ from .utils import favorite_projects_list, variable_reorder
 from user_management.utils import sys_admin_test
 from user_management.models import my_profile_model
 from collections import defaultdict
+import random
 
 
 
@@ -202,21 +203,56 @@ def myProjects_units(request, project_id):
     # Fetch project from database
     project = get_object_or_404(project_model, project_id=project_id)
 
-    search_query = request.GET.get('search')
-    if search_query:
-        units = project.units.filter(doc_text__icontains=search_query).order_by('id')
+
+    filter_units = request.GET.get("filter-units")
+    filter_by = request.GET.get("filter-by")
+
+    print("filter_units", filter_units)
+    print("filter_by", filter_by)
+    assigned_units = unit_assignment.objects.filter(project=project, coder=request.user)
+
+    # FILTER:
+    # All units
+    # Fetch project units from database
+
+    # My Assigned units
+    """
+    if filter_units == "assigned":
+        assigned_units = unit_assignment.objects.filter(project=project, coder=request.user)
+    elif filter_units == "coder":
+        coder_units = unit_assignment.objects.filter(project=project).order_by('coder')
     else:
-        units = project.units.all().order_by("id")
+        all_units = project.units.all().order_by("id")
+        print("all_units.count()", all_units.count())
+        print("type(all_units)", type(all_units))
+    """
+    # Units by coder
+    # Get unit assignments only for this project
+    # unit_assignments_qs = unit_assignment.objects.filter(project=project, coder=request.user).select_related('coder')
+    unit_assignments_qs = unit_assignment.objects.filter(project=project).select_related('coder')
+    
+    # Fetch units and prefetch their assignments
+    units = sample_data.objects.filter(
+        assignments__project=project
+    ).prefetch_related(
+        Prefetch('assignments', queryset=unit_assignments_qs, to_attr='project_assignments')
+    ).distinct().order_by("id")
+
+    # BY:
+    # Incomplete
+
+    # In-progress
+    
+    # Complete
 
     paginator = Paginator(units, 25)  # Show 25 units per page.
 
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
 
+    print("assigned_units.count()", assigned_units.count())
+    print("type(assigned_units)", type(assigned_units))
 
-
-    # Fetch project units from database
-    units = project.units.all().order_by("id")
 
     favorite_list = favorite_projects_list(request.user)
     sys_admin = sys_admin_test(request.user)
@@ -224,7 +260,7 @@ def myProjects_units(request, project_id):
         'page_name': f"{project.project_name}",
         'project': project,
         'units': page_obj,
-        'search_query': search_query,
+        # 'search_query': search_query,
         'favorite_list': favorite_list,
         'sys_admin': sys_admin,
     }
@@ -326,7 +362,7 @@ def myProjects_codeUnit(request, project_id, unit_id):
                 )
 
         # Get general comment from coder
-        new_general_comment = request.POST.get('general_comment_in')
+        new_general_comment = request.POST.get('about')
 
         # Check if general comment exists
         if new_general_comment:
@@ -407,7 +443,9 @@ def myProjects_codebook(request, project_id):
 
         else:
             # Get codebook protocol from HTTP POST request
-            new_protocol = request.POST.get('codebook-protocol')
+            new_protocol = request.POST.get('about')
+
+            print("new_protocol:", new_protocol)
 
             # Set new codebook protocol
             project.codebook_protocol = new_protocol
@@ -468,7 +506,7 @@ def myProjects_addVariable(request, project_id):
         print("action:", action)
 
         # Get variable description from HTTP POST request
-        variable_description = request.POST.get('variable-description')
+        variable_description = request.POST.get('about')
 
         # Get variable value(s) from HTTP POST request
         values = request.POST.getlist('value[]')
@@ -596,11 +634,16 @@ def myProjects_editVariable(request, project_id, variable_id):
             # Fetch variable from database
             variable = get_object_or_404(coding_variable, pk=variable_id, variable_project=project_id)
 
+            about = request.POST.get('about')
+            
+            print("about:", about)
+
             # Get variable name from HTTP POST request
             variable.variable_name = request.POST.get('variable-name')
 
             # Get variable description from HTTP POST request
-            variable.variable_description = request.POST.get('variable-description')
+            # variable.variable_description = request.POST.get('variable-description')
+            variable.variable_description = about
 
             # Get variable value(s) from HTTP POST request
             values = request.POST.getlist('value[]')
@@ -785,8 +828,9 @@ def myProjects_editProject(request, project_id):
             project.save()
         else:
             # Get project description from HTTP POST request
-            new_description = request.POST.get('project-description')
-
+            new_description = request.POST.get('about')
+            print("ELSE")
+            print("new_description:", new_description)
             # Set new project description
             project.project_description = new_description
 
@@ -1069,7 +1113,7 @@ def test(request):
     sys_admin = sys_admin_test(request.user)
     test = None
 
-    testTexts = test_model.objects.all()    
+    testTexts = test_model.objects.all()
 
     if request.method == 'POST':
         print("POST")
@@ -1120,21 +1164,58 @@ def myProjects_assignTest(request, project_id):
     # Fetch project users from database
     coders = user_project_model.objects.filter(project=project).select_related('user')
 
+    # for coder in coders:
+    #     print("coder:", coder)
+    #     print("coder.user:", coder.user)
+    #     print("coder.user.id:", coder.user.id)
 
     if request.method == "POST":
         print("POST")
+        coder_id = request.POST.get('coder_id')
 
-        if 'coder' in request.POST:
-            coder = request.POST.get('coder')
-            print("coder:", coder)
-        else:
-            print("No coder")
+        num_units = int(request.POST.get('numUnits', 50))
+        # print("coder", coder)
 
-        if 'numUnits' in request.POST:
-            num_units = request.POST.get('numUnits')
-            print("num_units:", num_units)
-        else:
-            print("No num units")
+
+        coder_object = user_project_model.objects.filter(project=project, user__id=coder_id).select_related('user').first()
+
+        print("coder_project_role:", coder_object)
+
+        print("CODER PROJECT ROLE")
+        if not coder_object:
+            print("Invalid coder ID for this project")
+            return redirect(request.path)
+
+        coder_user = coder_object.user
+        print("CODER USER")
+        print("coder_user:", coder_user)
+        # Step 1: Get units from the project that this coder doesn't already have
+        already_assigned = unit_assignment.objects.filter(project=project, coder=coder_user).values_list('unit_id', flat=True)
+        available_units = project.units.exclude(id__in=already_assigned)
+
+        # Step 2: Randomly sample up to `num_units`
+        unit_sample = list(available_units)
+        if len(unit_sample) < num_units:
+            print(f"Only {len(unit_sample)} units available for assignment.")
+            num_units = len(unit_sample)
+
+        selected_units = random.sample(unit_sample, num_units)
+
+        # Step 3: Create unit_assignment objects
+        new_assignments = []
+        for unit in selected_units:
+            assignment = unit_assignment(
+                project=project,
+                unit=unit,
+                coder=coder_user,
+                assigned_by=active_user,  # the request.user assigning
+            )
+            new_assignments.append(assignment)
+
+        # Step 4: Bulk create
+        unit_assignment.objects.bulk_create(new_assignments, ignore_conflicts=True)
+
+        print(f"Assigned {len(new_assignments)} units to {coder_user.username}")
 
     
     favorite_list = favorite_projects_list(request.user)

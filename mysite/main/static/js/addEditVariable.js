@@ -1,7 +1,6 @@
 /*
-    Included in editVariable.html
+    Included in addVariable.html & editVariable.html
 
-    Initializes and handles Quill Editor (RTE)
     Moves value rows up/down
     Disables first Up and last Down button
     Hides/shows value table if there are values
@@ -10,28 +9,6 @@
 */
 
 $(document).ready(function () {
-    // ~~~ Quill Editor Initialization ~~~
-    const initialComment = JSON.parse(document.getElementById('initial-description').textContent);
-
-    const quill = new Quill('#editor', {
-        modules: {
-            syntax: true,
-            toolbar: '#toolbar-container',
-        },
-        theme: 'snow',
-    });
-
-    if (initialComment.trim()) {
-        quill.root.innerHTML = initialComment;
-    }
-
-    quill.on('text-change', function () {
-        document.getElementById('variable-description').value = quill.root.innerHTML;
-    });
-
-    // Initial sync on page load
-    document.getElementById('variable-description').value = quill.root.innerHTML;
-
     // ~~~ Table Row Manipulation ~~~
     function moveRowUp(button) {
         const row = button.closest("tr");

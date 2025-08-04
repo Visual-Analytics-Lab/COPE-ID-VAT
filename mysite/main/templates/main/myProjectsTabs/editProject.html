@@ -2,6 +2,13 @@
 
 {% block content %}
 
+<link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet"/>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+{% load static %}
+<link href="{% static 'css/dataviz-quill.css' %}" rel="stylesheet">
+
 <!-- Page Content -->
 <div class="container-fluid" style="height: 50rem;">
   
@@ -157,9 +164,9 @@
 
 <!-- Edit Project Description Modal -->
 <div class="modal fade" id="editDescription" tabindex="-1" aria-labelledby="editDescriptionLabel" aria-hidden="true">
-  <form method="post">
+  <form id="quill-form" method="post">
     {% csrf_token %}
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <!-- Title -->
@@ -168,7 +175,9 @@
         </div>
         <div class="modal-body">
           <!-- Input -->
-          <textarea class="form-control border-0" name="project-description" id="project-description" rows="3">{{ project.project_description }}</textarea>
+          <div id="editor" style="height: 30rem;">
+          </div>
+          <textarea name="project-description" id="project-description" style="display: none;"></textarea>
           <small class="text-body-secondary">Project descriptions are public and shared with users when invited.</small>
         </div>
         <div class="modal-footer">
@@ -181,5 +190,10 @@
   </form>
 </div>
 {% endif %}
+
+{{ project.project_description|default:""|json_script:"initial-data" }}
+
+{% load static %}
+<script src="{% static 'js/dataviz-quill.js' %}"></script>
 
 {% endblock %}
