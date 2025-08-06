@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function()
     {
       sidebarButton = document.getElementById('my_projects-btn');
     }
-    else
+    else if (pathPart2 != 'code_unit')
     {
       // console.log(pathPart2);
       const myproject_path = document.getElementById(pathPart2);
