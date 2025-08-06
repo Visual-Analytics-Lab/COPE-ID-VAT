@@ -1,0 +1,34 @@
+<!-- 
+    Included in My Project tabs
+    
+    Navigation buttons for each my projects page
+    Buttons are disabled by nav-toggle.js
+-->
+
+<div class="d-flex flex-row justify-content-start">
+    <!-- Units of Analysis -->
+    <div class="myProjects-nav-div">
+    <a id="units" class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
+    </div>
+
+    <!-- Codebook -->
+    <div class="myProjects-nav-div">
+    <a id="codebook" class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
+    </div>
+
+    <!-- Inter-Rater Reliability -->
+    <div class="myProjects-nav-div">
+    <a id="progress_irr" class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Coding Progress & IRR</a>
+    </div>
+
+    <!-- Sample & Results -->
+    <div class="myProjects-nav-div">
+    <a id="samples_results" class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
+    </div>
+
+    <!-- Edit Project -->
+    <div class="myProjects-nav-div">
+    <a id="edit_project" class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project & Users</a>
+    </div>
+
+</div>

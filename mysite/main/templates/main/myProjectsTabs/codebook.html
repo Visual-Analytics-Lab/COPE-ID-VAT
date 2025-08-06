@@ -2,6 +2,18 @@
 
 {% block content %}
 
+<!-- Delete Variable Modal CSS -->
+<style>
+  .icon-link.custom-hover {
+    color: var(--bs-secondary); /* default gray */
+    transition: color 0.2s ease;
+  }
+
+  .icon-link.custom-hover:hover {
+    color: var(--bs-danger); /* red */
+  }
+</style>
+
 <!-- Set div containing buttons to have 0 !important padding top and bottom to align with sidebar -->
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
@@ -29,35 +41,7 @@
       <!-- Row 1 Column 2 Row 1 -->
       <div class="row myProjects-nav-row">
         <!-- Navigation Buttons -->
-
-        <div class="d-flex flex-row justify-content-start">
-          <!-- Units of Analysis -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
-          </div>
-  
-          <!-- Codebook -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Codebook</a>
-          </div>
-  
-          <!-- Inter-Rater Reliability -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Coding Progress & IRR</a>
-          </div>
-  
-          <!-- Sample & Results -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
-          </div>
-  
-          <!-- Edit Project -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project & Users</a>
-          </div>
-  
-        </div>
-
+        {% include 'main/includes/myProjects/navbuttons.html' %}
       </div>
 
       <!-- Row 1 Column 2 Row 2 -->
@@ -232,22 +216,7 @@
 {% load static %}
 <script src="{% static 'js/dataviz-quill.js' %}"></script>
 
-<script>
-  function submitReorder() {
-    const modalTable = document.querySelector("#editVarOrder tbody"); // only look inside the modal
-    const rows = modalTable.querySelectorAll("tr");
-    const ids = [];
-
-    rows.forEach(row => {
-      const variableId = row.getAttribute("data-variable-id");
-      if (variableId) {
-        ids.push(variableId);
-      }
-    });
-
-    document.getElementById("reordered-ids").value = ids.join(",");
-    document.getElementById("reorder-form").submit();
-  }
-</script>
+{% load static %}
+<script src="{% static 'js/editVarOrder.js' %}"></script>
 
 {% endblock %}

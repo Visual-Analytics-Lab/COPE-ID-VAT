@@ -5,53 +5,23 @@
 <!-- Page Content -->
 <div class="container-fluid" style="height: 50rem;">
 
-  <!-- {\% include 'main/includes/pageTitle.html' %\} -->
-
   <!-- Row 1 -->
-  <div class="row">
+  <div class="d-flex flex-nowrap" style="width: 100%;">
 
     <!-- Row 1 Column 1 -->
-    <div class="col col-auto d-none d-sm-block sidebar-style">
+    <div class="d-none d-sm-block sidebar-style" style="flex: 0 0 auto;">
       <!-- Sidebar -->
       {% include 'main/includes/sidebar.html' %}
     </div>
 
     <!-- Row 1 Column 2 -->
-    <div class="col">
+    <div class="flex-grow-1 d-flex flex-column" style="min-width: 0;">
       <!-- Main Content -->
 
       <!-- Row 1 Column 2 Row 2 -->
       <div class="row myProjects-nav-row">
         <!-- Navigation Buttons -->
-
-        <div class="d-flex flex-row justify-content-start">
-          <!-- Units of Analysis -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
-          </div>
-  
-          <!-- Codebook -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
-          </div>
-  
-          <!-- Inter-Rater Reliability -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Coding Progress & IRR</a>
-          </div>
-  
-          <!-- Sample & Results -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
-          </div>
-  
-          <!-- Edit Project -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_editProject' project.project_id %}">Edit Project & Users</a>
-          </div>
-  
-        </div>
-
+        {% include 'main/includes/myProjects/navbuttons.html' %}
       </div>
 
       <!-- Row 1 Column 2 Row 3 -->

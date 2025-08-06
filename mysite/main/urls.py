@@ -28,13 +28,13 @@ urlpatterns = [
 
     # My Projects - Statistics (Will add URL for Samples & Results)
     # =============================================================
-    path("my_projects/irr/<uuid:project_id>/", views.myProjects_irr, name="myProjects_irr"),
+    path("my_projects/progress_irr/<uuid:project_id>/", views.myProjects_irr, name="myProjects_irr"),
 
     # My Projects - Edit Project
     # =============================================================
     path("my_projects/edit_project/<uuid:project_id>/", views.myProjects_editProject, name="myProjects_editProject"),
     path("my_projects/profile/<uuid:project_id>/<int:user_id>/", views.myProjects_projectProfile, name="myProjects_projectProfile"),
-    path("my_projects/project_roles/<uuid:project_id>/", views.myProjects_sampleResults, name="myProjects_SampleResults"),
+    path("my_projects/samples_results/<uuid:project_id>/", views.myProjects_sampleResults, name="myProjects_SampleResults"),
 
     # Inbox
     # =============================================================

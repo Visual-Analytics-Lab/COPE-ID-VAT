@@ -68,12 +68,12 @@
                     </tr>
                   {% endfor %}
                 {% endwith %}
-                <tfoot>
-                  <td colspan="12">
-                    <strong>Variable Description: </strong>{{ variable.variable_description|safe }}
-                  </td>
-                </tfoot>
               </tbody>
+              <tfoot>
+                <tr>
+                  <td><strong>Description:</strong> {{ variable.variable_description|safe }}</td>
+                </tr>
+              </tfoot>
             </table>
           </td>
         </tr>
