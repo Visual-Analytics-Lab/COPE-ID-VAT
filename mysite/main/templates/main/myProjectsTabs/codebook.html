@@ -14,7 +14,6 @@
   }
 </style>
 
-
 <!-- Set div containing buttons to have 0 !important padding top and bottom to align with sidebar -->
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
@@ -217,22 +216,7 @@
 {% load static %}
 <script src="{% static 'js/dataviz-quill.js' %}"></script>
 
-<script>
-  function submitReorder() {
-    const modalTable = document.querySelector("#editVarOrder tbody"); // only look inside the modal
-    const rows = modalTable.querySelectorAll("tr");
-    const ids = [];
-
-    rows.forEach(row => {
-      const variableId = row.getAttribute("data-variable-id");
-      if (variableId) {
-        ids.push(variableId);
-      }
-    });
-
-    document.getElementById("reordered-ids").value = ids.join(",");
-    document.getElementById("reorder-form").submit();
-  }
-</script>
+{% load static %}
+<script src="{% static 'js/editVarOrder.js' %}"></script>
 
 {% endblock %}
