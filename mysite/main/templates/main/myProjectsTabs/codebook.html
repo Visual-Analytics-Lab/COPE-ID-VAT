@@ -2,6 +2,19 @@
 
 {% block content %}
 
+<!-- Delete Variable Modal CSS -->
+<style>
+  .icon-link.custom-hover {
+    color: var(--bs-secondary); /* default gray */
+    transition: color 0.2s ease;
+  }
+
+  .icon-link.custom-hover:hover {
+    color: var(--bs-danger); /* red */
+  }
+</style>
+
+
 <!-- Set div containing buttons to have 0 !important padding top and bottom to align with sidebar -->
 <link href="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.snow.css" rel="stylesheet"/>
 <script src="https://cdn.jsdelivr.net/npm/quill@2.0.2/dist/quill.js"></script>
