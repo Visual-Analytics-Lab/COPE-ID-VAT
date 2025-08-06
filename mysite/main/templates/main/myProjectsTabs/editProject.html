@@ -28,40 +28,7 @@
       <!-- Row 1 Column 2 Row 2 -->
       <div class="row myProjects-nav-row">
         <!-- Navigation Buttons -->
-
-        <div class="d-flex flex-row justify-content-start">
-          <!-- Units of Analysis -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_units' project.project_id %}">Units of Analysis</a>
-          </div>
-  
-          <!-- Codebook -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_codebook' project.project_id %}">Codebook</a>
-          </div>
-  
-          <!-- Inter-Rater Reliability -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_irr' project.project_id %}">Coding Progress & IRR</a>
-          </div>
-  
-          <!-- Sample & Results -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_SampleResults' project.project_id %}">Sample & Results</a>
-          </div>
-  
-          <!-- Edit Project -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden disabled" role="button" aria-disabled="true" href="#">Edit Project & Users</a>
-          </div>
-
-          <!-- DELETE LATER Assign Units -->
-          <div class="myProjects-nav-div">
-            <a class="btn btn-secondary myProjects-nav-a text-truncate overflow-hidden" href="{% url 'main:myProjects_assignTest' project.project_id %}">Assign Units</a>
-          </div>
-  
-        </div>
-
+        {% include 'main/includes/myProjects/navbuttons.html' %}
       </div>
 
       <!-- Row 1 Column 2 Row 3 -->
