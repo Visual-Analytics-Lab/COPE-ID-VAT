@@ -28,15 +28,21 @@
 
 
 
+<!-- Page Content -->
 <div class="container-fluid" style="height: 50rem;">
 
-  <div class="row">
+  <!-- Row 1 -->
+  <div class="d-flex flex-nowrap" style="width: 100%;">
 
-    <div class="col col-auto d-none d-md-block text-center px-0" style="width: 8rem;">
+    <!-- Row 1 Column 1 -->
+    <div class="d-none d-sm-block sidebar-style" style="flex: 0 0 auto;">
+      <!-- Sidebar -->
       {% include 'main/includes/sidebar.html' %}
     </div>
 
-    <div class="col content w-auto">
+    <!-- Row 1 Column 2 -->
+    <div class="flex-grow-1 d-flex flex-column" style="min-width: 0;">
+      <!-- Main Content -->
       <!-- Row 1 -->
       <div class="row" style="height: 27rem;">
 
