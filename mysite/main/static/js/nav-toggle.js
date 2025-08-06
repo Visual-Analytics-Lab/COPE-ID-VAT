@@ -1,3 +1,10 @@
+/*
+    Navigation Button Toggle
+
+    Included in index.html
+    Toggles sidebar buttons
+    Toggles my projects navigation buttons
+*/
 
 document.addEventListener("DOMContentLoaded", function()
 {
@@ -31,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function()
     }
     else
     {
-      console.log(pathPart2);
+      // console.log(pathPart2);
       const myproject_path = document.getElementById(pathPart2);
       myproject_path.removeAttribute('href');
       myproject_path.classList.add('disabled');
@@ -54,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function()
   else
   {
     sidebarButton = document.getElementById('explore-btn');
-    console.log('You are on the Explore page');
+    // console.log('You are on the Explore page');
   }
 
   // Disable button
